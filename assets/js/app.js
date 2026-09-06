@@ -638,7 +638,7 @@
       viewCase.innerHTML = "";
       viewHome.hidden = false;
       mainNav.hidden = false;
-      document.title = "Ludgero Ricardo Abilino · Product Designer Sênior";
+      document.title = "Ludgero Ricardo Abilino · Product Designer";
 
       animarEntrada(viewHome);
 
