@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ludgero Ricardo Abilino · Product Designer Sênior</title>
+<meta name="description" content="Portfólio de Ludgero Ricardo Abilino — Product Designer Sênior com 15 anos de mercado, moldando experiências de aprendizagem e negócios em EdTech, T&amp;D e produtos digitais B2B.">
+<meta name="author" content="Ludgero Ricardo Abilino">
+<meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#fbfbf9" media="(prefers-color-scheme: light)">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="Ludgero Ricardo Abilino · Product Designer Sênior">
+<meta property="og:description" content="15 anos de mercado. 10 anos em EdTechs. Cases de learning experience design, plataformas gamificadas e produtos B2B.">
+<meta property="og:image" content="assets/img/home/hero-bg.jpg">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;700;900&family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/styles.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='18' fill='%23000'/><text x='50' y='68' font-family='Barlow,sans-serif' font-weight='900' font-size='46' fill='%23fff' text-anchor='middle'>LRA</text></svg>">
+
+<script>
+  /* Aplica o tema antes da primeira pintura para não haver flash. */
+  (function () {
+    try {
+      var pref = localStorage.getItem("lra-theme") || "auto";
+      var sys = window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
+      document.documentElement.dataset.theme = pref === "auto" ? sys : pref;
+      document.documentElement.dataset.themePref = pref;
+    } catch (e) {}
+  })();
+</script>
+</head>
+<body>
+
+<div class="progress" id="progress" aria-hidden="true"></div>
+<a class="skip" href="#main">Pular para o conteúdo</a>
+
+<!-- ====================================================================== -->
+<!-- Header                                                                 -->
+<!-- ====================================================================== -->
+<header class="site-header" id="site-header">
+  <a class="brand" href="#/" data-route="/" aria-label="LRA · Product Design — ir para o início">
+    <b>LRA</b><i>|</i><span>Product Design</span>
+  </a>
+
+  <nav class="main-nav" id="main-nav" aria-label="Seções">
+    <a href="#cases" data-spy="cases">Cases</a>
+    <a href="#sobre" data-spy="sobre">Sobre</a>
+    <a href="#contato" data-spy="contato">Contato</a>
+  </nav>
+
+  <div class="header-actions">
+    <div class="theme-switch" id="theme-switch" role="radiogroup" aria-label="Tema da interface">
+      <span class="theme-switch__thumb" id="theme-thumb" aria-hidden="true"></span>
+      <button type="button" role="radio" data-theme-set="light" aria-checked="false" title="Tema claro">
+        <span class="sr-only">Tema claro</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="4.2"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M19.1 4.9l-1.4 1.4M6.3 17.7l-1.4 1.4"/>
+        </svg>
+      </button>
+      <button type="button" role="radio" data-theme-set="auto" aria-checked="true" title="Seguir o sistema">
+        <span class="sr-only">Seguir o sistema</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="2.5" y="4" width="19" height="13" rx="2"/><path d="M8 20.5h8"/>
+        </svg>
+      </button>
+      <button type="button" role="radio" data-theme-set="dark" aria-checked="false" title="Tema escuro">
+        <span class="sr-only">Tema escuro</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M20.5 14.3A8.6 8.6 0 0 1 9.7 3.5a8.6 8.6 0 1 0 10.8 10.8z"/>
+        </svg>
+      </button>
+    </div>
+
+    <button type="button" class="lang-btn" id="lang-btn" aria-label="Idioma: Português (Brasil)">
+      PT <span aria-hidden="true">▾</span>
+    </button>
+  </div>
+
+  <!-- Só no mobile: concentra navegação, tema, idioma, contato e social.
+       Os três filetes viram um X ao abrir; o rótulo fica para leitor de tela. -->
+  <button type="button" class="menu-btn" id="menu-btn" aria-expanded="false" aria-controls="drawer">
+    <span class="menu-btn__icon" aria-hidden="true"><i></i><i></i><i></i></span>
+    <span class="sr-only" data-menu-label>Abrir menu</span>
+  </button>
+</header>
+
+<!-- ====================================================================== -->
+<!-- Menu mobile                                                            -->
+<!-- Os controles não são duplicados: o app.js move os elementos reais do   -->
+<!-- header e do rodapé para cá abaixo de 860px, e devolve acima disso.     -->
+<!-- ====================================================================== -->
+<div class="drawer" id="drawer" hidden>
+  <div class="drawer__panel" role="dialog" aria-modal="true" aria-labelledby="drawer-title">
+    <h2 class="sr-only" id="drawer-title">Menu</h2>
+
+    <div class="drawer__section" data-slot="nav">
+      <p class="drawer__label">Navegação</p>
+    </div>
+    <div class="drawer__section" data-slot="tema">
+      <p class="drawer__label">Tema</p>
+    </div>
+    <div class="drawer__section" data-slot="idioma">
+      <p class="drawer__label">Idioma</p>
+    </div>
+    <div class="drawer__section drawer__section--contato" data-slot="contato"></div>
+  </div>
+</div>
+
+<main id="main">
+
+  <!-- ==================================================================== -->
+  <!-- VIEW: Home                                                           -->
+  <!-- ==================================================================== -->
+  <div class="view" id="view-home">
+
+    <section class="hero" id="topo">
+      <div class="hero__bg" id="hero-bg" aria-hidden="true">
+        <img src="assets/img/home/hero-bg.jpg" alt="" fetchpriority="high" decoding="async">
+      </div>
+      <div class="hero__veil" aria-hidden="true"></div>
+
+      <div>
+        <h1 class="hero__name">
+          <span><i>Ludgero</i></span>
+          <span><i>Ricardo</i></span>
+          <span><i>Abilino</i></span>
+        </h1>
+        <p class="hero__tag">
+          Product Designer Sênior<br>
+          Moldando Experiências de<br>
+          Aprendizagem e Negócios
+        </p>
+      </div>
+
+      <button type="button" class="hero__scroll" data-scroll-to="cases">
+        <b aria-hidden="true"></b> Role para ver os cases
+      </button>
+    </section>
+
+    <section class="stats" aria-label="Números da carreira">
+      <div class="stats__cell reveal">
+        <p class="label">Anos de Mercado</p>
+        <p class="stats__num" data-count="15" data-suffix="+">15+</p>
+      </div>
+      <div class="stats__cell reveal" style="--reveal-delay:90ms">
+        <p class="label">Anos em EdTechs</p>
+        <p class="stats__num" data-count="10" data-suffix="+">10+</p>
+      </div>
+      <div class="stats__cell reveal" style="--reveal-delay:180ms">
+        <p class="label">Efeito do Maior Case</p>
+        <p class="stats__num" data-count="9000" data-suffix="+">9.000+</p>
+      </div>
+    </section>
+
+    <section class="wrap" id="cases" aria-labelledby="cases-title">
+      <div class="section-head">
+        <h2 class="eyebrow" id="cases-title">Cases de Destaque</h2>
+        <span class="section-head__count">// 03</span>
+      </div>
+      <div class="case-list" id="case-list"><!-- montado por app.js --></div>
+    </section>
+
+    <section class="wrap" id="sobre" aria-labelledby="sobre-title">
+      <div class="about">
+
+        <aside class="about__aside">
+          <div class="avatar reveal">
+            <img src="assets/img/home/portrait.jpg" alt="Retrato de Ludgero Ricardo Abilino" loading="lazy" decoding="async">
+          </div>
+          <p class="availability reveal" style="--reveal-delay:90ms">
+            <b aria-hidden="true"></b>
+            <span>Disponível para<br>contratação</span>
+          </p>
+          <!-- Abre o PDF no visualizador do navegador; quem quiser baixar
+               usa o próprio controle de download dele. -->
+          <a class="btn-ghost reveal" style="--reveal-delay:150ms"
+             href="assets/cv/CV_Ludgero_Product_Designer.pdf"
+             target="_blank" rel="noopener noreferrer">
+            Ver currículo
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M14 4h6v6M20 4l-8.5 8.5"/>
+              <path d="M18 14v4a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4"/>
+            </svg>
+            <span class="sr-only">(PDF, abre em nova aba)</span>
+          </a>
+        </aside>
+
+        <div>
+          <div class="about__block reveal">
+            <h2 class="eyebrow" id="sobre-title">Sobre Mim</h2>
+            <p>Sou Product Designer com 15 anos de experiência em design e uma trajetória construída, nos últimos 10 anos, entre produtos digitais, EdTech e soluções de T&amp;D. Combino UX/UI, gamificação, prototipagem e Design Systems para transformar problemas complexos — desde regras de negócio até experiências de aprendizagem — em produtos claros, intuitivos e relevantes para quem os utiliza. Venho de uma fase sólida em direção de arte, motion design e audiovisual, o que influencia diretamente a forma como penso produto: com atenção à experiência como um todo, à coerência dos sistemas e à qualidade de execução.</p>
+          </div>
+
+          <div class="about__block reveal">
+            <h2 class="eyebrow">Como Eu Trabalho</h2>
+            <p>Não acredito em processos de design rígidos. Acredito em entender o contexto, o problema e o momento do produto para definir o caminho mais adequado. Às vezes, isso significa simplificar o processo para validar uma hipótese ou colocar um MVP no mercado com mais velocidade. Em outros momentos, significa aprofundar a descoberta, conversar com usuários e testar soluções antes de avançar. Gosto de trabalhar próximo ao produto e à engenharia, porque acredito que as melhores soluções surgem do equilíbrio entre as necessidades das pessoas, os objetivos do negócio e as possibilidades da tecnologia.</p>
+          </div>
+
+          <div class="about__block reveal">
+            <h2 class="eyebrow">O Que Busco</h2>
+            <p>Procuro equipes maduras onde design participa de forma estratégica das decisões e existe espaço para colaboração, aprendizado e conversas honestas. Quero continuar evoluindo ao lado de pessoas boas, contribuindo com minha experiência para construir produtos digitais que resolvam problemas reais e gerem impacto consistente para o negócio.</p>
+            <p class="about__closer">Se essa forma de pensar design e produto combina com os desafios da sua equipe, vamos conversar.</p>
+          </div>
+
+          <div class="about__block reveal">
+            <h2 class="eyebrow">Experiências Mais Relevantes</h2>
+            <div class="exp">
+              <div class="exp__row">
+                <div>
+                  <p class="exp__role">Product Designer Sênior</p>
+                  <p class="exp__meta">Benkyou do Brasil · B2B · Remoto</p>
+                </div>
+                <time>Jan 2024 – Mar 2026</time>
+              </div>
+              <div class="exp__row">
+                <div>
+                  <p class="exp__role">Product Designer Pleno</p>
+                  <p class="exp__meta">Benkyou do Brasil · B2B · Remoto</p>
+                </div>
+                <time>Abr 2021 – Jan 2024</time>
+              </div>
+              <div class="exp__row">
+                <div>
+                  <p class="exp__role">UX/UI Designer</p>
+                  <p class="exp__meta">Benkyou do Brasil · B2B · Remoto</p>
+                </div>
+                <time>Mar 2020 – Abr 2021</time>
+              </div>
+              <div class="exp__row">
+                <div>
+                  <p class="exp__role">Designer Digital Pleno</p>
+                  <p class="exp__meta">Benkyou do Brasil · B2B · Presencial</p>
+                </div>
+                <time>Jan 2017 – Mar 2020</time>
+              </div>
+              <div class="exp__row">
+                <div>
+                  <p class="exp__role">Designer Digital Júnior</p>
+                  <p class="exp__meta">Benkyou do Brasil · Presencial</p>
+                </div>
+                <time>Abr 2016 – Dez 2016</time>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+  </div>
+
+  <!-- ==================================================================== -->
+  <!-- VIEW: Case (montada por app.js)                                      -->
+  <!-- ==================================================================== -->
+  <div class="view" id="view-case" hidden></div>
+
+</main>
+
+<!-- ====================================================================== -->
+<!-- Rodapé                                                                 -->
+<!-- ====================================================================== -->
+<footer class="site-footer" id="contato">
+  <div class="site-footer__brand">
+    <b>LRA | Product Design</b>
+    <small>© 2026</small>
+  </div>
+  <div class="site-footer__cols">
+    <div>
+      <h4>Contato</h4>
+      <ul>
+        <li>
+          <span class="mail-row">
+            <a href="mailto:ludgero.ra@gmail.com">ludgero.ra@gmail.com</a>
+            <button type="button" class="copy-btn" id="copy-email"
+                    data-email="ludgero.ra@gmail.com" aria-label="Copiar endereço de e-mail">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <rect x="9" y="9" width="12" height="12" rx="2"/>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+              </svg>
+            </button>
+          </span>
+        </li>
+      </ul>
+    </div>
+    <div>
+      <h4>Social</h4>
+      <ul>
+        <li><a href="https://www.linkedin.com/in/ludgero-abilino" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
+        <li><a href="https://www.behance.net/ludgero" target="_blank" rel="noopener noreferrer">Behance</a></li>
+        <li><a href="https://vimeo.com/ludgeroabilino?fl=pp&amp;fe=sh" target="_blank" rel="noopener noreferrer">Vimeo</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+<button type="button" class="to-top" id="to-top" aria-label="Voltar ao topo">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <path d="M12 19V5M5 12l7-7 7 7"/>
+  </svg>
+</button>
+
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Visualização ampliada" hidden>
+  <button type="button" class="lightbox__close" data-lb="close" aria-label="Fechar">✕</button>
+  <button type="button" class="lightbox__nav lightbox__nav--prev" data-lb="prev" aria-label="Imagem anterior">‹</button>
+  <button type="button" class="lightbox__nav lightbox__nav--next" data-lb="next" aria-label="Próxima imagem">›</button>
+  <figure style="margin:0;max-width:100%">
+    <img id="lightbox-img" src="" alt="">
+    <figcaption id="lightbox-cap"></figcaption>
+  </figure>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="assets/js/tool-icons.js"></script>
+<script src="assets/js/cases.js"></script>
+<script src="assets/js/app.js"></script>
+</body>
+</html>
