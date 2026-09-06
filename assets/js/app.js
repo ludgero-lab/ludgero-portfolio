@@ -107,7 +107,7 @@
   /* O indicador segue a posição real do botão ativo, então continua certo
      quando os tamanhos mudam no responsivo. */
   function positionThumb() {
-    const pref = document.documentElement.dataset.themePref || "auto";
+    const pref = document.documentElement.dataset.themePref || "dark";
     const active = $(`[data-theme-set="${pref}"]`, themeSwitch);
     if (!active) return;
     themeThumb.style.width = `${active.offsetWidth}px`;
@@ -144,7 +144,7 @@
   themeSwitch.addEventListener("keydown", (e) => {
     if (!["ArrowLeft", "ArrowRight"].includes(e.key)) return;
     e.preventDefault();
-    const cur = document.documentElement.dataset.themePref || "auto";
+    const cur = document.documentElement.dataset.themePref || "dark";
     const dir = e.key === "ArrowRight" ? 1 : -1;
     const next = ORDER[(ORDER.indexOf(cur) + dir + ORDER.length) % ORDER.length];
     applyTheme(next, { announce: true });
@@ -152,11 +152,15 @@
   });
 
   sysLight.addEventListener("change", () => {
-    if ((document.documentElement.dataset.themePref || "auto") === "auto") applyTheme("auto");
+    if ((document.documentElement.dataset.themePref || "dark") === "auto") applyTheme("auto");
   });
 
-  let storedPref = "auto";
-  try { storedPref = localStorage.getItem(THEME_KEY) || "auto"; } catch (e) {}
+  /* Padrão escuro: é o tema em que o portfólio foi desenhado. Quem escolher
+     claro ou "seguir o sistema" tem a escolha respeitada nas visitas seguintes.
+     Precisa casar com o script inline do <head>, senão há troca de tema
+     depois da primeira pintura. */
+  let storedPref = "dark";
+  try { storedPref = localStorage.getItem(THEME_KEY) || "dark"; } catch (e) {}
   applyTheme(storedPref);
 
   /* ==========================================================================
@@ -947,7 +951,7 @@
   document.addEventListener("keydown", (e) => {
     if (e.key.toLowerCase() !== "t" || e.metaKey || e.ctrlKey || e.altKey) return;
     if (/^(input|textarea|select)$/i.test(document.activeElement?.tagName || "")) return;
-    const cur = document.documentElement.dataset.themePref || "auto";
+    const cur = document.documentElement.dataset.themePref || "dark";
     applyTheme(cur === "dark" ? "light" : "dark", { announce: true });
   });
 

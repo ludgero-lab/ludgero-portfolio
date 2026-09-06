@@ -80,10 +80,14 @@ O tema é controlado por `data-theme` no `<html>` e todo o CSS consome tokens
 semânticos (`--bg`, `--fg`, `--line`, `--accent`…), definidos em `:root` para o
 escuro e sobrescritos em `[data-theme="light"]`.
 
-O seletor no header tem **três estados**: claro, sistema e escuro. A preferência
+**Sem preferência salva o site abre no escuro**, que é o tema em que ele foi
+desenhado. O seletor no header tem **três estados**: claro, sistema e escuro, e a
+escolha de quem visita passa a valer nas visitas seguintes. A preferência
 fica em `localStorage` (`lra-theme`); no modo *sistema*, a interface acompanha o
 `prefers-color-scheme` em tempo real. Um script inline no `<head>` aplica o tema
-antes da primeira pintura, então não há flash ao carregar.
+antes da primeira pintura, então não há flash ao carregar — o padrão
+desse script e o do `app.js` precisam continuar iguais, senão o tema troca
+depois da primeira pintura.
 
 Decisão de design: os logotipos de marca são artes brancas, então no tema claro
 eles recebem uma placa escura (`--logo-plate`) em vez de serem invertidos — o que
