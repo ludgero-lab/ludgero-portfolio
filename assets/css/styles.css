@@ -2003,10 +2003,6 @@ body:has(.drawer:not([hidden])) .to-top { opacity: 0; pointer-events: none; }
 .drawer .main-nav a[aria-current="true"] { color: var(--accent); }
 /* Contato tem seção própria dentro do menu; o link ficaria redundante. */
 .drawer .main-nav a[data-spy="contato"] { display: none; }
-/* Nas páginas de case a navegação da home não existe: a faixa inteira sai
-   do painel e a seguinte assume o topo. */
-.drawer__section:has(.main-nav[hidden]) { display: none; }
-.drawer__panel:has(.main-nav[hidden]) .drawer__section:nth-of-type(2) { border-top: 0; }
 
 /* Tema e idioma mantêm os controles reais do header; no toque eles ganham
    altura de alvo confortável. O indicador do seletor mede o botão ativo em

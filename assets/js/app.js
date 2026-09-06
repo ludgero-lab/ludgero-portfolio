@@ -594,6 +594,7 @@
   const mainNav = $("#main-nav");
   let sectionSpy = null;
   let currentKey = null;
+  let rotaAtual = "home";
 
   const keyOf = (route) => (route.name === "case" ? `case:${route.slug}` : "home");
 
@@ -616,16 +617,32 @@
     view.addEventListener("animationend", () => view.classList.remove("view-enter"), { once: true });
   }
 
+  /* Vindo de um case, a home acabou de ser reexibida e o documento ainda
+     não tem a altura final — o navegador limita o scroll ao que existe
+     naquele instante e a âncora fica pelo caminho. Por isso a posição é
+     reconferida por alguns quadros, até a seção encostar no topo. */
+  function irParaAncora(id, quadros = 12) {
+    const el = document.getElementById(id);
+    if (!el) { window.scrollTo({ top: 0, behavior: "auto" }); return; }
+    el.scrollIntoView({ behavior: "auto", block: "start" });
+    if (quadros > 0 && Math.abs(el.getBoundingClientRect().top) > 2) {
+      requestAnimationFrame(() => irParaAncora(id, quadros - 1));
+    }
+  }
+
   function render(route, { restore = null } = {}) {
     if (sectionSpy) { sectionSpy.disconnect(); sectionSpy = null; }
     currentKey = keyOf(route);
+    rotaAtual = route.name;
 
     if (route.name === "case") {
       const c = CASE_BY_SLUG[route.slug];
       viewCase.innerHTML = renderCase(c);
       viewCase.hidden = false;
       viewHome.hidden = true;
-      mainNav.hidden = true;
+      // Dentro de um case nenhuma seção da home está ativa.
+      $$("[data-spy]", mainNav).forEach((a) => a.setAttribute("aria-current", "false"));
+      atualizarNavDaHome();
       document.title = `${c.title} · Ludgero Ricardo Abilino`;
 
       animarEntrada(viewCase);
@@ -637,7 +654,7 @@
       viewCase.hidden = true;
       viewCase.innerHTML = "";
       viewHome.hidden = false;
-      mainNav.hidden = false;
+      atualizarNavDaHome();
       document.title = "Ludgero Ricardo Abilino · Product Designer";
 
       animarEntrada(viewHome);
@@ -651,9 +668,8 @@
       if (restore != null) {
         window.scrollTo({ top: restore, behavior: "auto" });
       } else if (route.name === "home" && route.anchor) {
-        const el = document.getElementById(route.anchor);
-        if (el) { el.scrollIntoView({ behavior: "auto", block: "start" }); return; }
-        window.scrollTo({ top: 0, behavior: "auto" });
+        irParaAncora(route.anchor);
+
       } else {
         window.scrollTo({ top: 0, behavior: "auto" });
       }
@@ -683,7 +699,11 @@
   function onHistoryNav() {
     const route = parseRoute();
     if (keyOf(route) === currentKey) return;
-    render(route, { restore: route.name === "home" ? scrollMemory.home ?? 0 : null });
+    /* Uma âncora explícita manda mais que a posição lembrada da home: vindo de
+       um case pelo menu, "#sobre" precisa abrir na seção Sobre, e não no ponto
+       onde a home havia parado. */
+    const restaurar = route.name === "home" && !route.anchor ? scrollMemory.home ?? 0 : null;
+    render(route, { restore: restaurar });
   }
 
   window.addEventListener("popstate", onHistoryNav);
@@ -977,6 +997,14 @@
   ].filter((p) => p.el);
   PECAS.forEach((p) => { p.origem = p.el.parentElement; p.marca = p.el.nextElementSibling; });
 
+  /* A navegação da home some do header quando se está num case: lá quem orienta
+     é a navegação de seções. Já dentro do painel do mobile ela fica, porque é o
+     caminho de volta para Cases e Sobre — e os links resolvem isso sozinhos:
+     o roteador lê "#cases" como home + âncora. */
+  function atualizarNavDaHome() {
+    mainNav.hidden = rotaAtual === "case" && !telaEstreita.matches;
+  }
+
   function sincronizarMenu() {
     PECAS.forEach((p) => {
       const alvo = telaEstreita.matches ? $(p.destino, drawer) : p.origem;
@@ -986,6 +1014,7 @@
         p.origem.insertBefore(p.el, p.marca);
       }
     });
+    atualizarNavDaHome();
     positionThumb();
   }
 

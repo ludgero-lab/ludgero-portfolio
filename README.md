@@ -123,8 +123,11 @@ Os controles **não são duplicados**: o `app.js` move os elementos reais do
 header e do rodapé para dentro do painel e os devolve acima de 860px. Existe
 um único seletor de tema, um único botão de idioma e um único botão de
 copiar e-mail — mesmos handlers, sem IDs repetidos e sem estado para
-sincronizar. Nas páginas de case a faixa de navegação some do painel, porque
-o menu da home não se aplica ali.
+sincronizar. Nas páginas de case a navegação da home **continua no painel**: é
+o caminho de volta para Cases e Sobre. Os links resolvem isso sozinhos, porque
+o roteador lê `#cases` como home + âncora — e uma âncora explícita tem
+precedência sobre a posição lembrada da home. No header, onde quem orienta é a
+navegação de seções do case, ela continua sumindo.
 
 ### Navegação do case no mobile
 
