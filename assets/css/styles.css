@@ -1966,6 +1966,18 @@ figure, blockquote { margin: 0; }
   cursor: pointer;
   text-align: left;
 }
+/* ndice em miniatura,  esquerda do rótulo: é o que diz que o botão abre
+   uma lista de seções. Mais fino e menor que o sanduíche do topo, para os dois
+   não se confundirem, e com o filete do meio em acento — o mesmo desenho que
+   marca a seção ativa na coluna do desktop. */
+.case-fab__indice {
+  flex: none;
+  width: 14px;
+  height: 10px;
+  fill: var(--fg-4);
+}
+.case-fab__indice-ativo { fill: var(--accent); }
+
 .case-fab__label {
   flex: 1 1 auto;
   min-width: 0;
@@ -2305,7 +2317,14 @@ body:has(.drawer:not([hidden])) .to-top { opacity: 0; pointer-events: none; }
   .case-body > .case-content { grid-column: 1; padding-inline: 0; }
   /* A navegação sai do fluxo e passa a flutuar sobre o conteúdo, aberta pelo
      botão. Fechada por padrão: o estado vive no aria-expanded do botão. */
-  .case-fab { display: flex; }
+  /* Entra com um atraso curto depois que o case abre: é o que faz o recurso
+     ser notado, sem precisar de brilho nem de movimento contínuo. */
+  .case-fab {
+    display: flex;
+    opacity: 0;
+    transform: translateY(8px);
+    animation: surgeIn 620ms var(--ease-out) 520ms forwards;
+  }
   .case-body:has(.case-fab[aria-expanded="false"]) > .case-nav { display: none; }
   .case-body > .case-nav {
     position: fixed;
@@ -2463,6 +2482,7 @@ body:has(.drawer:not([hidden])) .to-top { opacity: 0; pointer-events: none; }
   .hero__name span > i { opacity: 1; transform: none; animation: none; }
   .hero__bg img { transform: none; animation: none; }
   .hero::after { display: none; }
+  .case-fab { opacity: 1; transform: none; animation: none; }
   .hero__tag > span,
   .hero__scroll { opacity: 1; transform: none; animation: none; }
   .hero__tag::before { transform: none; background-color: var(--line); animation: none; }

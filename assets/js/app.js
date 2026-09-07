@@ -551,6 +551,14 @@
              para as seções ficarem ao alcance em qualquer ponto da rolagem. -->
         <button type="button" class="case-fab" id="case-fab"
                 aria-expanded="false" aria-controls="case-nav">
+          <!-- Índice em miniatura: três filetes com o do meio em acento,
+               o mesmo desenho que marca a seção ativa na coluna do desktop. Diz que
+               ali existe uma lista de seções, sem virar outro sanduíche. -->
+          <svg class="case-fab__indice" viewBox="0 0 14 10" aria-hidden="true">
+            <rect x="0" y="0" width="14" height="1" rx="0.5"/>
+            <rect class="case-fab__indice-ativo" x="0" y="4.5" width="9" height="1" rx="0.5"/>
+            <rect x="0" y="9" width="14" height="1" rx="0.5"/>
+          </svg>
           <span class="case-fab__label" data-fab-label>Seções</span>
           <span class="case-fab__count" data-fab-count aria-hidden="true"></span>
           <span class="case-fab__caret" aria-hidden="true">▴</span>
