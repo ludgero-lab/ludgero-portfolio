@@ -413,8 +413,8 @@
     clientAlso: "Grupo Boticário • Cielo • Norton • Ibema",
     logo: { neg: `${LOGO}/benkyou-neg.svg`, pos: `${LOGO}/benkyou-pos.svg` },
     logoAlt: "Benkyou Game",
-    title: "Plataforma de Aprendizado Gamificado e Imersivo",
-    shortTitle: "Plataforma de aprendizado gamificado e imersivo",
+    title: "Plataforma de Aprendizagem Gamificada e Imersiva",
+    shortTitle: "Plataforma de aprendizagem gamificada e imersiva",
     summary:
       "Arquitetura de produto multi-tenant com ambientes 3D customizados, alcançando crescimento consistente por 5 temporadas consecutivas.",
     thumb: `${IMG}/home/case-benkyou.jpg`,
@@ -435,7 +435,7 @@
         blocks: [
           {
             type: "p",
-            text: "Em 2020, o Grupo Boticário buscava um novo parceiro para seus programas de capacitação interna, já com experiência prévia em treinamentos gamificados e o objetivo de evoluir esse modelo com uma solução mais conectada à sua cultura. A Benkyou identificou nessa demanda uma oportunidade além do projeto pontual: desenvolver uma plataforma própria de aprendizado gamificado e imersivo, capaz de acondicionar conteúdos multimídia, criar ambientes tridimensionais personalizados por cliente e engajar colaboradores através de mecânicas de jogo. O resultado foi o Benkyou Game, lançado em 2021 com a primeira temporada do programa Connect do Grupo Boticário. Uma vez estabelecido o modelo, outros clientes adotaram a plataforma — entre eles Cielo, Norton e Ibema — cada um com seu próprio ambiente 3D e identidade visual adaptados."
+            text: "Em 2020, o Grupo Boticário buscava um novo parceiro para seus programas de capacitação interna, já com experiência prévia em treinamentos gamificados e o objetivo de evoluir esse modelo com uma solução mais conectada à sua cultura. A Benkyou identificou nessa demanda uma oportunidade além do projeto pontual: desenvolver uma plataforma própria de aprendizagem gamificada e imersiva, capaz de acondicionar conteúdos multimídia, criar ambientes tridimensionais personalizados por cliente e engajar colaboradores através de mecânicas de jogo. O resultado foi o Benkyou Game, lançado em 2021 com a primeira temporada do programa Connect do Grupo Boticário. Uma vez estabelecido o modelo, outros clientes adotaram a plataforma — entre eles Cielo, Norton e Ibema — cada um com seu próprio ambiente 3D e identidade visual adaptados."
           },
           {
             type: "timeline",
