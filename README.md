@@ -233,7 +233,28 @@ comprimento da régua de acento. A seta só aparece onde é afordância de
 link (voltar, ver case, paginador), e sempre animada no hover, como é
 convenção de navegação.
 
-Raios de canto ficam restritos a três tokens: `--radius`, `--radius-sm` e `--radius-pill`.
+Raios de canto ficam restritos a quatro tokens: `--radius`, `--radius-sm`,
+`--radius-pill` e `--radius-glass` — este último exclusivo das superfícies de
+vidro descritas abaixo.
+
+### Vidro
+
+As superfícies que **flutuam sobre o conteúdo** — o menu de seções do case no
+mobile e o botão de voltar ao topo — usam um material translúcido: desfoque de
+26 a 30px com saturação em 180%, filete de contorno, realce especular de 1px no
+topo e canto largo. É o único lugar do projeto com preenchimento, e por um motivo:
+são os únicos elementos que precisam se separar do conteúdo por cima do qual
+passam.
+
+Os tokens `--glass-*` definem o material nos dois temas. A opacidade é de
+**86%**, e não menos: o painel pode passar por cima de uma imagem clara, e
+abaixo disso os tons apagados do texto não alcançam 4.5:1. Pelo mesmo motivo o
+contador e a seta do botão usam `--fg-3` em vez de `--fg-5`, e o botão aberto
+**não troca para a cor de acento** — o acento sobre vidro claro fica em 3.7:1.
+
+Onde o desfoque não existe (`@supports`) ou onde a pessoa pediu menos
+transparência no sistema (`prefers-reduced-transparency`), o material vira
+sólido: o vidro é acabamento, não suporte de leitura.
 
 ### Grade justificada
 

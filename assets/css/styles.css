@@ -15,6 +15,9 @@
   --radius: 8px;
   --radius-sm: 6px;
   --radius-pill: 100px;
+  /* Quarto raio, exclusivo das superfícies de vidro: o canto largo faz parte
+     da linguagem desse material e não se aplica a nenhum outro componente. */
+  --radius-glass: 20px;
 
   /* --- Movimento --- */
   --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
@@ -57,6 +60,17 @@
   --hero-veil: linear-gradient(180deg, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.1) 50%, rgba(0, 0, 0, 0.92) 100%);
   --header-bg: rgba(0, 0, 0, 0.86);
   --shadow-lift: 0 24px 60px -24px rgba(0, 0, 0, 0.9);
+
+  /* --- Vidro: superfícies que flutuam sobre o conteúdo ------------------------
+     Translúcidas o bastante para a página atravessar, opacas o bastante para
+     o texto continuar legível mesmo quando o painel passa por cima de uma
+     imagem clara. O realce no topo imita a quina iluminada de um vidro. */
+  --glass-bg: rgba(16, 16, 16, 0.86);
+  --glass-stroke: rgba(255, 255, 255, 0.13);
+  --glass-brilho: rgba(255, 255, 255, 0.20);
+  --glass-divisor: rgba(255, 255, 255, 0.09);
+  --glass-sombra: 0 18px 44px -16px rgba(0, 0, 0, 0.85);
+  --glass-solido: #131313;
   --media-frame: 1px solid var(--line);
 
   color-scheme: dark;
@@ -90,6 +104,12 @@
   --hero-veil: linear-gradient(180deg, rgba(251, 251, 249, 0.55) 0%, rgba(251, 251, 249, 0.2) 42%, rgba(251, 251, 249, 0.96) 100%);
   --header-bg: rgba(251, 251, 249, 0.88);
   --shadow-lift: 0 24px 60px -28px rgba(20, 20, 16, 0.28);
+  --glass-bg: rgba(252, 252, 250, 0.86);
+  --glass-stroke: rgba(20, 20, 16, 0.10);
+  --glass-brilho: rgba(255, 255, 255, 0.90);
+  --glass-divisor: rgba(20, 20, 16, 0.08);
+  --glass-sombra: 0 18px 44px -18px rgba(20, 20, 16, 0.26);
+  --glass-solido: #f6f6f2;
 
   color-scheme: light;
 }
@@ -1868,10 +1888,11 @@ figure, blockquote { margin: 0; }
   gap: 10px;
   padding: 11px 16px;
   border-radius: var(--radius-pill);
-  border: 1px solid var(--line-strong);
-  background: var(--header-bg);
-  backdrop-filter: blur(14px) saturate(1.2);
-  -webkit-backdrop-filter: blur(14px) saturate(1.2);
+  border: 1px solid var(--glass-stroke);
+  background: var(--glass-bg);
+  backdrop-filter: blur(26px) saturate(180%);
+  -webkit-backdrop-filter: blur(26px) saturate(180%);
+  box-shadow: var(--glass-sombra), inset 0 1px 0 var(--glass-brilho);
   color: var(--fg);
   cursor: pointer;
   text-align: left;
@@ -1891,17 +1912,48 @@ figure, blockquote { margin: 0; }
   flex: none;
   font-size: 10px;
   letter-spacing: 0.2em;
-  color: var(--fg-5);
+  /* Um degrau mais claro que nas faixas opacas: sobre vidro o fundo pode
+     ser uma imagem clara, e os tons mais apagados não alcançam 4.5:1. */
+  color: var(--fg-3);
   font-variant-numeric: tabular-nums;
 }
 .case-fab__caret {
   flex: none;
   font-size: 10px;
-  color: var(--fg-4);
+  color: var(--fg-3);
   transition: transform 280ms var(--ease-out);
 }
-.case-fab[aria-expanded="true"] { color: var(--accent); }
+/* Aberto, o botão não troca de cor: o acento sobre vidro claro não alcança 4.5:1,
+   e o estado já é dito pela seta girada e pelo painel na tela. */
 .case-fab[aria-expanded="true"] .case-fab__caret { transform: rotate(180deg); }
+
+/* O vidro é acabamento, não suporte de leitura: onde o desfoque não existe, ou
+   onde a pessoa pediu menos transparência no sistema, a superfície vira sólida.
+   O texto mantém o mesmo contraste nos dois casos. */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .case-fab,
+  .to-top { background: var(--glass-solido); }
+}
+@media (prefers-reduced-transparency: reduce) {
+  .case-fab,
+  .to-top {
+    background: var(--glass-solido);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+}
+@media (max-width: 860px) {
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .case-body > .case-nav { background: var(--glass-solido); }
+  }
+}
+@media (max-width: 860px) and (prefers-reduced-transparency: reduce) {
+  .case-body > .case-nav {
+    background: var(--glass-solido);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+}
 
 /* ==========================================================================
    Menu mobile
@@ -2081,9 +2133,13 @@ body:has(.drawer:not([hidden])) .to-top { opacity: 0; pointer-events: none; }
   z-index: 90;
   width: 44px; height: 44px;
   border-radius: 50%;
-  border: 1px solid var(--line-strong);
-  background: var(--header-bg);
-  backdrop-filter: blur(12px);
+  /* Mesmo material do menu flutuante: os dois dividem a barra inferior no
+     mobile e destoariam se um fosse vidro e o outro não. */
+  border: 1px solid var(--glass-stroke);
+  background: var(--glass-bg);
+  box-shadow: var(--glass-sombra), inset 0 1px 0 var(--glass-brilho);
+  backdrop-filter: blur(26px) saturate(180%);
+  -webkit-backdrop-filter: blur(26px) saturate(180%);
   color: var(--fg-3);
   cursor: pointer;
   display: grid;
@@ -2196,24 +2252,28 @@ body:has(.drawer:not([hidden])) .to-top { opacity: 0; pointer-events: none; }
     max-height: min(56vh, 420px);
     overflow-y: auto;
     overscroll-behavior: contain;
-    padding: 4px 16px;
-    border: 1px solid var(--line-strong);
-    border-radius: var(--radius);
-    background: var(--header-bg);
-    backdrop-filter: blur(16px) saturate(1.2);
-    -webkit-backdrop-filter: blur(16px) saturate(1.2);
-    animation: fabIn 220ms var(--ease-out) both;
+    padding: 4px 18px;
+    border: 1px solid var(--glass-stroke);
+    border-radius: var(--radius-glass);
+    background: var(--glass-bg);
+    backdrop-filter: blur(30px) saturate(180%);
+    -webkit-backdrop-filter: blur(30px) saturate(180%);
+    box-shadow: var(--glass-sombra), inset 0 1px 0 var(--glass-brilho);
+    animation: fabIn 240ms var(--ease-out) both;
+    transform-origin: 50% 100%;
   }
+  /* Cresce a partir do botão, como uma superfície que emerge dele. */
   @keyframes fabIn {
-    from { opacity: 0; transform: translateY(8px); }
+    from { opacity: 0; transform: translateY(10px) scale(0.97); }
     to   { opacity: 1; transform: none; }
   }
   /* Uma seção por linha, separadas por filete — a mesma gramática das faixas
      do corpo do case e do painel do topo. */
   .case-nav a {
-    padding: 14px 0 14px 14px;
+    padding: 15px 0 15px 14px;
     font-size: 14px;
-    border-top: 1px solid var(--line);
+    /* Sobre o vidro o filete opaco some; a divisória acompanha o material. */
+    border-top: 1px solid var(--glass-divisor);
   }
   .case-nav a:first-child { border-top: 0; }
   .case-content { gap: 56px; }
