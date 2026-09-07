@@ -330,5 +330,16 @@
 <script src="assets/js/tool-icons.js"></script>
 <script src="assets/js/cases.js"></script>
 <script src="assets/js/app.js"></script>
+
+<!-- Cloudflare Web Analytics: sem cookies e sem identificar ninguém, então
+     não exige aviso de consentimento.
+
+     Sem o modo "spa" de propósito: o beacon remove o hash da URL antes de
+     reportar, e como a navegação daqui é por hash (#/case/stefani), todo
+     case chegaria como "/". Ligado, o efeito seria multiplicar as visualizações
+     de " / " sem dizer nada sobre qual case foi aberto. Para ter esse dado,
+     o roteamento precisaria usar caminhos reais em vez de hash. -->
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js"
+        data-cf-beacon='{"token": "2e3d0dd3ffa0425e8837305f4658bd1a"}'></script>
 </body>
 </html>
