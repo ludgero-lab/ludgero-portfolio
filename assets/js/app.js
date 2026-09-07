@@ -601,6 +601,7 @@
   const viewCase = $("#view-case");
   const mainNav = $("#main-nav");
   let sectionSpy = null;
+  let cardSpy = null;
   let currentKey = null;
   let rotaAtual = "home";
 
@@ -640,6 +641,7 @@
 
   function render(route, { restore = null } = {}) {
     if (sectionSpy) { sectionSpy.disconnect(); sectionSpy = null; }
+    if (cardSpy) { cardSpy.disconnect(); cardSpy = null; }
     currentKey = keyOf(route);
     rotaAtual = route.name;
 
@@ -669,6 +671,7 @@
 
       observeReveals(viewHome);
       setupHomeSpy();
+      setupContadorDeCases();
     }
 
     // Restaura a posição ao voltar; senão começa do topo (ou de uma âncora).
@@ -918,6 +921,8 @@
   const progress = $("#progress");
   const toTop = $("#to-top");
   const heroBg = $("#hero-bg");
+  const headCases = document.querySelector("#cases .section-head");
+  let alturaHeader = 66;
   let lastY = window.scrollY;
   let ticking = false;
 
@@ -932,6 +937,11 @@
     lastY = y;
 
     toTop.dataset.show = String(y > window.innerHeight * 0.8);
+
+    // Preso quando encosta no header: é o que acende o filete inferior.
+    if (headCases && !viewHome.hidden) {
+      headCases.dataset.preso = String(headCases.getBoundingClientRect().top <= alturaHeader + 1);
+    }
 
     if (heroBg && !viewHome.hidden && y < window.innerHeight * 1.2 && !prefersReduced.matches) {
       heroBg.style.transform = `translate3d(0, ${y * 0.22}px, 0)`;
@@ -1027,7 +1037,7 @@
   }
 
   function abrirMenu() {
-    document.documentElement.style.setProperty("--header-h", `${header.offsetHeight}px`);
+    medirHeader();
     drawer.hidden = false;
     menuBtn.setAttribute("aria-expanded", "true");
     $("[data-menu-label]", menuBtn).textContent = "Fechar menu";
@@ -1080,11 +1090,38 @@
      13 · Boot
      ========================================================================== */
 
+  /* A altura do header vira token: o cabeçalho preso da seção se apoia nela,
+     e o painel do menu também. Medida em vez de fixada, para acompanhar o
+     que muda entre desktop e mobile. */
+  function medirHeader() {
+    alturaHeader = header.offsetHeight;
+    document.documentElement.style.setProperty("--header-h", alturaHeader + "px");
+  }
+
+  /* Contador da seção de cases: acompanha qual card está à frente enquanto a
+     pessoa rola. A faixa de leitura começa logo abaixo do cabeçalho preso. */
+  function setupContadorDeCases() {
+    const contador = $(".section-head__count", viewHome);
+    const cards = $$(".case-card", viewHome);
+    if (!contador || !cards.length) return;
+    const total = String(cards.length).padStart(2, "0");
+    const marcar = (i) => { contador.textContent = String(i + 1).padStart(2, "0") + " / " + total; };
+    marcar(0);
+    cardSpy = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => { if (e.isIntersecting) marcar(cards.indexOf(e.target)); });
+      },
+      { rootMargin: "-30% 0px -55% 0px", threshold: 0 }
+    );
+    cards.forEach((c) => cardSpy.observe(c));
+  }
+
   renderCaseCards();
   render(parseRoute());
   observeCounters(viewHome);
   onScroll();
   positionThumb();
-  window.addEventListener("resize", positionThumb, { passive: true });
+  medirHeader();
+  window.addEventListener("resize", () => { positionThumb(); medirHeader(); }, { passive: true });
   document.fonts?.ready.then(positionThumb);
 })();

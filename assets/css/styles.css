@@ -140,7 +140,11 @@ body {
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  overflow-x: hidden;
+  /* clip e não hidden: hidden faz do body um contexto de rolagem, e a
+     partir daí nenhum position: sticky descendente consegue se prender 
+     viewport — o cabeçalho da seção de cases dependia disso. clip corta
+     o transbordo horizontal sem criar o contexto. */
+  overflow-x: clip;
   transition: background-color 420ms var(--ease), color 420ms var(--ease);
 }
 
@@ -557,13 +561,36 @@ figure, blockquote { margin: 0; }
    HOME — Cases
    ========================================================================== */
 
+/* O cabeçalho da seção prende sob o header enquanto os cases passam por baixo,
+   e o contador acompanha qual deles está à frente. O respiro de cima virou
+   margem: como padding ele entraria na caixa presa, e sobraria um bloco de
+   fundo vazio acima do título. Sangra até a borda para as peças não
+   aparecerem pelas laterais. */
 .section-head {
+  position: sticky;
+  top: var(--header-h, 66px);
+  z-index: 5;
   display: flex;
   align-items: center;
   gap: 12px;
-  padding-block: 80px 8px;
+  margin-top: 72px;
+  margin-inline: calc(var(--gutter) * -1);
+  padding: 12px var(--gutter);
+  background: var(--bg);
+  transition: top 420ms var(--ease);
 }
-.section-head__count { font-size: 12px; color: var(--accent); font-family: var(--font-body); }
+/* O header se recolhe ao descer. Sem isto, sobraria uma faixa de conteúdo
+   rolando acima do cabeçalho preso; assim os dois sobem juntos. */
+body:has(.site-header[data-hidden="true"]) .section-head { top: 0; }
+/* O filete só existe quando está preso: solto, ele duplicaria a borda de topo
+   do primeiro card. */
+.section-head[data-preso="true"] { box-shadow: 0 1px 0 var(--line); }
+.section-head__count {
+  font-size: 12px;
+  color: var(--accent);
+  font-family: var(--font-body);
+  font-variant-numeric: tabular-nums;
+}
 
 .case-list { border-bottom: 1px solid var(--line); }
 
