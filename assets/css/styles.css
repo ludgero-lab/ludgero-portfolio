@@ -57,7 +57,11 @@
 
   /* --- Camadas do hero --- */
   --hero-img-opacity: 0.25;
-  --hero-veil: linear-gradient(180deg, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.1) 50%, rgba(0, 0, 0, 0.92) 100%);
+  /* O véu abre no topo para as linhas da arte aparecerem, fecha aos poucos e
+     volta a fechar em cheio embaixo, onde o nome precisa de contraste cheio.
+     O ganho é gradual: ~45% mais imagem na primeira faixa, ~20% em um quarto
+     da altura, zero do meio para baixo — a metade inferior fica intocada. */
+  --hero-veil: linear-gradient(180deg, rgba(0, 0, 0, 0.42) 0%, rgba(0, 0, 0, 0.2) 26%, rgba(0, 0, 0, 0.1) 50%, rgba(0, 0, 0, 0.92) 100%);
   --header-bg: rgba(0, 0, 0, 0.86);
   --shadow-lift: 0 24px 60px -24px rgba(0, 0, 0, 0.9);
 
@@ -101,7 +105,7 @@
   --ok: #0a8f3c;
 
   --hero-img-opacity: 0.16;
-  --hero-veil: linear-gradient(180deg, rgba(251, 251, 249, 0.55) 0%, rgba(251, 251, 249, 0.2) 42%, rgba(251, 251, 249, 0.96) 100%);
+  --hero-veil: linear-gradient(180deg, rgba(251, 251, 249, 0.4) 0%, rgba(251, 251, 249, 0.26) 26%, rgba(251, 251, 249, 0.2) 42%, rgba(251, 251, 249, 0.96) 100%);
   --header-bg: rgba(251, 251, 249, 0.88);
   --shadow-lift: 0 24px 60px -28px rgba(20, 20, 16, 0.28);
   --glass-bg: rgba(252, 252, 250, 0.86);
