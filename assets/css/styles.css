@@ -767,11 +767,14 @@ body:has(.site-header[data-hidden="true"]) .section-head { top: 0; }
 /* A coluna da esquerda tem o dobro da largura anterior (220 → 440). Os itens
    não mudam de tamanho: ganham espaço em volta e passam a se alinhar à
    esquerda, como na referência. */
+/* O respiro de cima é menor porque o cabeçalho da seção já traz o seu:
+   o mesmo intervalo que separa o cabeçalho do primeiro card na seção de
+   cases. */
 .about {
   display: grid;
   grid-template-columns: 440px minmax(0, 1fr);
   gap: 96px;
-  padding-block: 96px;
+  padding-block: 48px 96px;
 }
 .about__aside {
   display: flex;

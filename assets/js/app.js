@@ -921,7 +921,7 @@
   const progress = $("#progress");
   const toTop = $("#to-top");
   const heroBg = $("#hero-bg");
-  const headCases = document.querySelector("#cases .section-head");
+  const cabecalhos = Array.prototype.slice.call(document.querySelectorAll(".section-head"));
   let alturaHeader = 66;
   let lastY = window.scrollY;
   let ticking = false;
@@ -939,8 +939,10 @@
     toTop.dataset.show = String(y > window.innerHeight * 0.8);
 
     // Preso quando encosta no header: é o que acende o filete inferior.
-    if (headCases && !viewHome.hidden) {
-      headCases.dataset.preso = String(headCases.getBoundingClientRect().top <= alturaHeader + 1);
+    if (!viewHome.hidden) {
+      cabecalhos.forEach((h) => {
+        h.dataset.preso = String(h.getBoundingClientRect().top <= alturaHeader + 1);
+      });
     }
 
     if (heroBg && !viewHome.hidden && y < window.innerHeight * 1.2 && !prefersReduced.matches) {
