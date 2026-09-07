@@ -127,14 +127,30 @@
             text: "A montagem final e a programação foram desenvolvidas no Adobe Captivate. O principal desafio de UX Design consistiu em traduzir a lógica de todo o sistema interativo para um input físico limitado do totem: uma interface sem suporte a touchscreen ou mouse, onde o motorista interage estritamente através do teclado numérico físico integrado. Para validar a usabilidade e a arquitetura das tomadas de decisão antes do desenvolvimento final, estruturei wireframes focados em caminhos lógicos simples e de rápida resposta."
           },
           {
-            // "full" preserva a proporção original: o wireframe é panorâmico e
-            // qualquer enquadramento fixo cortava as anotações das pontas.
-            type: "figure",
-            src: `${IMG}/votorantim/wireframes.jpg`,
-            alt: "Wireframes panorâmicos do fluxo do treinamento",
+            // Duas metades do mesmo wireframe, separadas para caberem lado a
+            // lado no desktop e empilharem no mobile — juntas numa única imagem
+            // panorâmica, no celular ficavam pequenas demais para ler.
+            // "full" preserva a proporção de cada arquivo: as duas têm 792x460,
+            // então saem com a mesma altura sem precisar de justify.
+            type: "grid",
+            cols: 2,
+            // O vao entre os dois grupos na arte original tinha 17px em 1600 de
+            // largura; nesta escala isso dá ~9px. Mantém a separação que a imagem
+            // já tinha, em vez dos 24px padrão das grades de peças independentes.
+            gap: 9,
             caption: "Wireframe do projeto — validação da ideia",
-            ratio: "full",
-            center: true
+            items: [
+              {
+                src: `${IMG}/votorantim/wireframes-fluxo.jpg`,
+                alt: "Wireframes das telas de abertura, apresentação e dos dois vídeos do treinamento",
+                ratio: "full"
+              },
+              {
+                src: `${IMG}/votorantim/wireframes-decisao.jpg`,
+                alt: "Wireframe da tela de decisão, com as alternativas A e B respondidas pelo teclado do totem",
+                ratio: "full"
+              }
+            ]
           }
         ]
       },
