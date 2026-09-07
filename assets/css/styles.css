@@ -416,14 +416,18 @@ figure, blockquote { margin: 0; }
   transform: translateY(105%);
   animation: riseIn 900ms var(--ease-out) forwards;
 }
-.hero__name span:nth-child(2) > i { animation-delay: 90ms; }
-.hero__name span:nth-child(3) > i { animation-delay: 180ms; }
+.hero__name span:nth-child(2) > i { animation-delay: 130ms; }
+.hero__name span:nth-child(3) > i { animation-delay: 260ms; }
 @keyframes riseIn { to { transform: none; } }
 
+/* Entrada do hero, em uma composição só: as três palavras sobem em cascata,
+   o filete risca em acento e esfria para o tom normal, o texto auxiliar se
+   forma linha a linha e a indicação de rolagem fecha o conjunto. Os tempos se
+   sobrepõem de propósito — é uma sequência, não quatro animações soltas. */
 .hero__tag {
+  position: relative;
   margin-top: 40px;
   padding-top: 28px;
-  border-top: 1px solid var(--line);
   max-width: 340px;
   font-family: var(--font-display);
   font-weight: 700;
@@ -433,6 +437,35 @@ figure, blockquote { margin: 0; }
   text-transform: uppercase;
   color: var(--fg);
 }
+
+/* O filete que era border-top: vira elemento próprio para poder ser riscado
+   da esquerda para a direita e trocar de cor no fim. */
+.hero__tag::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background-color: var(--accent);
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  animation: riscaEntra 700ms var(--ease-out) 620ms forwards,
+             riscaEsfria 600ms var(--ease) 1240ms forwards;
+}
+@keyframes riscaEntra { to { transform: none; } }
+@keyframes riscaEsfria { to { background-color: var(--line); } }
+
+.hero__tag > span {
+  display: block;
+  opacity: 0;
+  transform: translateY(10px);
+  animation: surgeIn 700ms var(--ease-out) forwards;
+}
+.hero__tag > span:nth-child(1) { animation-delay: 820ms; }
+.hero__tag > span:nth-child(2) { animation-delay: 920ms; }
+.hero__tag > span:nth-child(3) { animation-delay: 1020ms; }
+@keyframes surgeIn { to { opacity: 1; transform: none; } }
 
 .hero__scroll {
   position: absolute;
@@ -449,13 +482,17 @@ figure, blockquote { margin: 0; }
   border: 0;
   cursor: pointer;
   transition: color 200ms var(--ease);
+  opacity: 0;
+  transform: translateY(10px);
+  animation: surgeIn 700ms var(--ease-out) 1200ms forwards;
 }
 .hero__scroll:hover { color: var(--fg); }
 .hero__scroll b {
   display: block;
   width: 1px; height: 40px;
   background: linear-gradient(var(--fg-5), transparent);
-  animation: scrollHint 2.2s var(--ease) infinite;
+  /* O pulso só começa depois que o botão terminou de entrar. */
+  animation: scrollHint 2.2s var(--ease) 1900ms infinite;
 }
 @keyframes scrollHint {
   0%, 100% { transform: scaleY(1); opacity: 1; transform-origin: 0 0; }
@@ -2393,7 +2430,13 @@ body:has(.drawer:not([hidden])) .to-top { opacity: 0; pointer-events: none; }
     transition-duration: 0.001ms !important;
   }
   .reveal { opacity: 1; transform: none; }
-  .hero__name span > i { transform: none; }
+  /* A entrada do hero é acabamento, não informação: sem movimento, tudo aparece
+     já no lugar, sem atraso e sem pulso. */
+  .hero__name span > i { transform: none; animation: none; }
+  .hero__tag > span,
+  .hero__scroll { opacity: 1; transform: none; animation: none; }
+  .hero__tag::before { transform: none; background-color: var(--line); animation: none; }
+  .hero__scroll b { animation: none; }
 }
 
 @media print {
