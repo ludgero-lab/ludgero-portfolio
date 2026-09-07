@@ -100,7 +100,9 @@ Atalho: tecla **T** alterna claro/escuro.
 - Roteamento por hash com transição de view e restauração de scroll ao voltar
 - Barra de progresso de leitura no topo
 - Header que se recolhe ao descer e reaparece ao subir
-- Parallax sutil no hero
+- Parallax sutil no hero, mantido por decisão: só responde à rolagem, não roda
+  sozinho. A entrada anima a **imagem** e o parallax anima o **contêiner**, de
+  propósito — na mesma propriedade as duas se anulariam
 - Contadores animados nos números da home
 - *Reveal* progressivo por `IntersectionObserver`
 - Scrollspy no menu do topo (home) e na sidebar (cases)
@@ -181,8 +183,19 @@ tocando.
 | `votorantim-animacao.mp4` | 10,5 MB | Case Votorantim · O Desafio |
 | `stefani-solucao.mp4` | 48 MB | Case Stefani · Solução e Atuação |
 
-O da Stefani é pesado para streaming em conexão móvel. Vale recomprimir
-(1080p, ~2–3 Mbps) antes de publicar, ou trocar por uma versão mais curta.
+Os 48 MB da Stefani **não são excesso de compressão**: o arquivo tem 1280x720,
+7min51s e **851 kbps**, que já é um bitrate baixo para 720p. O peso vem da
+duração. Recomprimir a partir daí degrada — e como é uma gravação de tela, texto
+e interface são o primeiro a sujar. A 600 kbps cairia para ~34 MB com perda
+visível; não compensa.
+
+O arquivo também já é *faststart* (o `moov` vem antes do `mdat`), então
+começa a tocar sem baixar tudo. E o `preload="none"` mantém o peso fora do
+carregamento da página.
+
+Se um dia o peso incomodar, os ganhos reais estão na **duração** (um recorte de
+1 a 2 minutos cairia para 6–12 MB sem perder qualidade) ou em **hospedar no
+Vimeo** e incorporar, o que zera o custo de banda e dá streaming adaptativo.
 
 ## Ícones das ferramentas
 
@@ -315,4 +328,3 @@ apenas em separadores decorativos (`|`, `·`) e no conector do percurso.
 ## Pontos em aberto
 
 - **Versão EN**: o seletor de idioma está presente mas ainda sem tradução.
-- **Recompressão do vídeo da Stefani**, como descrito acima.
