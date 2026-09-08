@@ -557,6 +557,20 @@ figure, blockquote { margin: 0; }
 }
 .stats .label { letter-spacing: 0.4em; color: var(--fg-6); }
 
+/* Terceiro andar da célula: o escopo do número — onde ele vale. Entra em
+   caixa baixa, sem tracking, para descer um degrau claro depois do rótulo
+   versaleteado e do algarismo. A medida da linha é a própria largura útil
+   da célula: um max-width menor só forçaria a terceira nota a quebrar
+   sozinha, desalinhando o rodapé das três. O balance cuida da quebra
+   quando a tela aperta, para nenhuma delas terminar com uma palavra órfã. */
+.stats__nota {
+  margin: 14px 0 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--fg-4);
+  text-wrap: balance;
+}
+
 /* ==========================================================================
    HOME — Cases
    ========================================================================== */
