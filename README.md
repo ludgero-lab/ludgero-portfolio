@@ -27,7 +27,6 @@ assets/
   js/app.js             Roteador, tema, scrollspy, reveal, lightbox, vídeo
   img/                  Imagens dos cases (JPEG otimizado; 1 PNG com recorte)
   logos/                Logotipos SVG, versões negativa e positiva
-  video/                Vídeos das demonstrações
   cv/                   Currículo em PDF
 ```
 
@@ -173,29 +172,61 @@ otimização automática de imagem, ele cobre esse último passo.
 
 ## Vídeos
 
-Os dois vídeos usam `preload="none"` com poster: nada é baixado antes de
-alguém apertar o play, então o peso do arquivo não entra no carregamento da
-página. Só um vídeo toca por vez, e trocar de rota pausa o que estiver
+Os dois vídeos são hospedados no Vimeo. A moldura (`.video-frame`) continua
+aceitando as duas origens, e a escolha se faz nos dados do case:
+
+| Campo | Origem | Miniatura |
+|---|---|---|
+| `vimeo: "<id>"` | player do Vimeo | do próprio Vimeo, ou `poster` se houver |
+| `src: "assets/video/x.mp4"` | arquivo no repositório | `poster`, obrigatório |
+
+| Vídeo | Onde | Id |
+|---|---|---|
+| Preview fábrica Votorantim — 2020 | Case Votorantim · O Desafio | `1224800204` |
+| Stefani — Módulo de ensino | Case Stefani · Solução e Atuação | `1193806255` |
+
+Nenhum arquivo de vídeo mora mais no repositório — saíram 58,5 MB. A pasta
+`assets/video/` deixou de existir, mas o caminho do MP4 continua no código:
+é a saída para um vídeo que não possa ir para o Vimeo.
+
+Nas duas origens nada pesado carrega antes do clique — no MP4 por causa do
+`preload="none"`, no Vimeo porque o `<iframe>` só é criado no play. Só um
+vídeo toca por vez (nos MP4 via `pause()`, nos players do Vimeo via
+`postMessage`, sem precisar do SDK), e trocar de rota pausa o que estiver
 tocando.
 
-| Arquivo | Peso | Onde |
-|---|---|---|
-| `votorantim-animacao.mp4` | 10,5 MB | Case Votorantim · O Desafio |
-| `stefani-solucao.mp4` | 48 MB | Case Stefani · Solução e Atuação |
+### Por que saíram do repositório
 
-Os 48 MB da Stefani **não são excesso de compressão**: o arquivo tem 1280x720,
-7min51s e **851 kbps**, que já é um bitrate baixo para 720p. O peso vem da
-duração. Recomprimir a partir daí degrada — e como é uma gravação de tela, texto
-e interface são o primeiro a sujar. A 600 kbps cairia para ~34 MB com perda
-visível; não compensa.
+O da Stefani tinha 48 MB, e **não por excesso de compressão**: 1280x720,
+7min51s e 851 kbps já é bitrate baixo para 720p. O peso vinha da duração,
+então recomprimir só degradaria — e, por ser gravação de tela, texto e
+interface sujam primeiro. O Vimeo resolve pelo outro lado: entrega bitrate
+adaptativo, o que muda a experiência de quem abre o case no celular.
 
-O arquivo também já é *faststart* (o `moov` vem antes do `mdat`), então
-começa a tocar sem baixar tudo. E o `preload="none"` mantém o peso fora do
-carregamento da página.
+### Privacidade do vídeo no Vimeo
 
-Se um dia o peso incomodar, os ganhos reais estão na **duração** (um recorte de
-1 a 2 minutos cairia para 6–12 MB sem perder qualidade) ou em **hospedar no
-Vimeo** e incorporar, o que zera o custo de banda e dá streaming adaptativo.
+Um vídeo **privado não funciona incorporado** — o player pede login e o
+oEmbed responde 404, então a moldura fica sem miniatura e sem vídeo. Foi o
+que aconteceu com o da Votorantim antes de ser liberado. Para funcionar
+aqui, a privacidade precisa ser pública ou "não listado", com incorporação
+liberada.
+
+Vídeo não listado tem um hash junto do id (`vimeo.com/<id>/<hash>`). Ele vai
+no campo `vimeoHash` e é obrigatório nos dois pontos: sem ele o oEmbed dá 404
+e o player recusa a incorporação. Os dois vídeos aqui estão públicos, mas o
+hash está guardado — assim continuam funcionando se um dia virarem não
+listados.
+
+### Miniatura e cookies
+
+A miniatura vem do oEmbed público do Vimeo (aceita CORS, não pede token) e
+só é buscada quando a moldura chega perto da tela: quem não rolar até o
+vídeo não toca no vimeo.com. Um `poster` local tem precedência — é a saída
+quando o quadro escolhido pelo Vimeo não conversar com a página.
+
+O player entra com `dnt=1`, que desliga o rastreamento e impede o cookie do
+Vimeo. Isso mantém a política do site, que é a mesma razão de o Analytics ser
+o do Cloudflare: nada de cookie, nada de aviso de consentimento.
 
 ## Ícones das ferramentas
 

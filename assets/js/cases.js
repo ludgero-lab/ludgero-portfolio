@@ -107,8 +107,10 @@
                 caption: "Storyboard / planejamento do processo"
               },
               {
-                video: "assets/video/votorantim-animacao.mp4",
-                poster: `${IMG}/votorantim/flow-02.jpg`,
+                // Também no Vimeo, pelo mesmo motivo do vídeo da Stefani.
+                // Sem `poster`: a miniatura vem de lá.
+                vimeo: "1224800204",
+                vimeoHash: "7f1ab5847e",
                 label: "Animação",
                 alt: "Demonstração do vídeo em animação produzido para o treinamento",
                 caption: "Demonstração do vídeo em animação"
@@ -255,8 +257,11 @@
             right: [
               {
                 type: "video",
-                src: "assets/video/stefani-solucao.mp4",
-                poster: `${IMG}/home/case-stefani.jpg`,
+                // Hospedado no Vimeo: o player entrega bitrate adaptativo, o
+                // que importa num vídeo de quase oito minutos aberto no
+                // celular. Sem `poster`, a miniatura vem do próprio Vimeo.
+                vimeo: "1193806255",
+                vimeoHash: "53c8f60c2d",
                 label: "Solução",
                 alt: "Demonstração da solução digital implementada para a Stefani",
                 caption: "Reprodução da solução digital implementada"

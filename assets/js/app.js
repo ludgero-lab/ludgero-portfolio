@@ -33,18 +33,18 @@
     </span>`;
   }
 
-  /* Player leve: enquanto ninguém aperta play, só o poster é baixado.
-     Os arquivos de vídeo são pesados, então nada de `preload`. */
+  /* Uma moldura, duas origens. Com `src` o arquivo é servido pelo próprio
+     site; com `vimeo` (só o número do ID) quem serve é o player do Vimeo.
+     Pôster, botão, rótulo e legenda são os mesmos nos dois casos — a troca
+     não aparece no layout, só muda de onde vem o vídeo.
+
+     Nos dois casos nada pesado é baixado antes do clique: no MP4 por causa
+     do preload="none", no Vimeo porque o iframe só nasce no play. Enquanto
+     ninguém pedir para assistir, nenhuma requisição sai para o vimeo.com e
+     o site segue sem cookie de terceiro. */
   function videoHTML(v) {
-    return `
-      <div class="video-frame" data-video>
-        <video preload="none" playsinline controls
-               poster="${esc(v.poster || "")}"
-               aria-label="${esc(v.alt || v.caption || "Vídeo")}">
-          <source src="${esc(v.src || v.video)}" type="video/mp4">
-          Seu navegador não reproduz este vídeo.
-          <a href="${esc(v.src || v.video)}">Baixar o arquivo</a>.
-        </video>
+    const descricao = esc(v.alt || v.caption || "Vídeo");
+    const capa = `
         <button type="button" class="video-frame__poster" data-play
                 aria-label="Reproduzir: ${esc(v.alt || v.caption || "vídeo")}">
           ${v.poster ? `<img src="${esc(v.poster)}" alt="" loading="lazy">` : ""}
@@ -52,7 +52,27 @@
             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.14v13.72L19 12z"/></svg>
           </span>
           ${v.label ? `<span class="video-frame__label">${esc(v.label)}</span>` : ""}
-        </button>
+        </button>`;
+
+    if (v.vimeo) {
+      return `
+      <div class="video-frame" data-video data-vimeo="${esc(String(v.vimeo))}"
+           data-vimeo-h="${esc(v.vimeoHash || "")}"
+           data-titulo="${descricao}">
+        ${capa}
+      </div>`;
+    }
+
+    return `
+      <div class="video-frame" data-video>
+        <video preload="none" playsinline controls
+               poster="${esc(v.poster || "")}"
+               aria-label="${descricao}">
+          <source src="${esc(v.src || v.video)}" type="video/mp4">
+          Seu navegador não reproduz este vídeo.
+          <a href="${esc(v.src || v.video)}">Baixar o arquivo</a>.
+        </video>
+        ${capa}
       </div>`;
   }
 
@@ -247,6 +267,59 @@
     $$("[data-count]", root).forEach((el) => countObserver.observe(el));
   }
 
+  /* Miniatura vinda do Vimeo, para quando não houver pôster local.
+
+     O pôster do repositório tem precedência de propósito: é ele que garante
+     que o quadro escolhido converse com o resto da página — a arte do card
+     do case, por exemplo, é a mesma imagem. A miniatura do Vimeo é o plano
+     B: chega automaticamente e acompanha o que for definido lá, mas o
+     recorte é decisão do Vimeo, não do layout.
+
+     O oEmbed é público, aceita CORS e não exige token. Ainda assim é uma
+     requisição a terceiro, então só sai quando a moldura chega perto da
+     tela — quem nunca rolar até o vídeo nunca toca no vimeo.com. */
+  const observadorVimeo = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        observadorVimeo.unobserve(entry.target);
+        buscarMiniaturaVimeo(entry.target);
+      });
+    },
+    { rootMargin: "300px 0px" }
+  );
+
+  function buscarMiniaturaVimeo(frame) {
+    const capa = frame.querySelector("[data-play]");
+    if (!frame.dataset.vimeo || !capa) return;
+
+    // Vídeo não listado: o endereço canônico é vimeo.com/ID/HASH. Sem o
+    // hash o oEmbed responde 404 e a moldura fica sem miniatura.
+    const caminho = frame.dataset.vimeo
+      + (frame.dataset.vimeoH ? "/" + frame.dataset.vimeoH : "");
+    const alvo = encodeURIComponent("https://vimeo.com/" + caminho);
+    fetch("https://vimeo.com/api/oembed.json?width=1600&url=" + alvo)
+      .then((r) => (r.ok ? r.json() : Promise.reject(r.status)))
+      .then((d) => {
+        if (!d.thumbnail_url) return;
+        const img = document.createElement("img");
+        img.alt = "";
+        img.loading = "lazy";
+        img.src = d.thumbnail_url;
+        capa.prepend(img);
+      })
+      // Vídeo privado, offline ou rede fora do ar: a moldura fica no fundo
+      // preto com o botão de play. Perde a prévia, continua funcionando.
+      .catch(() => {});
+  }
+
+  function prepararVimeo(root = document) {
+    $$("[data-vimeo]", root).forEach((frame) => {
+      if (frame.querySelector("img")) return;
+      observadorVimeo.observe(frame);
+    });
+  }
+
   /* ==========================================================================
      4 · Renderização — Home (cards de case)
      ========================================================================== */
@@ -298,7 +371,7 @@
 
   function figureHTML(f, extraClass = "") {
     // Um item de grade também pode ser um vídeo.
-    if (f.video || f.type === "video") {
+    if (f.video || f.vimeo || f.type === "video") {
       return `
         <figure class="figure ${f.center ? "figure--center" : ""} ${extraClass}">
           ${videoHTML(f)}
@@ -658,6 +731,7 @@
       animarEntrada(viewCase);
 
       observeReveals(viewCase);
+      prepararVimeo(viewCase);
       justificarGrades(viewCase);
       setupCaseSpy(c);
     } else {
@@ -670,6 +744,7 @@
       animarEntrada(viewHome);
 
       observeReveals(viewHome);
+      prepararVimeo(viewHome);
       setupHomeSpy();
       setupContadorDeCases();
     }
@@ -871,13 +946,46 @@
     showLightbox();
   }
 
+  /* "Um de cada vez" vale para os dois tipos de vídeo. No MP4 é o pause
+     direto; no Vimeo é um postMessage, que o próprio player entende — não
+     vale carregar o SDK inteiro só para isso. */
+  function pausarTudo(exceto) {
+    $$("video").forEach((v) => { if (v !== exceto) v.pause(); });
+    $$("iframe[src*='player.vimeo.com']").forEach((f) => {
+      if (f.contentWindow) {
+        f.contentWindow.postMessage('{"method":"pause"}', "https://player.vimeo.com");
+      }
+    });
+  }
+
   document.addEventListener("click", (e) => {
-    // Play: só aqui o arquivo começa a baixar. Um vídeo por vez.
+    // Play: só aqui o vídeo começa a carregar. Um de cada vez.
     const play = e.target.closest("[data-play]");
     if (play) {
       const frame = play.closest("[data-video]");
+
+      // Vimeo: o iframe entra agora, por cima do pôster, já tocando.
+      // dnt=1 pede ao player que não rastreie a sessão — sem esse
+      // parâmetro o Vimeo grava cookie, e o site não usa nenhum.
+      if (frame.dataset.vimeo) {
+        pausarTudo();
+        const player = document.createElement("iframe");
+        player.src = "https://player.vimeo.com/video/"
+          + encodeURIComponent(frame.dataset.vimeo)
+          + "?autoplay=1&dnt=1&title=0&byline=0&portrait=0"
+          + (frame.dataset.vimeoH ? "&h=" + encodeURIComponent(frame.dataset.vimeoH) : "");
+        player.title = frame.dataset.titulo || "Vídeo";
+        // allow já cobre o fullscreen; repetir no allowfullscreen só gera
+        // aviso no console, porque um sobrepõe o outro.
+        player.allow = "autoplay; fullscreen; picture-in-picture";
+        frame.appendChild(player);
+        play.remove();
+        player.focus();
+        return;
+      }
+
       const vid = frame.querySelector("video");
-      $$("video").forEach((v) => { if (v !== vid) v.pause(); });
+      pausarTudo(vid);
       play.hidden = true;
       vid.play().catch(() => { play.hidden = false; });
       vid.focus();

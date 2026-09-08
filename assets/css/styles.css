@@ -1390,6 +1390,17 @@ body:has(.site-header[data-hidden="true"]) .section-head { top: 0; }
 }
 .video-frame:hover { border-color: var(--line-loud); box-shadow: var(--shadow-lift); }
 .video-frame video { width: 100%; height: 100%; object-fit: cover; display: block; background: #000; }
+/* O iframe do Vimeo entra depois do clique e ocupa a moldura inteira. Como
+   é criado por cima do pôster, precisa de inset em vez de fluxo normal —
+   o pôster do MP4 sai com hidden, o do Vimeo sai do DOM. */
+.video-frame iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+}
 
 .video-frame__poster {
   position: absolute;
