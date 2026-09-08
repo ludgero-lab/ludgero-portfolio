@@ -81,6 +81,8 @@
                o path na cor escura sobre um retângulo na cor viva, recuado o
                bastante para não escapar pelas bordas arredondadas.
      'glyph' — só a marca, centralizada sobre o ladrilho.
+     'letras' — o inverso do 'tile': ladrilho escuro com as letras vivas
+               por cima, que é como a Adobe desenha o Captivate.
      Sem marca oficial, cai no ladrilho com a abreviação de duas letras. */
   function toolHTML(key) {
     const t = TOOLS[key];
@@ -94,6 +96,9 @@
     } else if (icon && icon.type === "glyph") {
       inner = `<rect width="24" height="24" rx="4.3" fill="${t.bright}"/>
                <g transform="translate(4.6 4.6) scale(0.617)"><path d="${icon.d}" fill="${t.dark}"/></g>`;
+    } else if (icon && icon.type === "letras") {
+      inner = `<rect width="24" height="24" rx="4.3" fill="${t.dark}"/>
+               <g transform="${icon.transform}"><path d="${icon.d}" fill="${t.bright}"/></g>`;
     } else {
       inner = `<rect width="24" height="24" rx="4.3" fill="${t.dark}"/>
                <rect x="0.6" y="0.6" width="22.8" height="22.8" rx="3.8" fill="none"

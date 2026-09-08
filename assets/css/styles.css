@@ -1378,6 +1378,13 @@ body:has(.site-header[data-hidden="true"]) .section-head { top: 0; }
    Vídeo
    ========================================================================== */
 
+/* Sem borda, ao contrário de .media e .case-card__thumb. Nesses dois o
+   conteúdo pode não encher a caixa (recorte com `contain` sobre o fundo
+   elevado), e o filete é o que desenha o limite. Aqui o pôster sempre
+   preenche a moldura inteira, então o filete não delimita nada: vira um
+   contorno claro por cima da imagem no tema claro. Sem ele a caixa de
+   conteúdo também fica exatamente em 16/9, e o pôster entra sem corte.
+   O relevo do hover fica por conta da sombra. */
 .video-frame {
   position: relative;
   width: 100%;
@@ -1385,10 +1392,9 @@ body:has(.site-header[data-hidden="true"]) .section-head { top: 0; }
   border-radius: var(--radius);
   overflow: hidden;
   background: #000;
-  border: var(--media-frame);
-  transition: border-color 260ms var(--ease), box-shadow 320ms var(--ease);
+  transition: box-shadow 320ms var(--ease);
 }
-.video-frame:hover { border-color: var(--line-loud); box-shadow: var(--shadow-lift); }
+.video-frame:hover { box-shadow: var(--shadow-lift); }
 .video-frame video { width: 100%; height: 100%; object-fit: cover; display: block; background: #000; }
 /* O iframe do Vimeo entra depois do clique e ocupa a moldura inteira. Como
    é criado por cima do pôster, precisa de inset em vez de fluxo normal —

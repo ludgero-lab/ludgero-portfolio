@@ -180,6 +180,14 @@ aceitando as duas origens, e a escolha se faz nos dados do case:
 | `vimeo: "<id>"` | player do Vimeo | do próprio Vimeo, ou `poster` se houver |
 | `src: "assets/video/x.mp4"` | arquivo no repositório | `poster`, obrigatório |
 
+A moldura do vídeo é a única mídia **sem o filete de 1px** que `.media` e
+`.case-card__thumb` usam. Nesses dois o conteúdo pode não encher a caixa
+(recorte com `contain` sobre o fundo elevado) e o filete é o que desenha o
+limite; aqui o pôster sempre preenche, então ele não delimitava nada — só
+aparecia como um contorno claro por cima da imagem no tema claro, onde
+`--line` é `#dedcd5`. Sem a borda a caixa de conteúdo também fica exatamente
+em 16/9, e o pôster entra sem corte nenhum.
+
 | Vídeo | Onde | Id |
 |---|---|---|
 | Preview fábrica Votorantim — 2020 | Case Votorantim · O Desafio | `1224800204` |
@@ -245,12 +253,15 @@ da Adobe, e no ícone real a distinção entre os dois é a abreviação, não a
 cor — não trocar por variedade. O roxo/magenta que o Premiere tinha antes
 era da geração anterior do ícone.
 
-O **Adobe Captivate** não existe no Simple Icons e usa o ladrilho com a
-abreviação de duas letras — a mesma anatomia dos demais apps da Adobe.
+O **Adobe Captivate** não existe no Simple Icons: veio do SVG oficial do
+aplicativo, acrescentado à mão. Ele é desenhado ao contrário dos outros —
+ladrilho escuro (`#012d2d`) com as letras vivas (`#03f2c4`) por cima —, daí
+o terceiro tipo, `letras`, que traz só o "Cp" no espaço 56x54 do arquivo
+original mais o `transform` que encaixa no ladrilho de 24.
 
 Para regenerar depois de acrescentar um SVG em `assets/icons/`, o script que
 extrai os paths está no histórico desta conversa; o formato do arquivo é
-`{ type: "tile" | "glyph", d: "<path>" }`.
+`{ type: "tile" | "glyph" | "letras", d: "<path>", transform?: "<transform>" }`.
 
 ## Vocabulário visual
 
