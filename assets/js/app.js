@@ -697,11 +697,18 @@
      transform vira bloco de contenção — os filhos com `position: fixed` (o
      menu flutuante do case) passariam a se posicionar dentro da view em vez
      da viewport. */
+  /* A classe precisa sair de qualquer jeito: enquanto ela está aplicada a
+     view carrega um transform, e um ancestral com transform desloca a
+     referência do `position: sticky` do hero. Se o animationend não vier —
+     aba em segundo plano na hora da troca, movimento reduzido, animação
+     interrompida —, o tempo limite tira. */
   function animarEntrada(view) {
     view.classList.remove("view-enter");
     void view.offsetWidth;
     view.classList.add("view-enter");
-    view.addEventListener("animationend", () => view.classList.remove("view-enter"), { once: true });
+    const soltar = () => view.classList.remove("view-enter");
+    view.addEventListener("animationend", soltar, { once: true });
+    setTimeout(soltar, 1200);
   }
 
   /* Vindo de um case, a home acabou de ser reexibida e o documento ainda
@@ -1034,6 +1041,152 @@
   const progress = $("#progress");
   const toTop = $("#to-top");
   const heroBg = $("#hero-bg");
+
+  /* --- Hero preso à tela -------------------------------------------------
+     Enquanto a pista passa, o hero fica parado, a composição do nome encolhe
+     e a faixa de números sobe para o lugar que ela desocupa. O CSS faz a
+     prisão (sticky) e a subida da faixa; daqui saem só as duas medidas que
+     dependem do texto renderizado: quanto encolher e em que ritmo.
+
+     A escala é calculada, não escolhida: é a maior que ainda deixa a
+     composição inteira caber acima da faixa. Assim o efeito se ajusta a
+     telas de alturas diferentes em vez de depender de um número fixo. */
+
+  const pista = $("#hero-stage");
+  const heroComp = $("#hero-comp");
+  const faixaNumeros = $("#stats");
+  const heroSecao = $(".hero");
+  const heroCta = $(".hero__scroll");
+  const heroFundo = $(".hero__fundo");
+  const efeitoHero = window.matchMedia(
+    "(min-width: 861px) and (min-height: 640px) and (prefers-reduced-motion: no-preference)"
+  );
+  // O fundo preso não depende do tamanho da tela — só de haver movimento.
+  const fundoSuave = window.matchMedia("(prefers-reduced-motion: no-preference)");
+  const MARGEM_HERO = 72;  // o mesmo respiro de baixo do hero, em px
+  const ESCALA_ALVO = 0.62; // redução desejada da composição, se couber
+  const RESPIRO = 32;      // ar entre a base do texto e o topo da faixa
+  let escalaFinal = ESCALA_ALVO;
+  let subidaFinal = 0;
+  let cursoComposicao = 1;
+
+  /* A entrada do botão termina com `forwards`, e preenchimento de animação
+     ganha de qualquer declaração normal — inclusive da opacidade que a
+     rolagem quer escrever. Terminada a entrada, a animação sai do caminho.
+     O tempo limite cobre o caso de o animationend não vir: aba em segundo
+     plano na hora do carregamento, ou animação interrompida. */
+  if (heroCta) {
+    const soltarCta = () => {
+      heroCta.style.animation = "none";
+      heroCta.style.opacity = "1";
+      heroCta.style.transform = "none";
+    };
+    // Sem `once`: com um filtro por alvo ele poderia ser consumido pelo
+    // animationend de um filho e nunca chegar no botão.
+    heroCta.addEventListener("animationend", (e) => {
+      if (e.target === heroCta) soltarCta();
+    });
+    setTimeout(soltarCta, 3000);
+  }
+
+  /* A imagem de fundo é a única parte do efeito que vale em qualquer largura:
+     conforme os blocos sobem, ela fica onde está e apaga aos poucos. O que
+     muda entre desktop e mobile é só onde esse apagar começa e quanto dura.
+
+     No desktop, com o hero preso, ela só começa a sumir quando a pista acaba
+     e o bloco de texto e números sobe embora — antes disso ela é o fundo da
+     composição. No mobile não há prisão, então ela segura enquanto o hero
+     está na tela e apaga ao longo da faixa de números, terminando quando os
+     cases chegam. */
+  function atualizarFundo() {
+    if (!pista || !heroFundo || viewHome.hidden) return;
+    if (!fundoSuave.matches) { limparFundo(); return; }
+
+    const alturaHero = heroSecao.offsetHeight;
+    const percorrido = window.scrollY - pista.offsetTop;
+    const preso = efeitoHero.matches;
+    const inicio = preso ? pista.offsetHeight - alturaHero : alturaHero * 0.6;
+    const janela = preso ? alturaHero * 0.7 : alturaHero;
+
+    const saida = Math.min(1, Math.max(0, (percorrido - inicio) / janela));
+    pista.style.setProperty("--fundo-op", (1 - saida).toFixed(3));
+    // Some de vez no fim: uma camada do tamanho da tela não deve continuar
+    // pendurada sobre o resto da página só porque está transparente.
+    heroFundo.style.visibility = saida >= 1 ? "hidden" : "";
+
+    // A deriva substitui o parallax antigo. Com a imagem presa à tela ela já
+    // está no limite do efeito de profundidade; o deslocamento aqui é só um
+    // resto de vida, e vai no máximo até os 8% que a imagem tem de sobra em
+    // cima (.hero__bg inset: -8%). Passar disso abriria uma fresta.
+    if (heroBg && !prefersReduced.matches) {
+      const curso = Math.max(1, inicio + janela);
+      const pTotal = Math.min(1, Math.max(0, percorrido / curso));
+      heroBg.style.transform = `translate3d(0, ${(pTotal * alturaHero * 0.08).toFixed(1)}px, 0)`;
+    }
+  }
+
+  function limparFundo() {
+    if (!pista) return;
+    pista.style.removeProperty("--fundo-op");
+    if (heroFundo) heroFundo.style.removeProperty("visibility");
+    if (heroBg) heroBg.style.removeProperty("transform");
+  }
+
+  /* Só o que é do hero preso. O fundo tem limpeza própria: ele continua
+     valendo mesmo quando a prisão não vale. */
+  function limparHero() {
+    if (!pista) return;
+    pista.style.removeProperty("--hero-p");
+    pista.style.removeProperty("--comp-escala");
+    pista.style.removeProperty("--comp-sobe");
+    pista.style.removeProperty("--faixa-h");
+    if (heroCta) heroCta.style.removeProperty("opacity");
+  }
+
+  function medirHero() {
+    if (!pista || !efeitoHero.matches) { limparHero(); atualizarFundo(); return; }
+    const alturaHero = heroSecao.offsetHeight;
+    const alturaFaixa = faixaNumeros.offsetHeight;
+    const alturaComp = heroComp.offsetHeight;
+
+    // Quanto a composição precisa subir para a base dela parar acima da
+    // faixa. O padding de cima da faixa já dá um afastamento, mas ele é
+    // interno e o olho não lê como respiro entre os dois blocos: sem o
+    // RESPIRO o texto auxiliar encosta na linha dos números.
+    subidaFinal = Math.max(0, alturaFaixa - MARGEM_HERO + RESPIRO);
+
+    // A escala é a desejada, a menos que o texto encolhido ainda assim
+    // esbarre no topo. Aí ela cede o necessário, nunca abaixo de 0.45.
+    const tetoDisponivel = alturaHero - MARGEM_HERO - subidaFinal - 90;
+    escalaFinal = Math.max(0.45, Math.min(ESCALA_ALVO, tetoDisponivel / alturaComp));
+
+    // O curso é a subida da faixa, e nada mais: é ela que comanda: a faixa
+    // parte da dobra e sobe uma altura dela até encaixar. Amarrar o
+    // encolhimento a esse mesmo número é o que faz as duas coisas serem um
+    // movimento só, sem uma esperar a outra.
+    cursoComposicao = Math.max(1, alturaFaixa);
+    pista.style.setProperty("--faixa-h", alturaFaixa + "px");
+    atualizarHero();
+    atualizarFundo();
+  }
+
+  function atualizarHero() {
+    if (!pista || !efeitoHero.matches || viewHome.hidden) return;
+    const percorrido = window.scrollY - pista.offsetTop;
+    const p = Math.min(1, Math.max(0, percorrido / cursoComposicao));
+    pista.style.setProperty("--hero-p", p.toFixed(4));
+    pista.style.setProperty("--comp-escala", (1 - (1 - escalaFinal) * p).toFixed(4));
+    pista.style.setProperty("--comp-sobe", (subidaFinal * p).toFixed(1) + "px");
+    // O botão de rolagem divide o lugar com a faixa: sai já no começo.
+    if (heroCta) heroCta.style.opacity = Math.max(0, 1 - p * 4).toFixed(3);
+  }
+
+  efeitoHero.addEventListener("change", medirHero);
+  fundoSuave.addEventListener("change", medirHero);
+  window.addEventListener("resize", medirHero);
+  window.addEventListener("load", medirHero);
+  medirHero();
+
   const cabecalhos = Array.prototype.slice.call(document.querySelectorAll(".section-head"));
   let alturaHeader = 66;
   let lastY = window.scrollY;
@@ -1057,10 +1210,9 @@
         h.dataset.preso = String(h.getBoundingClientRect().top <= alturaHeader + 1);
       });
     }
-
-    if (heroBg && !viewHome.hidden && y < window.innerHeight * 1.2 && !prefersReduced.matches) {
-      heroBg.style.transform = `translate3d(0, ${y * 0.22}px, 0)`;
-    }
+    // O fundo vale em qualquer largura; a prisão do hero, só no desktop.
+    atualizarFundo();
+    if (efeitoHero.matches) atualizarHero();
     ticking = false;
   }
 

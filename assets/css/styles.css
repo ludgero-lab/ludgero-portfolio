@@ -383,6 +383,28 @@ figure, blockquote { margin: 0; }
   overflow: hidden;
   isolation: isolate;
 }
+/* Invólucro das camadas de fundo. Sozinho ele não faz nada: é uma caixa
+   colada no hero, exatamente onde as camadas já estavam. Quem o usa é o
+   efeito de rolagem, que o solta do hero e o faz desaparecer. */
+.hero__fundo {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* Preso à tela, e não ao hero: conforme os blocos sobem, a imagem fica onde
+   está e apaga aos poucos, até os cases ocuparem a tela. Vale em qualquer
+   largura — no mobile é o efeito inteiro, no desktop é a saída do hero preso.
+   Quem escreve --fundo-op é o JS; os pontos de início e fim mudam conforme o
+   hero esteja preso ou não. */
+@media (prefers-reduced-motion: no-preference) {
+  .hero__fundo {
+    position: fixed;
+    opacity: var(--fundo-op, 1);
+  }
+}
 .hero__bg {
   position: absolute;
   inset: -8% 0 0;
@@ -529,6 +551,99 @@ figure, blockquote { margin: 0; }
 @keyframes scrollHint {
   0%, 100% { transform: scaleY(1); opacity: 1; transform-origin: 0 0; }
   50% { transform: scaleY(0.4); opacity: 0.4; transform-origin: 0 0; }
+}
+
+/* ==========================================================================
+   HOME — Hero preso à tela
+   ========================================================================== */
+
+/* A pista (.hero-stage) é mais alta que a tela; essa sobra é o curso da
+   animação. Enquanto ela passa o hero fica preso no topo e acontece um
+   movimento só: a faixa de números sobe do rodapé e vai empurrando a
+   composição do nome, que encolhe na mesma medida em que é empurrada. Não
+   são duas animações em sequência — é a mesma, lida de dois jeitos. Por
+   isso o encolhimento não tem tempo próprio: ele é função de quanto a faixa
+   já subiu. Terminada a pista, os dois se soltam juntos e a página segue.
+
+   A base da composição para exatamente no filete de cima da faixa: o respiro
+   entre o texto e os números é o padding que a faixa já tem, o mesmo do resto
+   do site.
+
+   A escala final vem do JS: depende de quanto o nome e o texto auxiliar de
+   fato ocupam na tela de cada um. O resto é CSS.
+
+   O segundo véu (.hero__lastro) existe só para isso: adensa a base conforme
+   os números sobem, senão eles cairiam sobre o miolo claro da foto. Parado,
+   ele é zero — a imagem continua exatamente como era. */
+.hero__lastro {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0;
+  background: linear-gradient(180deg, transparent 30%, var(--bg) 100%);
+}
+
+@media (min-width: 861px) and (min-height: 640px) and (prefers-reduced-motion: no-preference) {
+  .hero-stage { position: relative; }
+  /* O tempo parado depois de tudo composto. Precisa ser uma caixa no fluxo,
+     e não padding da pista: o retângulo que prende um sticky é a caixa de
+     CONTEÚDO do pai — padding do pai não entra na conta, e a prisão acabaria
+     cedo demais. Aqui o vazio é conteúdo de verdade. */
+  .hero-stage::after {
+    content: "";
+    display: block;
+    height: var(--curso, 25svh);
+  }
+
+  .hero {
+    position: sticky;
+    top: 0;
+    height: 100svh;
+    min-height: 0;
+  }
+
+  /* Encolhe ancorada pela base e sobe o tanto que a faixa de números ocupa:
+     as duas chegam juntas ao lugar final, a composição logo acima dos
+     números. Os dois valores vêm do JS já em px, medidos no texto real. */
+  .hero__comp {
+    transform-origin: 0 100%;
+    transform: translateY(calc(var(--comp-sobe, 0px) * -1)) scale(var(--comp-escala, 1));
+  }
+  /* Sem will-change de propósito. Ele promoveria a composição a uma camada
+     rasterizada uma vez e depois só escalada — e o nome, que é o maior tipo
+     da página, chegaria borrado ao estado final, onde a pessoa fica parada.
+     Sem a promoção o navegador redesenha o texto em cada escala, nítido. É
+     um bloco de texto só, num trecho curto de rolagem: cabe no orçamento. */
+
+  .hero__lastro { opacity: var(--hero-p, 0); }
+
+  /* Presa pelo topo, e não pela base: com `bottom` o sticky puxaria a faixa
+     para dentro da tela já na primeira pintura, que é o contrário do efeito.
+     Com `top` ela fica no fluxo, abaixo da dobra, e sobe até encaixar. O topo
+     é calculado para a base dela parar a 72px do rodapé — a mesma margem em
+     que a composição estava antes de encolher. */
+  /* A faixa mantém o layout que tem no resto do site: mesmo respiro, mesmo
+     tamanho de número, mesmos divisores entre as colunas. O que muda é de
+     onde ela vem, e os filetes de fora, que saem.
+
+     Presa pelo topo, e não pela base: com `bottom` o sticky puxaria a faixa
+     para dentro da tela já na primeira pintura, que é o contrário do efeito.
+     Com `top` ela fica no fluxo, logo abaixo da dobra, e sobe até a base
+     dela encostar no rodapé da tela.
+
+     Sem vão antes dela, de propósito: a subida da faixa e o encolhimento da
+     composição são o mesmo movimento, e qualquer distância aqui viraria uma
+     espera entre as duas coisas. */
+  .hero-stage .stats {
+    position: sticky;
+    top: calc(100svh - var(--faixa-h, 280px));
+    /* Sem os filetes de fora: sobre a foto eles atravessariam a imagem sem
+       delimitar nada — na página eles separam a faixa do que vem antes e
+       depois, aqui não há nem antes nem depois. Os divisores entre as
+       colunas ficam: esses continuam separando uma coisa da outra. */
+    border-block: 0;
+  }
 }
 
 /* ==========================================================================

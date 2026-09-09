@@ -126,53 +126,75 @@
   <!-- ==================================================================== -->
   <div class="view" id="view-home">
 
-    <section class="hero" id="topo">
-      <div class="hero__bg" id="hero-bg" aria-hidden="true">
-        <img src="assets/img/home/hero-bg.jpg" alt="" fetchpriority="high" decoding="async">
-      </div>
-      <div class="hero__veil" aria-hidden="true"></div>
+    <!-- A pista de rolagem do hero. Ela é mais alta que a tela, e é essa
+         sobra que dá curso à animação: enquanto ela passa, o hero fica preso
+         no topo, a composição do nome encolhe e a faixa de números sobe para
+         o lugar que a composição desocupou. Acabou a pista, tudo se solta e a
+         página segue. Só vale em tela larga e alta, e com movimento
+         permitido — fora disso o hero e a faixa voltam a ser dois blocos em
+         sequência, como sempre foram. -->
+    <div class="hero-stage" id="hero-stage">
 
-      <div>
-        <h1 class="hero__name">
-          <span><i>Ludgero</i></span>
-          <span><i>Ricardo</i></span>
-          <span><i>Abilino</i></span>
-        </h1>
-        <!-- Uma linha por span: assim o texto auxiliar entra escalonado,
-             ecoando a cascata das três palavras do nome. -->
-        <p class="hero__tag">
-          <span>Product Designer Sênior</span>
-          <span>Moldando Experiências de</span>
-          <span>Aprendizagem e Negócios</span>
-        </p>
-      </div>
+      <section class="hero" id="topo">
+        <!-- As três camadas de fundo num invólucro só. Ele existe para o
+             efeito: quando o hero se solta, o invólucro passa a `fixed` e
+             fica onde está enquanto o texto e os números sobem, sumindo aos
+             poucos à medida que os cases entram. Sem o efeito ele é apenas
+             uma caixa colada no hero, como as camadas eram antes. -->
+        <div class="hero__fundo" aria-hidden="true">
+          <div class="hero__bg" id="hero-bg">
+            <img src="assets/img/home/hero-bg.jpg" alt="" fetchpriority="high" decoding="async">
+          </div>
+          <div class="hero__veil"></div>
+          <!-- Segunda camada de véu, só para a animação: adensa a base à
+               medida que os números sobem, para eles não caírem em cima do
+               miolo claro da foto. Fica em zero enquanto o hero está parado. -->
+          <div class="hero__lastro"></div>
+        </div>
 
-      <button type="button" class="hero__scroll" data-scroll-to="cases">
-        <b aria-hidden="true"></b> Role para ver os cases
-      </button>
-    </section>
+        <div class="hero__comp" id="hero-comp">
+          <h1 class="hero__name">
+            <span><i>Ludgero</i></span>
+            <span><i>Ricardo</i></span>
+            <span><i>Abilino</i></span>
+          </h1>
+          <!-- Uma linha por span: assim o texto auxiliar entra escalonado,
+               ecoando a cascata das três palavras do nome. -->
+          <p class="hero__tag">
+            <span>Product Designer Sênior</span>
+            <span>Moldando Experiências de</span>
+            <span>Aprendizagem e Negócios</span>
+          </p>
+        </div>
 
-    <!-- Cada célula segue a mesma gramática de três andares: o rótulo diz o
-         que está sendo contado, o número diz quanto, a nota diz onde. Sem a
-         terceira linha o 9.000+ ficava solto ("nove mil do quê?"), e resolver
-         só aquela célula quebraria o paralelismo com as outras duas. -->
-    <section class="stats" aria-label="Números da carreira">
-      <div class="stats__cell reveal">
-        <p class="label">Anos de Mercado</p>
-        <p class="stats__num" data-count="15" data-suffix="+">15+</p>
-        <p class="stats__nota">Design de produto e experiência</p>
-      </div>
-      <div class="stats__cell reveal" style="--reveal-delay:90ms">
-        <p class="label">Anos em EdTechs</p>
-        <p class="stats__num" data-count="10" data-suffix="+">10+</p>
-        <p class="stats__nota">Educação, T&amp;D e produtos B2B</p>
-      </div>
-      <div class="stats__cell reveal" style="--reveal-delay:180ms">
-        <p class="label">Testes por Mês</p>
-        <p class="stats__num" data-count="9000" data-suffix="+">9.000+</p>
-        <p class="stats__nota">Rede nacional da Votorantim</p>
-      </div>
-    </section>
+        <button type="button" class="hero__scroll" data-scroll-to="cases">
+          <b aria-hidden="true"></b> Role para ver os cases
+        </button>
+      </section>
+
+      <!-- Cada célula segue a mesma gramática de três andares: o rótulo diz o
+           que está sendo contado, o número diz quanto, a nota diz onde. Sem a
+           terceira linha o 9.000+ ficava solto ("nove mil do quê?"), e resolver
+           só aquela célula quebraria o paralelismo com as outras duas. -->
+      <section class="stats" id="stats" aria-label="Números da carreira">
+        <div class="stats__cell reveal">
+          <p class="label">Anos de Mercado</p>
+          <p class="stats__num" data-count="15" data-suffix="+">15+</p>
+          <p class="stats__nota">Design de produto e experiência</p>
+        </div>
+        <div class="stats__cell reveal" style="--reveal-delay:90ms">
+          <p class="label">Anos em EdTechs</p>
+          <p class="stats__num" data-count="10" data-suffix="+">10+</p>
+          <p class="stats__nota">Educação, T&amp;D e produtos B2B</p>
+        </div>
+        <div class="stats__cell reveal" style="--reveal-delay:180ms">
+          <p class="label">Testes por Mês</p>
+          <p class="stats__num" data-count="9000" data-suffix="+">9.000+</p>
+          <p class="stats__nota">Rede nacional da Votorantim</p>
+        </div>
+      </section>
+
+    </div>
 
     <section class="wrap" id="cases" aria-labelledby="cases-title">
       <div class="section-head reveal">

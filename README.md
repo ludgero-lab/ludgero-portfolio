@@ -99,9 +99,12 @@ Atalho: tecla **T** alterna claro/escuro.
 - Roteamento por hash com transição de view e restauração de scroll ao voltar
 - Barra de progresso de leitura no topo
 - Header que se recolhe ao descer e reaparece ao subir
-- Parallax sutil no hero, mantido por decisão: só responde à rolagem, não roda
-  sozinho. A entrada anima a **imagem** e o parallax anima o **contêiner**, de
-  propósito — na mesma propriedade as duas se anulariam
+- Hero preso à tela na home enquanto a composição encolhe e os números sobem
+  (seção própria abaixo)
+- Imagem do hero presa à tela, que permanece e apaga aos poucos conforme os
+  blocos sobem — em qualquer largura (seção própria abaixo). Substituiu o
+  parallax antigo: com a imagem parada o efeito de profundidade já está no
+  limite, e o que sobrou de deslocamento é bem menor
 - Contadores animados nos números da home
 - *Reveal* progressivo por `IntersectionObserver`
 - Scrollspy no menu do topo (home) e na sidebar (cases)
@@ -109,6 +112,107 @@ Atalho: tecla **T** alterna claro/escuro.
 - Paginador de duas direções ao final de cada case
 - Copiar e-mail com feedback em toast
 - Todo o movimento respeita `prefers-reduced-motion`
+
+
+## Hero preso à tela
+
+Na home, em tela larga (≥861px) e alta (≥640px) e com movimento permitido, o
+hero não sai de cena de imediato: ele fica preso no topo enquanto uma pista de
+rolagem passa.
+
+O que acontece nesse trecho é **um movimento só**: a faixa de números sobe do
+rodapé e vai empurrando a composição do nome, que encolhe na mesma medida em
+que é empurrada. Não são duas animações em sequência — o encolhimento não tem
+tempo próprio, ele é função de quanto a faixa já subiu. Por isso não há vão
+nenhum entre o hero e a faixa: qualquer distância ali viraria uma espera entre
+as duas coisas, e o movimento deixaria de ler como um bloco contínuo.
+
+Depois da pausa, o bloco inteiro sobe embora — mas a imagem fica.
+
+| Trecho | O que acontece |
+|---|---|
+| 0 → altura da faixa | a faixa sobe e encaixa; a composição encolhe junto |
+| + `--curso` (25svh) | tudo parado, a composição inteira à vista |
+| + 70svh | texto e números sobem embora; a imagem fica e apaga |
+
+Numa tela de 800px: 273px de subida, 200px de pausa, 560px de saída.
+
+### O fundo que fica — a parte que vale em qualquer largura
+
+As três camadas de fundo (imagem, véu e véu de base) vivem num invólucro que
+passa a `fixed`. Conforme os blocos sobem, ele fica onde está e apaga aos
+poucos, até sumir de vez. Isso **não** depende do tamanho da tela: no desktop
+é a saída do hero preso, no mobile é o efeito inteiro — lá não há prisão nem
+encolhimento, só a imagem que permanece enquanto o nome e os números passam
+por cima dela.
+
+O que muda entre os dois é onde o apagar começa e quanto dura:
+
+| | Começa em | Dura |
+|---|---|---|
+| Desktop (hero preso) | quando a pista acaba | 70% de uma tela |
+| Mobile | 60% da altura do hero | uma tela |
+
+No mobile isso põe o fim do apagar quase exatamente onde a faixa de números
+termina e os cases começam. A única condição é `prefers-reduced-motion`: com
+movimento reduzido o invólucro volta a ser uma caixa colada no hero e nada
+disso acontece.
+
+Esse invólucro substituiu o parallax antigo (`y * 0.22`). Com a imagem presa à
+tela ela já está no limite do efeito de profundidade — o deslocamento que
+sobrou é só um resto de vida, e vai no máximo até os 8% de sobra que a imagem
+tem em cima. Passar disso abriria uma fresta.
+
+### A faixa dentro do hero
+
+Ela mantém o respiro, o tamanho de número e os divisores entre as colunas que
+tem no resto do site. Os **filetes de fora saem**: na página eles separam a
+faixa do que vem antes e depois; sobre a foto não há nem antes nem depois, e
+eles só atravessariam a imagem.
+
+A base da composição para 32px acima do topo da faixa. O padding de cima dela
+já daria 56px de afastamento, mas ele é interno — o olho não lê como respiro
+entre os dois blocos, e sem os 32px o texto auxiliar encosta na linha dos
+números.
+
+### As três armadilhas
+
+**O retângulo que prende um sticky é a caixa de *conteúdo* do pai.** Padding
+no pai não entra na conta — a primeira versão usava `padding-bottom` na pista
+para dar o tempo parado e a prisão acabava cedo demais. O vazio virou um
+`::after` no fluxo, que é conteúdo de verdade.
+
+**`bottom` não serve para uma faixa que deve chegar de baixo.** Com
+`position: sticky; bottom: 0` o navegador puxa o elemento para dentro da tela
+já na primeira pintura — a faixa apareceria pronta, sem subir. É `top`, com o
+valor calculado para a base dela encostar no rodapé da tela.
+
+**Um ancestral com `transform` desloca a referência do sticky.** A classe
+`view-enter` da transição de rota carrega um `translateY`, e enquanto ela
+estava aplicada o hero prendia 14px abaixo do topo. Por isso `animarEntrada`
+agora tem tempo limite além do `animationend`: se o evento não vier — aba em
+segundo plano, animação interrompida —, a classe sai assim mesmo.
+
+### Medidas
+
+Só a escala da composição vem do JS, porque depende de quanto o texto de fato
+ocupa: é a redução desejada (0.62), a menos que o texto encolhido ainda
+esbarre no topo — aí ela cede o necessário, nunca abaixo de 0.45. O resto é
+CSS, com `--curso` e a altura da faixa.
+
+A composição **não** leva `will-change: transform`. Ele promoveria o bloco a
+uma camada rasterizada uma vez e depois só escalada, e o nome — o maior tipo
+da página — chegaria borrado justamente ao estado final, onde a pessoa fica
+parada.
+
+Um segundo véu (`.hero__lastro`) adensa a base conforme os números sobem,
+senão eles cairiam sobre o miolo claro da foto. Ele é zero enquanto o hero
+está parado, então nada muda na primeira tela.
+
+Fora das condições do hero preso — telas estreitas ou baixas — a home volta a
+ser o que sempre foi: hero de uma tela, faixa de números logo abaixo, com os
+filetes dela. O fundo preso continua valendo; só o `prefers-reduced-motion`
+desliga tudo.
 
 ## Menu mobile
 
