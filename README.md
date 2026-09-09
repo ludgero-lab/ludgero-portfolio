@@ -175,7 +175,7 @@ já daria 56px de afastamento, mas ele é interno — o olho não lê como respi
 entre os dois blocos, e sem os 32px o texto auxiliar encosta na linha dos
 números.
 
-### As três armadilhas
+### As armadilhas
 
 **O retângulo que prende um sticky é a caixa de *conteúdo* do pai.** Padding
 no pai não entra na conta — a primeira versão usava `padding-bottom` na pista
@@ -187,11 +187,25 @@ para dar o tempo parado e a prisão acabava cedo demais. O vazio virou um
 já na primeira pintura — a faixa apareceria pronta, sem subir. É `top`, com o
 valor calculado para a base dela encostar no rodapé da tela.
 
-**Um ancestral com `transform` desloca a referência do sticky.** A classe
-`view-enter` da transição de rota carrega um `translateY`, e enquanto ela
-estava aplicada o hero prendia 14px abaixo do topo. Por isso `animarEntrada`
-agora tem tempo limite além do `animationend`: se o evento não vier — aba em
-segundo plano, animação interrompida —, a classe sai assim mesmo.
+**Um ancestral com `transform` quebra o sticky e o fixed de dentro dele.** Foi
+a armadilha que mais custou, e apareceu duas vezes com sintomas diferentes.
+
+A classe `view-enter` da transição de rota carrega um `translateY`. Enquanto
+ela estava aplicada:
+
+- o hero, que é `sticky`, prendia 14px abaixo do topo;
+- o invólucro do fundo, que é `fixed`, deixava de medir uma tela e passava a
+  medir a view inteira — quase 4700px de altura. Com `object-fit: cover` numa
+  caixa desse tamanho, a imagem entrava com o enquadramento todo errado e só
+  voltava ao lugar quando a classe saía, 460ms depois. Era um salto no meio
+  da animação de entrada.
+
+Duas correções, uma para cada ponta. A home passou a entrar **só com
+opacidade** (`viewInSuave`) — sem transform não há bloco contendo os fixed de
+dentro; a view do case mantém o deslocamento, porque lá não há nada fixed. E
+`animarEntrada` ganhou tempo limite além do `animationend`, para a classe sair
+mesmo se o evento não vier (aba em segundo plano, animação interrompida) e não
+deixar o hero preso fora do lugar para sempre.
 
 ### Medidas
 

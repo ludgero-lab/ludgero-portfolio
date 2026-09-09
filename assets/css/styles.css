@@ -370,6 +370,24 @@ figure, blockquote { margin: 0; }
   to { opacity: 1; transform: none; }
 }
 
+/* A home entra só com a opacidade, sem o deslocamento.
+
+   Não é preferência estética: um ancestral com `transform` vira o bloco que
+   contém os `position: fixed` de dentro dele. Com o translate aplicado, o
+   invólucro do fundo do hero — que é fixed — deixava de medir uma tela e
+   passava a medir a view inteira, quase 4700px de altura. A imagem entrava
+   com o enquadramento errado e só voltava ao lugar quando a classe saía, o
+   que se via como um salto na animação de entrada.
+
+   A view do case mantém o deslocamento: lá não há nada fixed dentro. */
+#view-home.view-enter {
+  animation-name: viewInSuave;
+}
+@keyframes viewInSuave {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
 /* ==========================================================================
    HOME — Hero
    ========================================================================== */
