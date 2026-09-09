@@ -165,10 +165,18 @@ tem em cima. Passar disso abriria uma fresta.
 
 ### A faixa dentro do hero
 
-Ela mantém o respiro, o tamanho de número e os divisores entre as colunas que
-tem no resto do site. Os **filetes de fora saem**: na página eles separam a
-faixa do que vem antes e depois; sobre a foto não há nem antes nem depois, e
-eles só atravessariam a imagem.
+Ela mantém o respiro e o tamanho de número que tem no resto do site. Muda em
+dois pontos, os dois pela mesma razão — sobre a foto não há nem antes nem
+depois da faixa:
+
+- **os filetes de fora saem.** Na página eles separam a faixa do que vem antes
+  e depois; aqui só atravessariam a imagem.
+- **os divisores entre as colunas encurtam.** Eles iam de filete a filete, e
+  eram os filetes que os terminavam. Sem eles, uma linha de altura cheia sobe
+  até a borda da faixa e invade o ar que separa a composição dos números.
+  Recuados 32px em cima e embaixo, sobram 24px de avanço além do rótulo e da
+  nota — o bastante para a linha ter começo e fim, e não para brigar com a
+  composição.
 
 A base da composição para 32px acima do topo da faixa. O padding de cima dela
 já daria 56px de afastamento, mas ele é interno — o olho não lê como respiro

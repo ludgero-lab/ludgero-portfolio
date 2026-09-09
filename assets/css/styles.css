@@ -463,10 +463,20 @@ figure, blockquote { margin: 0; }
   transition: background 420ms var(--ease);
 }
 
+/* O corpo responde à largura e também à altura. Só a largura bastava quando
+   o hero podia crescer além da tela: numa janela baixa ele passava da dobra e
+   o texto auxiliar ficava cortado. Agora o hero está travado em uma tela — a
+   prisão depende disso —, então o que não coubesse seria empurrado contra o
+   topo. O teto por altura reserva o texto auxiliar (136px), o respiro de baixo
+   (72px) e 120px de ar em cima, e divide o que sobra pelas três linhas do
+   nome (3 x 0.87 de entrelinha = 2.61).
+
+   Ele só entra em ação abaixo de 816px de altura de janela; de lá para cima
+   o valor continua sendo exatamente o de antes. */
 .hero__name {
   font-family: var(--font-display);
   font-weight: 900;
-  font-size: clamp(56px, 13vw, 187px);
+  font-size: clamp(56px, min(13vw, calc((100svh - 328px) / 2.61)), 187px);
   line-height: 0.87;
   letter-spacing: -0.025em;
   text-transform: uppercase;
@@ -661,6 +671,25 @@ figure, blockquote { margin: 0; }
        depois, aqui não há nem antes nem depois. Os divisores entre as
        colunas ficam: esses continuam separando uma coisa da outra. */
     border-block: 0;
+  }
+
+  /* Os divisores encurtam. Na página eles iam de filete a filete, e eram os
+     filetes que os terminavam; aqui, sem eles, uma linha de altura cheia sobe
+     até a borda da faixa e invade o ar que separa a composição dos números.
+     Recuados, param um pouco antes do conteúdo de cada célula e voltam a ter
+     onde começar e onde acabar. */
+  .hero-stage .stats__cell {
+    border-right: 0;
+    position: relative;
+  }
+  .hero-stage .stats__cell:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    right: 0;
+    top: 32px;
+    bottom: 32px;
+    width: 1px;
+    background: var(--line);
   }
 }
 
