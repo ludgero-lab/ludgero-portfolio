@@ -586,6 +586,15 @@
         title: "Evolução e resultados",
         blocks: [
           {
+            type: "kpiCards",
+            items: [
+              { value: "2021", title: "1.470 jogadores", note: "24h de conteúdo" },
+              { value: "2022", title: "1.758 jogadores", note: "19h de conteúdo" },
+              { value: "2023", title: "2.062 jogadores", note: "19,5h de conteúdo" },
+              { value: "2024", title: "2.700 jogadores", note: "19h de conteúdo" }
+            ]
+          },
+          {
             type: "p",
             text: "O sistema de recompensas foi projetado em 2023, quando a plataforma já contava com uma base funcional consolidada. A primeira versão, com histórico de resgate detalhado, feedback visual por cores e filtro de dados, foi simplificada após estudo de viabilidade técnica e implementada em uma versão mais direta no início de 2024, já no lançamento da nova temporada do Connect."
           },
@@ -619,15 +628,6 @@
           {
             type: "p",
             text: "O Benkyou Game permaneceu em operação por cinco temporadas consecutivas com o Grupo Boticário, com renovação anual do contrato refletindo a consistência do produto e a confiança construída com o cliente. Entre 2021 e 2024, a plataforma cresceu 84% em número de jogadores ativos só no Grupo Boticário, passando de 1.470 para 2.700 colaboradores por temporada, mantendo uma média de 19 a 24 horas de conteúdo consumido por jogador. O modelo estabelecido viabilizou a entrada de novos clientes — Cielo, Norton e Ibema — confirmando que a arquitetura da plataforma era escalável e adaptável a diferentes contextos corporativos."
-          },
-          {
-            type: "kpiCards",
-            items: [
-              { value: "2021", title: "1.470 jogadores", note: "24h de conteúdo" },
-              { value: "2022", title: "1.758 jogadores", note: "19h de conteúdo" },
-              { value: "2023", title: "2.062 jogadores", note: "19,5h de conteúdo" },
-              { value: "2024", title: "2.700 jogadores", note: "19h de conteúdo" }
-            ]
           },
           {
             type: "quote",
