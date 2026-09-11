@@ -719,6 +719,22 @@ figure, blockquote { margin: 0; }
 }
 .stats .label { letter-spacing: 0.4em; color: var(--fg-6); }
 
+/* Lado a lado, as três células dividem as mesmas linhas: rótulo, número e
+   nota. Sem isso, um rótulo que quebra em duas linhas — "Sessões de Uso por
+   Mês" quebra por volta de 880px de largura — empurrava só o número dele para
+   baixo, e os três algarismos saíam do alinhamento. Com subgrid a linha do
+   rótulo passa a ter a altura do mais alto dos três, e cada rótulo encosta na
+   base dela, colado ao seu número; os números seguem numa linha só. */
+@media (min-width: 861px) {
+  .stats { grid-template-rows: auto auto auto; }
+  .stats__cell {
+    display: grid;
+    grid-row: span 3;
+    grid-template-rows: subgrid;
+  }
+  .stats .label { align-self: end; }
+}
+
 /* Terceiro andar da célula: o escopo do número — onde ele vale. Entra em
    caixa baixa, sem tracking, para descer um degrau claro depois do rótulo
    versaleteado e do algarismo. A medida da linha é a própria largura útil

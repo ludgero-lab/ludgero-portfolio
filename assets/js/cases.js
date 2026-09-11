@@ -34,7 +34,7 @@
     heroTags: ["B2B", "Learning Experience Design", "UX Design", "2020 — 2024"],
     homeKpi: { label: "KPI Principal", value: "Escala Nacional", note: "Totens interativos homologados em 100% das unidades do país" },
     kpis: [
-      { value: "+9.000", note: "Testes por mês em escala nacional" },
+      { value: "+9.000", note: "Sessões de uso por mês em escala nacional" },
       { value: "4 Anos", note: "Em uso contínuo e evolução desde 2020" },
       { value: "100%", note: "Das unidades integradas via totens físicos" }
     ],
