@@ -1230,20 +1230,35 @@ body:has(.site-header[data-hidden="true"]) .section-head { top: 0; }
 }
 
 /* Mesma diagramação da faixa de números da home: sangra até a borda da
-   página para as divisórias correrem de ponta a ponta, e o espaço entre
-   colunas vem do padding das células, não de `gap`. */
+   página e o espaço entre colunas vem do padding das células, não de `gap`.
+
+   Também o mesmo aspecto: só os divisores verticais, sem filete de fora, e
+   recuados nas pontas para avançar 24px além do conteúdo — a mesma medida da
+   faixa do hero (lá o padding é 56px e o recuo 32px; aqui 48px e 24px). Uma
+   linha de altura cheia, sem filete horizontal que a termine, não tem onde
+   começar nem onde acabar.
+
+   Isso vale para as três colunas lado a lado. Empilhadas, no mobile, as
+   células continuam separadas pelo filete horizontal, como na home. */
 .kpi-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 0;
   margin-inline: calc(var(--gutter) * -1);
-  border-top: 1px solid var(--line);
 }
 .kpi-grid > div {
+  position: relative;
   padding: 48px var(--gutter);
-  border-right: 1px solid var(--line);
 }
-.kpi-grid > div:last-child { border-right: 0; }
+.kpi-grid > div:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 24px;
+  bottom: 24px;
+  width: 1px;
+  background: var(--line);
+}
 
 .kpi-grid__num {
   font-family: var(--font-display);
@@ -1266,11 +1281,14 @@ body:has(.site-header[data-hidden="true"]) .section-head { top: 0; }
    largura — antes eram medidas independentes (240px + 80px de gap) que
    caíam ~80px à esquerda do divisor. Sangra até a borda, como a faixa; o
    recuo da página fica dentro das células. */
+/* Sem filete em cima: ele ficava colado na base da faixa de KPIs e lia como
+   o filete de baixo dela — justamente o que a faixa deixou de ter para ficar
+   igual à da home. No mobile ele volta (regra da coluna única), porque lá
+   fecha a pilha de números, como o filete de baixo da faixa da home. */
 .case-body {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   padding: 64px 0 96px;
-  border-top: 1px solid var(--line);
 }
 .case-body > .case-nav { grid-column: 1; padding-left: var(--gutter); padding-right: 40px; }
 /* Recuo dos dois lados: o alinhamento é texto com texto, não texto com
@@ -2554,6 +2572,7 @@ body:has(.drawer:not([hidden])) .to-top { opacity: 0; pointer-events: none; }
     grid-template-columns: 1fr;
     gap: 32px;
     padding: 40px var(--gutter) 96px;
+    border-top: 1px solid var(--line);
   }
   .case-body > .case-nav { grid-column: 1; padding-left: 0; padding-right: 0; }
   .case-body > .case-content { grid-column: 1; padding-inline: 0; }
@@ -2607,13 +2626,14 @@ body:has(.drawer:not([hidden])) .to-top { opacity: 0; pointer-events: none; }
   }
   .case-nav a:first-child { border-top: 0; }
   .case-content { gap: 56px; }
-  /* Empilhado: a divisória passa a ser horizontal, entre as células. */
-  .kpi-grid { grid-template-columns: 1fr; }
+  /* Empilhado: a divisória passa a ser horizontal, entre as células, e o
+     filete de cima volta — é como a faixa da home se comporta no mobile. */
+  .kpi-grid { grid-template-columns: 1fr; border-top: 1px solid var(--line); }
   .kpi-grid > div {
     padding: 32px var(--gutter);
-    border-right: 0;
     border-bottom: 1px solid var(--line);
   }
+  .kpi-grid > div:not(:last-child)::after { content: none; }
   .kpi-grid > div:last-child { border-bottom: 0; }
   .grid-2, .grid-3, .split, .pillars, .quote-cards, .kpi-cards { grid-template-columns: 1fr; }
   /* Numa coluna só não há o que justificar: a proporção deixa de reger a largura. */

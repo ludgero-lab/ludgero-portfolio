@@ -474,9 +474,18 @@ o mesmo. Numa tela de 1400px o texto do 2º KPI e a coluna de conteúdo
 começam ambos em 523, e o 3º KPI e a coluna terminam ambos em 1323.
 
 O recuo da página fica **dentro das células**, não no contêiner: é isso que
-permite as divisórias correrem de ponta a ponta e, ao mesmo tempo, o texto
-ancorar no gutter. Título do hero, texto da faixa de KPIs e links da
-navegação caem todos no mesmo eixo.
+permite a faixa sangrar até a borda e, ao mesmo tempo, o texto ancorar no
+gutter. Título do hero, texto da faixa de KPIs e links da navegação caem
+todos no mesmo eixo.
+
+A faixa de KPIs do case tem o **mesmo aspecto da faixa do hero da home**: só os
+divisores verticais, sem filete de cima, recuados nas pontas para avançar 24px
+além do número e da nota. Como lá, sem filete horizontal que termine uma linha
+de altura cheia, ela não teria onde começar nem onde acabar. O filete de cima
+de `.case-body`, que separava o hero do corpo do case, também saiu no desktop:
+ele ficava colado na base da faixa e lia como o filete de baixo dela. No
+mobile as células empilham e voltam os filetes horizontais — o de cima da
+faixa e o de `.case-body`, que fecha a pilha —, igual à home.
 
 Abaixo de 860px a grade de terços some, o recuo volta para o contêiner e a
 navegação vira uma régua horizontal rolável.
