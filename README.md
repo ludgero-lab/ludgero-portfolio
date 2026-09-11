@@ -502,6 +502,25 @@ Auditado nas 4 rotas × 2 temas: todo texto passa em 4.5:1 (3:1 para títulos
 grandes). Os degraus `--fg-7` e `--fg-8` ficam abaixo disso e são usados
 apenas em separadores decorativos (`|`, `·`) e no conector do percurso.
 
+As palavras-chave em negrito do Sobre usam o **tom mais alto do texto**
+(`--fg`), não o acento: o azul fica reservado aos títulos e rótulos, e usado
+também no corpo disputaria com eles e leria como link. O destaque vem do salto
+de brilho e de peso sobre o cinza do corpo — 21:1 no escuro e 19.1:1 no claro,
+contra 7.56:1 e 7.26:1 do texto ao redor.
+
+Fica registrado por que o acento, onde aparece como texto, muda de tom com o
+tema (medido em texto pequeno, então 4.5:1):
+
+| Cor | Sobre | Contraste |
+|---|---|---|
+| `#0088ff` (acento, tema escuro) | preto `#000` | 5.97:1 |
+| `#0059c9` (acento, tema claro) | `#fbfbf9` | 6.19:1 |
+| `#0059c9` | preto `#000` | 3.27:1 — reprova |
+| `#0088ff` | `#fbfbf9` | 3.40:1 — reprova |
+
+Um azul escuro sobre o preto não passa, nem o médio sobre o claro: cada tema
+precisa do seu.
+
 ## Pontos em aberto
 
 - **Versão EN**: o seletor de idioma está presente mas ainda sem tradução.

@@ -1052,6 +1052,18 @@ body:has(.site-header[data-hidden="true"]) .section-head { top: 0; }
   color: var(--fg-3);
   max-width: 68ch;
 }
+/* Palavras-chave do parágrafo de abertura. Negrito no tom mais alto do
+   texto (--fg), contra o cinza do corpo (--fg-3): o destaque vem do salto de
+   brilho e de peso, sem cor. O azul fica reservado aos títulos e rótulos —
+   usado também aqui, disputaria com eles e leria como link.
+
+   São poucas de propósito: quatro marcas num parágrafo, para o olho que
+   passa por cima pegar o essencial sem transformar o texto num mosaico.
+   Contraste: 21:1 no escuro, 19.1:1 no claro. */
+.about__block strong {
+  font-weight: 600;
+  color: var(--fg);
+}
 .about__block .eyebrow { letter-spacing: 0.4em; }
 
 /* Fecho da seção, antes das experiências. */
