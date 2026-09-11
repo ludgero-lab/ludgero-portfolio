@@ -759,6 +759,10 @@
       prepararVimeo(viewHome);
       setupHomeSpy();
       setupContadorDeCases();
+      // As medidas do hero preso dependem da home renderizada; se ela estava
+      // escondida quando a página carregou ou mudou de tamanho, só agora elas
+      // valem.
+      medirHero();
     }
 
     // Restaura a posição ao voltar; senão começa do topo (ou de uma âncora).
@@ -1143,8 +1147,16 @@
     if (heroCta) heroCta.style.removeProperty("opacity");
   }
 
+  /* Com a home escondida — uma rota de case aberta — tudo nela mede zero, e
+     medir nessa hora gravava zeros nas variáveis: a faixa virava altura 0,
+     a composição encolhia de uma vez no primeiro pixel de rolagem e não subia,
+     e os números passavam por cima do nome. Acontecia ao abrir o site direto
+     num case, ou ao redimensionar a janela com um case aberto, e aparecia na
+     volta para a home. Agora a medição só roda com a home à vista, e o render
+     da home mede de novo toda vez que ela reaparece. */
   function medirHero() {
-    if (!pista || !efeitoHero.matches) { limparHero(); atualizarFundo(); return; }
+    if (!pista || viewHome.hidden) return;
+    if (!efeitoHero.matches) { limparHero(); atualizarFundo(); return; }
     const alturaHero = heroSecao.offsetHeight;
     const alturaFaixa = faixaNumeros.offsetHeight;
     const alturaComp = heroComp.offsetHeight;
