@@ -95,7 +95,7 @@
         blocks: [
           {
             type: "p",
-            text: "Em 2020, o briefing original previa gravações em loco com imagens reais nas unidades industriais da Votorantim. Com a chegada da pandemia de Covid-19, o plano foi integralmente inviabilizado. A virada estratégica foi migrar toda a produção de captação real para ilustrações e animações do zero. O obstáculo se tornou uma vantagem competitiva: as ilustrações permitiram encenar perigos, infrações operacionais e consequências graves com precisão pedagógica máxima, sem expor ninguém a situações reais de risco."
+            text: "Em 2020, o briefing original previa gravações in loco com imagens reais nas unidades industriais da Votorantim. Com a chegada da pandemia de Covid-19, o plano foi integralmente inviabilizado. A virada estratégica foi migrar toda a produção de captação real para ilustrações e animações do zero. O obstáculo se tornou uma vantagem competitiva: as ilustrações permitiram encenar perigos, infrações operacionais e consequências graves com precisão pedagógica máxima, sem expor ninguém a situações reais de risco."
           },
           {
             type: "grid",
@@ -126,7 +126,7 @@
         blocks: [
           {
             type: "p",
-            text: "A montagem final e a programação foram desenvolvidas no Adobe Captivate. O principal desafio de UX Design consistiu em traduzir a lógica de todo o sistema interativo para um input físico limitado do totem: uma interface sem suporte a touchscreen ou mouse, onde o motorista interage estritamente através do teclado numérico físico integrado. Para validar a usabilidade e a arquitetura das tomadas de decisão antes do desenvolvimento final, estruturei wireframes focados em caminhos lógicos simples e de rápida resposta."
+            text: "A montagem final e a programação foram desenvolvidas no Adobe Captivate. O principal desafio de UX Design consistiu em traduzir a lógica de todo o sistema interativo para um input físico limitado do totem: uma interface sem suporte a touchscreen ou mouse, na qual o motorista interage estritamente através do teclado numérico físico integrado. Para validar a usabilidade e a arquitetura das tomadas de decisão antes do desenvolvimento final, estruturei wireframes focados em caminhos lógicos simples e de rápida resposta."
           },
           {
             // Duas metades do mesmo wireframe, separadas para caberem lado a
@@ -277,7 +277,7 @@
         blocks: [
           {
             type: "p",
-            text: "O desafio da Stefani era transformar seu conteúdo instrucional, voltado a motoristas parceiros, antes apresentado de forma presencial, para um formato digital e interativo. Os conteúdos eram complexos e densos, o que limitava a praticidade e a autonomia dos treinamentos. Era necessário adotar métodos interativos como estratégia de ensino para aumentar o engajamento das equipes e otimizar as operações."
+            text: "O desafio da Stefani era transformar seu conteúdo instrucional, voltado a motoristas parceiros, antes apresentado de forma presencial, em um formato digital e interativo. Os conteúdos eram complexos e densos, o que limitava a praticidade e a autonomia dos treinamentos. Era necessário adotar métodos interativos como estratégia de ensino para aumentar o engajamento das equipes e otimizar as operações."
           },
           { type: "h3", text: "Objetivos de aprendizagem" },
           {
@@ -440,7 +440,7 @@
         blocks: [
           {
             type: "p",
-            text: "Em 2020, o Grupo Boticário buscava um novo parceiro para seus programas de capacitação interna, já com experiência prévia em treinamentos gamificados e o objetivo de evoluir esse modelo com uma solução mais conectada à sua cultura. A Benkyou identificou nessa demanda uma oportunidade além do projeto pontual: desenvolver uma plataforma própria de aprendizagem gamificada e imersiva, capaz de acondicionar conteúdos multimídia, criar ambientes tridimensionais personalizados por cliente e engajar colaboradores através de mecânicas de jogo. O resultado foi o Benkyou Game, lançado em 2021 com a primeira temporada do programa Connect do Grupo Boticário. Uma vez estabelecido o modelo, outros clientes adotaram a plataforma — entre eles Cielo, Norton e Ibema — cada um com seu próprio ambiente 3D e identidade visual adaptados."
+            text: "Em 2020, o Grupo Boticário buscava um novo parceiro para seus programas de capacitação interna, já com experiência prévia em treinamentos gamificados e o objetivo de evoluir esse modelo com uma solução mais conectada à sua cultura. A Benkyou identificou nessa demanda uma oportunidade além do projeto pontual: desenvolver uma plataforma própria de aprendizagem gamificada e imersiva, capaz de abrigar conteúdos multimídia, criar ambientes tridimensionais personalizados por cliente e engajar colaboradores através de mecânicas de jogo. O resultado foi o Benkyou Game, lançado em 2021 com a primeira temporada do programa Connect do Grupo Boticário. Uma vez estabelecido o modelo, outros clientes adotaram a plataforma — entre eles Cielo, Norton e Ibema — cada um com seu próprio ambiente 3D e identidade visual adaptados."
           },
           {
             type: "timeline",
@@ -493,7 +493,7 @@
         blocks: [
           {
             type: "p",
-            text: "A plataforma foi concebida com um sistema visual flexível que permitia adaptar a experiência a cada cliente sem reconstruir a interface do zero. A partir da tela de loading, todos os elementos visuais podiam ser personalizados com a identidade do cliente: cores, imagens de fundo, elementos da HUD, telas de perfil e área de recompensas — sempre dentro de um framework de proporções e tamanhos pré-estabelecidos, garantindo consistência de uso independente do tema aplicado. O resultado foi um produto que se comportava como um sistema, não como um projeto único."
+            text: "A plataforma foi concebida com um sistema visual flexível que permitia adaptar a experiência a cada cliente sem reconstruir a interface do zero. A partir da tela de loading, todos os elementos visuais podiam ser personalizados com a identidade do cliente: cores, imagens de fundo, elementos da HUD, telas de perfil e área de recompensas — sempre dentro de um framework de proporções e tamanhos pré-estabelecidos, garantindo consistência de uso independentemente do tema aplicado. O resultado foi um produto que se comportava como um sistema, não como um projeto único."
           },
           {
             type: "grid",
@@ -554,7 +554,7 @@
         blocks: [
           {
             type: "p",
-            text: "Independente do modo de acesso escolhido, todos os colaboradores acessavam o mesmo conteúdo educacional organizado em trilhas de aprendizagem, com módulos exibindo status de progresso, pontuação disponível e condição de obrigatoriedade. A avaliação acontecia ao final de cada módulo através de quizzes com feedback imediato: resposta correta destacada, contador de questões, acertos, erros e performance final em percentual. O sistema foi projetado para ser transparente — o usuário sabia exatamente como estava se saindo a cada etapa."
+            text: "Independentemente do modo de acesso escolhido, todos os colaboradores acessavam o mesmo conteúdo educacional organizado em trilhas de aprendizagem, com módulos exibindo status de progresso, pontuação disponível e condição de obrigatoriedade. A avaliação acontecia ao final de cada módulo através de quizzes com feedback imediato: resposta correta destacada, contador de questões, acertos, erros e performance final em percentual. O sistema foi projetado para ser transparente — o usuário sabia exatamente como estava se saindo a cada etapa."
           },
           {
             type: "grid",
@@ -631,7 +631,7 @@
           },
           {
             type: "quote",
-            text: "É nítido a constante evolução da plataforma. Obrigada a todos os envolvidos!",
+            text: "É nítida a constante evolução da plataforma. Obrigada a todos os envolvidos!",
             cite: "Grupo Boticário"
           },
           {
