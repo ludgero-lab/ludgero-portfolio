@@ -80,10 +80,14 @@ semânticos (`--bg`, `--fg`, `--line`, `--accent`…), definidos em `:root` para
 escuro e sobrescritos em `[data-theme="light"]`.
 
 **Sem preferência salva o site abre no escuro**, que é o tema em que ele foi
-desenhado. O seletor no header tem **três estados**: claro, sistema e escuro, e a
-escolha de quem visita passa a valer nas visitas seguintes. A preferência
-fica em `localStorage` (`lra-theme`); no modo *sistema*, a interface acompanha o
-`prefers-color-scheme` em tempo real. Um script inline no `<head>` aplica o tema
+desenhado. O seletor no header tem **dois estados**, claro e escuro, e a escolha
+de quem visita passa a valer nas visitas seguintes. A preferência fica em
+`localStorage` (`lra-theme`).
+
+Já houve um terceiro estado, *seguir o sistema*, retirado. Quem o tinha escolhido
+ainda guarda `auto`: esse valor é convertido no tema que o sistema indica no
+momento da visita e regravado como `light` ou `dark`, para a pessoa não ver o
+site mudar de cara de repente. Um script inline no `<head>` aplica o tema
 antes da primeira pintura, então não há flash ao carregar — o padrão
 desse script e o do `app.js` precisam continuar iguais, senão o tema troca
 depois da primeira pintura.

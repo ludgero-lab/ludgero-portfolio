@@ -298,7 +298,7 @@ figure, blockquote { margin: 0; }
 
 .header-actions { display: flex; align-items: center; gap: 14px; }
 
-/* --- Seletor de tema (segmentado 3 estados) --- */
+/* --- Seletor de tema (segmentado, 2 estados: claro e escuro) --- */
 
 .theme-switch {
   position: relative;

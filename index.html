@@ -31,12 +31,20 @@
 <script>
   /* Aplica o tema antes da primeira pintura para não haver flash.
      Sem preferência salva o site abre no escuro, que é o tema em que ele foi
-     desenhado. O seletor continua oferecendo "seguir o sistema" a quem quiser. */
+     desenhado. São só dois temas, claro e escuro.
+
+     Quem escolheu "seguir o sistema" quando essa opção existia ainda tem
+     "auto" guardado: esse valor vira o tema que o sistema indica agora, para
+     a visita não mudar de cara de uma hora para outra. O app.js grava o
+     valor convertido. Qualquer outro valor desconhecido cai no escuro. */
   (function () {
     try {
       var pref = localStorage.getItem("lra-theme") || "dark";
-      var sys = window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
-      document.documentElement.dataset.theme = pref === "auto" ? sys : pref;
+      if (pref === "auto") {
+        pref = window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
+      }
+      if (pref !== "light" && pref !== "dark") pref = "dark";
+      document.documentElement.dataset.theme = pref;
       document.documentElement.dataset.themePref = pref;
     } catch (e) {}
   })();
@@ -68,12 +76,6 @@
         <span class="sr-only">Tema claro</span>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
           <circle cx="12" cy="12" r="4.2"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M19.1 4.9l-1.4 1.4M6.3 17.7l-1.4 1.4"/>
-        </svg>
-      </button>
-      <button type="button" role="radio" data-theme-set="auto" aria-checked="false" title="Seguir o sistema">
-        <span class="sr-only">Seguir o sistema</span>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <rect x="2.5" y="4" width="19" height="13" rx="2"/><path d="M8 20.5h8"/>
         </svg>
       </button>
       <button type="button" role="radio" data-theme-set="dark" aria-checked="true" title="Tema escuro">

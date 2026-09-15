@@ -116,17 +116,22 @@
   }
 
   /* ==========================================================================
-     1 · Tema (light / dark / auto)
+     1 · Tema (light / dark)
      ========================================================================== */
 
   const THEME_KEY = "lra-theme";
-  const sysLight = window.matchMedia("(prefers-color-scheme: light)");
   const themeSwitch = $("#theme-switch");
   const themeThumb = $("#theme-thumb");
-  const ORDER = ["light", "auto", "dark"];
+  const ORDER = ["light", "dark"];
 
-  function resolveTheme(pref) {
-    return pref === "auto" ? (sysLight.matches ? "light" : "dark") : pref;
+  /* Só dois temas. "auto" é o que ficou guardado de quem escolhia "seguir o
+     sistema" quando a opção existia: vira o tema que o sistema indica agora,
+     igual ao script inline do <head>, e passa a ser gravado assim. */
+  function normalizarTema(pref) {
+    if (pref === "auto") {
+      return window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
+    }
+    return pref === "light" ? "light" : "dark";
   }
 
   /* O indicador segue a posição real do botão ativo, então continua certo
@@ -141,23 +146,20 @@
   }
 
   function applyTheme(pref, { announce = false } = {}) {
-    const resolved = resolveTheme(pref);
-    document.documentElement.dataset.theme = resolved;
-    document.documentElement.dataset.themePref = pref;
-    try { localStorage.setItem(THEME_KEY, pref); } catch (e) {}
+    const tema = normalizarTema(pref);
+    document.documentElement.dataset.theme = tema;
+    document.documentElement.dataset.themePref = tema;
+    try { localStorage.setItem(THEME_KEY, tema); } catch (e) {}
 
     $$("[data-theme-set]", themeSwitch).forEach((btn) => {
-      const on = btn.dataset.themeSet === pref;
+      const on = btn.dataset.themeSet === tema;
       btn.setAttribute("aria-checked", String(on));
       btn.tabIndex = on ? 0 : -1;
     });
 
     positionThumb();
 
-    if (announce) {
-      const names = { light: "Tema claro", dark: "Tema escuro", auto: "Tema do sistema" };
-      toast(names[pref]);
-    }
+    if (announce) toast(tema === "light" ? "Tema claro" : "Tema escuro");
   }
 
   themeSwitch.addEventListener("click", (e) => {
@@ -176,14 +178,10 @@
     $(`[data-theme-set="${next}"]`, themeSwitch).focus();
   });
 
-  sysLight.addEventListener("change", () => {
-    if ((document.documentElement.dataset.themePref || "dark") === "auto") applyTheme("auto");
-  });
-
   /* Padrão escuro: é o tema em que o portfólio foi desenhado. Quem escolher
-     claro ou "seguir o sistema" tem a escolha respeitada nas visitas seguintes.
-     Precisa casar com o script inline do <head>, senão há troca de tema
-     depois da primeira pintura. */
+     o claro tem a escolha respeitada nas visitas seguintes. Precisa casar com
+     o script inline do <head>, senão há troca de tema depois da primeira
+     pintura. */
   let storedPref = "dark";
   try { storedPref = localStorage.getItem(THEME_KEY) || "dark"; } catch (e) {}
   applyTheme(storedPref);
