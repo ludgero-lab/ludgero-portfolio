@@ -263,9 +263,14 @@
             <span data-i18n-html="sobre.disponivel">Disponível para<br>contratação</span>
           </p>
           <!-- Abre o PDF no visualizador do navegador; quem quiser baixar
-               usa o próprio controle de download dele. -->
+               usa o próprio controle de download dele.
+
+               O ?v= aqui é a data do currículo, não a da publicação: o arquivo
+               mantém o nome a cada troca, então sem isso o cache continuaria
+               servindo o PDF antigo — foi o que fez uma substituição anterior
+               parecer que não tinha funcionado. Trocou o PDF, troca a data. -->
           <a class="btn-ghost reveal" style="--reveal-delay:150ms"
-             href="assets/cv/CV_Ludgero_PD.pdf"
+             href="assets/cv/CV_Ludgero_PD.pdf?v=20260916"
              target="_blank" rel="noopener noreferrer">
             <span data-i18n="sobre.cv">Ver currículo</span>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
