@@ -750,6 +750,34 @@ figure, blockquote { margin: 0; }
 }
 
 /* ==========================================================================
+   HOME — Linha de tecnologia
+   ========================================================================== */
+
+/* Vem logo abaixo da faixa de números, e de propósito não se parece com ela:
+   lá são medidas, aqui é repertório. Rótulo no microtipo dos demais e as
+   frentes nas mesmas etiquetas usadas nos cases — nada de número, para não
+   competir com os algarismos logo acima. */
+.tech {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 24px;
+  margin-top: 40px;
+}
+.tech__lista {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+/* Fora de um card, a etiqueta não tem o hover do case para acender: fica um
+   degrau mais legível desde o começo. */
+.tech .tag { color: var(--fg-4); }
+
+
+/* ==========================================================================
    HOME — Cases
    ========================================================================== */
 
@@ -890,6 +918,25 @@ body:has(.site-header[data-hidden="true"]) .section-head { top: 0; }
   font-size: 14px;
   line-height: 1.62;
   color: var(--fg-4);
+}
+
+/* Papel no card: a versão curta do bloco "Meu envolvimento" do case. O
+   rótulo fica no mesmo microtipo dos outros rótulos do card, e a lista das
+   frentes no degrau de leitura do resumo logo acima. */
+.case-card__papel {
+  display: block;
+  margin-top: 14px;
+  max-width: 40ch;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--fg-3);
+}
+.case-card__papel span {
+  margin-right: 8px;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--fg-2);
 }
 .case-card__cta {
   margin-top: 32px;
@@ -1377,6 +1424,89 @@ body:has(.site-header[data-hidden="true"]) .section-head { top: 0; }
 .case-section > p { font-size: 16px; line-height: 1.65; color: var(--fg-2); max-width: 82ch; }
 .case-section h3 { font-size: 18px; color: var(--fg); }
 .case-section .fineprint { font-size: 12px; color: var(--fg-3); line-height: 1.6; }
+
+/* ==========================================================================
+   Envolvimento — "Meu envolvimento", primeira seção de cada case
+   ========================================================================== */
+
+/* Agrupado por nível. O nome do nível é o título do grupo e a definição vem
+   ao lado dele, então não existe legenda para decodificar: a hierarquia da
+   página diz o que os traços diziam antes. A ordem é do maior envolvimento
+   para o menor, e um grupo vazio simplesmente não aparece. */
+.envolv {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+.envolv__grupo {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* Cabeça do grupo: nome, contagem e definição na mesma linha de base. A
+   contagem repete a gramática dos contadores do site ("Case 01 / 03"). */
+.envolv__cabeca {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 6px 14px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--line);
+}
+.envolv__nivel {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 17px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--fg);
+}
+.envolv__conta {
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  color: var(--fg-5);
+  font-variant-numeric: tabular-nums;
+}
+.envolv__desc {
+  flex: 1 1 auto;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--fg-4);
+}
+
+/* O peso do grupo acompanha o nível: o que foi liderado tem o nome da frente
+   no tom cheio; abaixo disso, um degrau de cada vez. É a mesma informação
+   que o título já dá, reforçada sem depender de cor nem de marca. */
+.envolv__itens { margin: 0; }
+.envolv__item {
+  display: grid;
+  grid-template-columns: minmax(0, 15rem) minmax(0, 1fr);
+  gap: 6px 24px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--line-subtle);
+}
+.envolv__item:last-child { border-bottom: 0; }
+.envolv__item dt {
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.45;
+  color: var(--fg-2);
+}
+.envolv__item dd {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--fg-3);
+}
+.envolv__grupo[data-nivel="lidera"] .envolv__item dt { color: var(--fg); }
+.envolv__grupo[data-nivel="acompanha"] .envolv__item dt { color: var(--fg-3); }
+
+/* A coluna de conteúdo do case estreita antes da página: a evidência desce
+   para baixo do nome da frente. */
+@media (max-width: 1180px) {
+  .envolv__item { grid-template-columns: minmax(0, 1fr); gap: 4px; }
+}
 
 /* Listas numeradas de jornada -----------------------------------------------
    Faixa de filetes, como as demais seções: uma linha por etapa, o ordinal

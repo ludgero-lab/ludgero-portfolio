@@ -19,6 +19,7 @@
     slug: "votorantim",
     index: "01",
     client: "Votorantim Cimentos",
+    shortName: "Votorantim",
     logo: { neg: `${LOGO}/votorantim-neg.svg`, pos: `${LOGO}/votorantim-pos.svg` },
     logoAlt: "Votorantim Cimentos",
     title: "Programa de Integração de Segurança Interativa",
@@ -38,15 +39,46 @@
       { value: "4 Anos", note: "Em uso contínuo e evolução desde 2020" },
       { value: "100%", note: "Das unidades integradas via totens físicos" }
     ],
+    // Nível de envolvimento em cada frente, com a evidência que o sustenta.
+    // A ordem das frentes é a de ENVOLVIMENTO.frentes, não a daqui.
+    involvement: [
+      { area: "pesquisa", level: "lidera", note: "Iniciativa minha, fora do briefing: em campo, no centro de distribuição de Osasco, filmei e anotei o comportamento de um motorista usando o treinamento anterior no totem, para entender a operação real e os pontos de fricção antes de desenhar a jornada" },
+      { area: "arquitetura", level: "lidera", note: "Defini a ideia conceitual do curso a partir do briefing do cliente: o vídeo pausa diante de uma situação de risco e o motorista responde pelo teclado, trocando a aula passiva por tomada de decisão" },
+      { area: "interacao", level: "lidera", note: "Traduzi a lógica do sistema para um totem sem toque nem mouse, operado só pelo teclado numérico, e validei os caminhos de decisão em wireframes antes do desenvolvimento" },
+      { area: "visual", level: "lidera", note: "Direção de design do projeto: defini o estilo de animação que substituiu a captação real e dirigi a produção das ilustrações" },
+      { area: "decisoes", level: "lidera", note: "Conduzi o projeto de ponta a ponta: ajudei a decidir a virada de captação real para animação quando a pandemia inviabilizou o briefing, e propus o formato Top 10, que virou o vídeo Política de Consequências em 2024" },
+      { area: "tecnologia", level: "lidera", note: "Adaptei a experiência ao hardware do totem, com o teclado numérico como única entrada, e especifiquei como esses caminhos deveriam ser montados no Adobe Captivate" },
+      // Os nomes da equipe ficam na ficha técnica, não aqui: esta seção
+      // responde "o que foi meu". O nível já diz onde a execução foi dividida.
+      { area: "producao", level: "lidera", note: "Estive à frente da produção nos dois projetos, do início à entrega: a montagem do treinamento em 2020 e, no vídeo de 2024, narrativa, sonorização, motion graphics no After Effects e finalização no Premiere" }
+    ],
     sections: [
       {
         id: "solucao",
-        nav: "Solução Final",
-        title: "A solução final",
+        nav: "Solução",
+        title: "A solução",
         blocks: [
           {
             type: "p",
-            text: "O sistema foi implantado em totens físicos em todas as unidades Votorantim Cimentos do Brasil, atuando como treinamento obrigatório para o credenciamento de motoristas parceiros. A interface foi projetada para quebrar o escopo de vídeo passivo tradicional e transformá-lo em uma jornada de tomada de decisão em cenários de risco operacionais."
+            text: "O sistema foi implantado em totens físicos em todas as unidades Votorantim Cimentos do Brasil, atuando como treinamento obrigatório para o credenciamento de motoristas parceiros. A interface foi projetada para quebrar o escopo de vídeo passivo tradicional e transformá-lo em uma jornada de tomada de decisão em cenários de risco operacionais. A jornada começa por uma escolha do próprio motorista: quem já conhece o conteúdo vai direto à prova, em um a dois minutos; quem prefere rever assiste ao curso completo antes, em sete."
+          },
+          {
+            // Vem antes do totem: a foto do equipamento é a mesma miniatura do
+            // card na home, então abrir o case com ela repete o que o visitante
+            // acabou de clicar. Quem chega aqui quer ver a interface.
+            //
+            // As três telas são etapas de um mesmo fluxo: quase encostadas,
+            // lêem-se como sequência, não como peças soltas. A ordem dos
+            // arquivos já era a da jornada; o que estava trocado eram os textos
+            // alternativos, que descreviam telas que não eram as suas.
+            type: "grid",
+            cols: 3,
+            gap: 8,
+            items: [
+              { src: `${IMG}/votorantim/flow-01.jpg`, alt: "Escolha entre ir direto para a prova ou assistir ao curso antes, com os tempos estimados de cada caminho", caption: "Escolha do caminho" },
+              { src: `${IMG}/votorantim/flow-02.jpg`, alt: "Tela de boas-vindas, com o caminhão do motorista chegando à unidade", caption: "Boas-vindas" },
+              { src: `${IMG}/votorantim/flow-03.jpg`, alt: "Pergunta sobre calçar as rodas do caminhão, respondida com as teclas 1 e 2 do totem", caption: "Decisão em cenário de risco" }
+            ]
           },
           {
             type: "split",
@@ -55,6 +87,7 @@
               {
                 type: "steps",
                 items: [
+                  "Escolha do caminho",
                   "Boas-vindas",
                   "Vídeo de instrução",
                   "Vídeo de fixação",
@@ -71,19 +104,6 @@
                 alt: "Totem físico com a interface do treinamento",
                 fit: "bare"
               }
-            ]
-          },
-          {
-            // As três telas são etapas de um mesmo fluxo: quase encostadas,
-            // lêem-se como sequência, não como peças soltas.
-            type: "grid",
-            cols: 3,
-            gap: 8,
-            caption: "Fluxo da jornada do motorista",
-            items: [
-              { src: `${IMG}/votorantim/flow-01.jpg`, alt: "Tela de boas-vindas do treinamento" },
-              { src: `${IMG}/votorantim/flow-02.jpg`, alt: "Cenário de decisão em situação de risco" },
-              { src: `${IMG}/votorantim/flow-03.jpg`, alt: "Tela de feedback imediato após a resposta" }
             ]
           }
         ]
@@ -121,12 +141,16 @@
       },
       {
         id: "processo",
-        nav: "Processo e Wireframe",
-        title: "Mentalidade de processo, wireframes e arquitetura",
+        nav: "Processo e Wireframes",
+        title: "Processo, wireframes e arquitetura de decisão",
         blocks: [
           {
             type: "p",
-            text: "A montagem final e a programação foram desenvolvidas no Adobe Captivate. O principal desafio de UX Design consistiu em traduzir a lógica de todo o sistema interativo para um input físico limitado do totem: uma interface sem suporte a touchscreen ou mouse, na qual o motorista interage estritamente através do teclado numérico físico integrado. Para validar a usabilidade e a arquitetura das tomadas de decisão antes do desenvolvimento final, estruturei wireframes focados em caminhos lógicos simples e de rápida resposta."
+            // O texto antigo narrava o papel ("estruturei wireframes",
+            // "traduzi a lógica do sistema") com as mesmas palavras das
+            // evidências de UX e tecnologia do bloco de envolvimento. Aqui
+            // fica só a restrição e o que ela impõe ao produto.
+            text: "O totem impõe uma restrição rara em produto digital: não há touchscreen nem mouse. Toda a interação acontece pelo teclado numérico embutido no equipamento. Isso obriga a arquitetura de decisão a caber em poucas alternativas por tela, sempre numeradas, com resposta imediata e sem navegação livre. Os wireframes abaixo testaram esses caminhos antes do desenvolvimento, e a montagem final foi programada no Adobe Captivate."
           },
           {
             // Duas metades do mesmo wireframe, separadas para caberem lado a
@@ -159,11 +183,13 @@
       {
         id: "evolucao",
         nav: "Evolução 2024",
-        title: "Evolução e retorno de conta (2024)",
+        title: "Evolução e retorno do cliente (2024)",
         blocks: [
           {
             type: "p",
-            text: "Quatro anos após a entrega do sistema original, a Votorantim nos procurou novamente para reforçar o programa de integração com um novo vídeo, desta vez sem necessidade de interatividade. Em uma reunião com a equipe e o cliente, propus o desenvolvimento conceitual do formato “Top 10”, elencando de forma direta e memorável as dez maiores prioridades do programa de segurança da companhia. O conceito evoluiu para o nome oficial do vídeo: Política de Consequências. Atuei diretamente na definição da narrativa conceitual, sonorização, motion graphics no After Effects e edição e finalização no Premiere. O resultado foi novamente bem recebido pelos gestores do cliente."
+            // A frase sobre narrativa, sonorização, After Effects e Premiere
+            // saiu daqui: era cópia literal da evidência de produção.
+            text: "Quatro anos após a entrega do sistema original, a Votorantim voltou a procurar a equipe para reforçar o programa de integração com um novo vídeo, desta vez sem interatividade. Em uma reunião com a equipe e o cliente, propus o formato “Top 10”: elencar de forma direta e memorável as dez maiores prioridades do programa de segurança da companhia. O conceito virou o nome oficial da peça — Política de Consequências — e o resultado foi novamente bem recebido pelos gestores do cliente."
           },
           {
             type: "extLink",
@@ -186,10 +212,10 @@
           {
             type: "credits",
             items: [
-              { role: "Direção de Design e Dev", name: "Ludgero Ricardo Abilino" },
+              { role: "Direção de Design e UX", name: "Ludgero Ricardo Abilino" },
               { role: "Edição de Conteúdo", name: "Ana Paula Augusto" },
               { role: "Produção e Execução", name: "Karin Ueda" },
-              { role: "Diagramação e Interações", name: "Adriana Oliveira" }
+              { role: "Diagramação, Interações e Captivate", name: "Adriana Oliveira" }
             ]
           },
           { type: "tools", items: ["ai", "ae", "pr", "cp"] }
@@ -203,6 +229,7 @@
     slug: "stefani",
     index: "02",
     client: "Stefani · Benkyou Learn",
+    shortName: "Stefani",
     clientAlso: "Andritz • Grupo Equatorial",
     logo: { neg: `${LOGO}/stefani-neg.svg`, pos: `${LOGO}/stefani-pos.svg` },
     logoAlt: "Stefani",
@@ -220,54 +247,43 @@
       { value: "60h", note: "De conteúdo técnico transformadas em treinamento digital" },
       { value: "30%+", note: "Eficácia com feedback imediato" }
     ],
+    involvement: [
+      { area: "pesquisa", level: "contribui", note: "Participei da análise do briefing técnico com a equipe e levantei referências fotográficas das plantas industriais, que viraram base dos cenários ilustrados" },
+      { area: "arquitetura", level: "lidera", note: "Defini a abordagem didática e a estrutura da jornada: análise do conteúdo, roteirização e fechamento com quizzes" },
+      { area: "interacao", level: "lidera", note: "Defini as interações e o template de animações e transições que padronizou a experiência em todos os módulos" },
+      { area: "visual", level: "lidera", note: "Identidade visual dos materiais, modelo de personas e direção dos cenários ilustrados a partir das fotos reais das plantas" },
+      { area: "decisoes", level: "lidera", note: "Designer líder de ponta a ponta: da definição do modelo do projeto à aprovação de personagens e cenários com o cliente" },
+      { area: "tecnologia", level: "lidera", note: "Especifiquei a montagem da solução e usei IA generativa como acelerador na criação dos avatares, com refinamento ilustrado depois" },
+      { area: "producao", level: "lidera", note: "Motion design completo e finalização do material audiovisual entregue; construí também o manual base que padronizou a reprodução do modelo em novos projetos" }
+    ],
     sections: [
       {
         id: "solucao",
-        nav: "Solução e Atuação",
-        title: "Solução e atuação",
+        nav: "Solução",
+        title: "A solução",
         blocks: [
           {
             type: "p",
-            text: "Foi desenvolvida uma solução de treinamento digital estruturada para transformar conteúdos técnicos em uma experiência acessível, interativa e escalável, alinhando necessidades operacionais com estratégias de aprendizagem. Atuei como designer líder do projeto, responsável pela concepção pedagógica e pela execução visual e técnica da solução."
+            // Sem a frase "Atuei como designer líder...": a seção "Meu
+            // envolvimento", logo acima, já diz isso com nível e evidência.
+            text: "Foi desenvolvida uma solução de treinamento digital estruturada para transformar conteúdos técnicos em uma experiência acessível, interativa e escalável, alinhando necessidades operacionais com estratégias de aprendizagem."
           },
           {
-            type: "split",
-            title: "Minha atuação, ponto a ponto",
-            left: [
-              {
-                type: "steps",
-                items: [
-                  "Participação na análise do briefing técnico ao lado da equipe",
-                  "Definição da abordagem didática e indicação de elementos de suporte ao conteúdo",
-                  "Criação do modelo das personas a partir do briefing fornecido pela Stefani",
-                  "Direção e criação dos cenários ilustrados a partir de referências fotográficas",
-                  "Definição da identidade visual aplicada aos materiais interativos",
-                  "Criação do template de animações, transições e motion design completo",
-                  "Apresentação e aprovação do modelo de personagens e cenários com o cliente"
-                ]
-              },
-              {
-                // Dentro da coluna da lista: assim a nota herda a mesma
-                // medida e termina onde o texto acima termina, em vez de
-                // atravessar por baixo do vídeo.
-                type: "fineprint",
-                text: "Contei com o apoio da equipe Benkyou: Ana Paula Augusto na edição do conteúdo didático; Karin Ueda na produção de ilustrações; Adriana Oliveira na diagramação e interações; e Talita Cristine Borosch na edição de áudio."
-              }
-            ],
-            right: [
-              {
-                type: "video",
-                // Hospedado no Vimeo: o player entrega bitrate adaptativo, o
-                // que importa num vídeo de quase oito minutos aberto no
-                // celular. Sem `poster`, a miniatura vem do próprio Vimeo.
-                vimeo: "1193806255",
-                vimeoHash: "53c8f60c2d",
-                label: "Solução",
-                alt: "Demonstração da solução digital implementada para a Stefani",
-                caption: "Reprodução da solução digital implementada"
-              }
-            ]
+            // Em largura cheia: é a prova do case. A lista "ponto a ponto" que
+            // dividia esta área com o vídeo repetia, item por item, o que a
+            // seção "Meu envolvimento" já diz na abertura.
+            type: "video",
+            // Hospedado no Vimeo: o player entrega bitrate adaptativo, o que
+            // importa num vídeo de quase oito minutos aberto no celular. Sem
+            // `poster`, a miniatura vem do próprio Vimeo.
+            vimeo: "1193806255",
+            vimeoHash: "53c8f60c2d",
+            label: "Solução",
+            alt: "Demonstração da solução digital implementada para a Stefani",
+            caption: "Reprodução da solução digital implementada"
           }
+          // A nota de créditos que ficava aqui repetia, uma a uma, as quatro
+          // pessoas que a ficha técnica deste mesmo case já lista com função.
         ]
       },
       {
@@ -397,10 +413,10 @@
           {
             type: "credits",
             items: [
-              { role: "Direção de Design e Dev", name: "Ludgero Ricardo Abilino" },
+              { role: "Direção de Design", name: "Ludgero Ricardo Abilino" },
               { role: "Edição de Conteúdo", name: "Ana Paula Augusto" },
               { role: "Produção e Execução", name: "Karin Ueda" },
-              { role: "Diagramação e Interações", name: "Adriana Oliveira" },
+              { role: "Diagramação, Interações e Captivate", name: "Adriana Oliveira" },
               { role: "Edição de Áudio", name: "Talita Cristine Borosch" }
             ]
           },
@@ -415,6 +431,7 @@
     slug: "benkyou-game",
     index: "03",
     client: "Benkyou Game",
+    shortName: "Benkyou Game",
     clientAlso: "Grupo Boticário • Cielo • Norton • Ibema",
     logo: { neg: `${LOGO}/benkyou-neg.svg`, pos: `${LOGO}/benkyou-pos.svg` },
     logoAlt: "Benkyou Game",
@@ -432,11 +449,20 @@
       { value: "+84%", note: "De crescimento em jogadores ativos entre 2021 e 2024" },
       { value: "5 Anos", note: "Em operação contínua, com renovação de contrato a cada temporada" }
     ],
+    involvement: [
+      { area: "pesquisa", level: "acompanha", note: "Trouxe boas práticas de usabilidade como referência ao longo do processo; não houve validação formal com usuários, o que aponto como aprendizado na ficha do case" },
+      { area: "arquitetura", level: "lidera", note: "Defini a arquitetura de navegação da plataforma, do acesso às trilhas de conteúdo, mantendo a mesma hierarquia em todos os clientes" },
+      { area: "interacao", level: "lidera", note: "Desenhei os fluxos e as telas iterativamente, a navegação dos modos Explorador e Prático e os wireframes do editor de perfil, com edição livre e confirmação antes de sair" },
+      { area: "visual", level: "lidera", note: "Concebi o sistema visual que adapta a interface a cada cliente: proporções e tamanhos fixos, identidade trocável em cores, HUD, perfil e recompensas" },
+      { area: "decisoes", level: "contribui", note: "A divisão em dois modos de acesso foi definida com a liderança; o sistema de recompensas foi simplificado depois de um estudo de viabilidade técnica, e documentei a proposta original" },
+      { area: "tecnologia", level: "lidera", note: "Entreguei o protótipo navegável em Adobe XD como especificação de front-end para o time e negociei escopo com o desenvolvimento" },
+      { area: "producao", level: "acompanha", note: "O desenvolvimento em Unity e a modelagem 3D foram conduzidos pela equipe, a partir das minhas especificações" }
+    ],
     sections: [
       {
         id: "contexto",
-        nav: "Contexto e Atuação",
-        title: "Contexto e atuação",
+        nav: "Contexto",
+        title: "O contexto",
         blocks: [
           {
             type: "p",
@@ -463,25 +489,18 @@
             ]
           },
           {
-            type: "p",
-            text: "Atuei como UX/UI Designer responsável pela interface da plataforma, trabalhando na interseção entre três frentes: a visão estratégica e pedagógica da CEO da Benkyou, as restrições e possibilidades técnicas levantadas pelos desenvolvedores, e as boas práticas de usabilidade que trouxe como referência ao longo de todo o processo. A partir dos briefings e direcionamentos da liderança, desenvolvi as telas iterativamente, propondo fluxos, definindo a arquitetura de navegação e entregando o protótipo navegável em Adobe XD como especificação de front-end para o time de desenvolvimento. Também fiz parte do estúdio de criação da Benkyou, contribuindo para a adaptação visual da plataforma a cada novo cliente, utilizando o Miro como espaço colaborativo para definir linhas de construção de cenário, paleta de cores e diretrizes visuais."
-          },
-          {
+            // O parágrafo "Atuei como UX/UI Designer..." saiu daqui: repetia,
+            // frase por frase, quatro evidências do bloco de envolvimento
+            // (arquitetura, fluxos, protótipo em XD, boas práticas). As cinco
+            // etiquetas que vinham depois eram a mesma lista pela terceira vez.
+            //
+            // O diagrama fica: ele diz algo que o bloco não diz — a posição
+            // entre a estratégia da liderança e a viabilidade do time.
             type: "diagram",
             items: [
               { label: "Visão", title: "Estratégia / CEO", note: "Direção pedagógica e de negócio" },
-              { label: "Minha atuação", title: "UX/UI Design", note: "Princípios de usabilidade", self: true },
+              { label: "Minha posição", title: "UX/UI Design", note: "Princípios de usabilidade", self: true },
               { label: "Viabilidade", title: "Desenvolvimento", note: "Restrições e possibilidades técnicas" }
-            ]
-          },
-          {
-            type: "chips",
-            items: [
-              "Arquitetura de navegação",
-              "Wireframes e fluxos",
-              "Protótipo navegável (XD)",
-              "Especificação de front-end",
-              "Adaptação visual por cliente"
             ]
           }
         ]
@@ -505,7 +524,7 @@
           },
           {
             type: "p",
-            text: "Nem todo colaborador chega ao treinamento com o mesmo perfil ou disponibilidade. A solução, definida em conjunto com a liderança da Benkyou, foi bifurcar a experiência logo após o loading: o modo Explorador leva o usuário direto ao ambiente 3D com avatar e HUD do jogo, enquanto o modo Prático direciona para a tela de objetivos com acesso direto aos conteúdos das trilhas. Os dois caminhos convergem no mesmo conteúdo educacional, garantindo que a escolha do modo não criasse cidadãos de segunda classe dentro da plataforma: ambos os perfis tinham acesso às mesmas trilhas, avaliações e recompensas."
+            text: "Nem todo colaborador chega ao treinamento com o mesmo perfil ou disponibilidade. A solução foi bifurcar a experiência logo após o loading: o modo Explorador leva o usuário direto ao ambiente 3D com avatar e HUD do jogo, enquanto o modo Prático direciona para a tela de objetivos com acesso direto aos conteúdos das trilhas. Os dois caminhos convergem no mesmo conteúdo educacional, garantindo que a escolha do modo não criasse cidadãos de segunda classe dentro da plataforma: ambos os perfis tinham acesso às mesmas trilhas, avaliações e recompensas."
           },
           {
             type: "figure",
@@ -534,7 +553,7 @@
           },
           {
             type: "p",
-            text: "A identidade do jogador dentro da plataforma era construída através do editor de perfil, uma área dedicada à personalização do avatar que tornava a experiência mais pessoal e aumentava o vínculo do colaborador com o jogo. O fluxo foi pensado para ser exploratório: o usuário podia experimentar combinações livremente, visualizar as mudanças em tempo real com rotação 3D e reverter as alterações antes de salvar. Uma confirmação final antes de sair garantia que nenhuma edição fosse perdida por acidente. As telas de editor de perfil apresentadas aqui refletem o nível de wireframe estrutural que entreguei; o design visual final foi desenvolvido por outro profissional da equipe."
+            text: "A identidade do jogador dentro da plataforma era construída através do editor de perfil, uma área dedicada à personalização do avatar que tornava a experiência mais pessoal e aumentava o vínculo do colaborador com o jogo. O fluxo foi pensado para ser exploratório: o usuário podia experimentar combinações livremente, visualizar as mudanças em tempo real com rotação 3D e reverter as alterações antes de salvar. Uma confirmação final antes de sair garantia que nenhuma edição fosse perdida por acidente."
           },
           {
             type: "grid",
@@ -544,6 +563,12 @@
               { src: `${IMG}/benkyou/perfil-cores.jpg`, alt: "Editor de perfil com paleta de cores", caption: "Editor de perfil — paleta de cores" },
               { src: `${IMG}/benkyou/perfil-confirma.jpg`, alt: "Editor de perfil com confirmação de edição", caption: "Editor de perfil — confirmação de edição" }
             ]
+          },
+          {
+            // A ressalva estava no fim do parágrafo, longe das imagens que ela
+            // descreve. Aqui ela fica colada no que o leitor está vendo.
+            type: "fineprint",
+            text: "As telas acima são os wireframes estruturais que entreguei; o design visual final foi desenvolvido por outro profissional da equipe."
           }
         ]
       },
@@ -692,5 +717,31 @@
     cp:  { name: "Adobe Captivate",     dark: "#012d2d", bright: "#03f2c4", label: "Cp" }
   };
 
-  global.PORTFOLIO_DATA = { CASES: CASES, TOOLS: TOOLS };
+  /* --- Envolvimento ---------------------------------------------------------
+     O que eu decidi, o que dividi e o que acompanhei em cada projeto. As sete
+     frentes são as mesmas nos três cases, na mesma ordem, para dar para
+     comparar um com outro. O `curto` é para a linha de papel no card da home,
+     onde o nome inteiro não caberia.
+
+     Três níveis, nunca percentual: nota que a pessoa dá a si mesma não
+     convence ninguém. Cada nível vem com uma linha de evidência, e é ela que
+     sustenta o nível. */
+  const ENVOLVIMENTO = {
+    frentes: [
+      { id: "pesquisa",    nome: "Pesquisa e descoberta",                 curto: "pesquisa" },
+      { id: "arquitetura", nome: "Arquitetura da informação e do conteúdo", curto: "arquitetura do conteúdo" },
+      { id: "interacao",   nome: "Design de interação (UX)",              curto: "UX" },
+      { id: "visual",      nome: "Interface e direção visual",            curto: "direção visual" },
+      { id: "decisoes",    nome: "Decisões de produto e escopo",          curto: "decisões de produto" },
+      { id: "tecnologia",  nome: "Integração com a tecnologia",           curto: "tecnologia" },
+      { id: "producao",    nome: "Desenvolvimento e produção",            curto: "produção" }
+    ],
+    niveis: {
+      lidera:    { nome: "Liderei",    peso: 3, descricao: "decidi ou conduzi" },
+      contribui: { nome: "Contribuí",  peso: 2, descricao: "participei ativamente, com decisão ou execução dividida" },
+      acompanha: { nome: "Acompanhei", peso: 1, descricao: "outra pessoa conduziu" }
+    }
+  };
+
+  global.PORTFOLIO_DATA = { CASES: CASES, TOOLS: TOOLS, ENVOLVIMENTO: ENVOLVIMENTO };
 })(window);

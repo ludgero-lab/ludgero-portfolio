@@ -7,7 +7,24 @@
 (function () {
   "use strict";
 
-  const { CASES, TOOLS } = window.PORTFOLIO_DATA;
+  const { CASES, TOOLS, ENVOLVIMENTO } = window.PORTFOLIO_DATA;
+
+  /* "Meu envolvimento" abre todo case que tem os dados. A seção é gerada
+     aqui, e não escrita à mão em cases.js, para ficar sempre em primeiro
+     lugar e com o mesmo título nos três — e para entrar na lista de seções
+     antes de qualquer leitura dela: a coluna de navegação, o contador do
+     menu flutuante e o scrollspy leem todos c.sections. */
+  CASES.forEach((c) => {
+    if (!c.involvement || c.sections.some((s) => s.id === "meu-envolvimento")) return;
+    c.sections.unshift({
+      // Não pode ser "envolvimento": esse id é da seção da home, que continua
+      // no documento (só escondida) enquanto um case está aberto.
+      id: "meu-envolvimento",
+      nav: "Meu Envolvimento",
+      title: "Meu envolvimento",
+      blocks: [{ type: "involvement", items: c.involvement }]
+    });
+  });
   const CASE_BY_SLUG = Object.fromEntries(CASES.map((c) => [c.slug, c]));
 
   const $ = (sel, root = document) => root.querySelector(sel);
@@ -327,6 +344,22 @@
      4 · Renderização — Home (cards de case)
      ========================================================================== */
 
+  /* Linha de papel no card: só as frentes em que liderei, escritas em lista
+     corrida. É a versão curta do bloco "Meu envolvimento" que abre o case —
+     na home ela diz a amplitude sem virar autoavaliação, porque não atribui
+     nível a nada, só nomeia o que foi meu. */
+  function papelHTML(c) {
+    if (!c.involvement) return "";
+    const lidera = new Set(
+      c.involvement.filter((x) => x.level === "lidera").map((x) => x.area)
+    );
+    const nomes = ENVOLVIMENTO.frentes.filter((f) => lidera.has(f.id)).map((f) => f.curto);
+    if (!nomes.length) return "";
+    const lista =
+      nomes.length > 1 ? `${nomes.slice(0, -1).join(", ")} e ${nomes[nomes.length - 1]}` : nomes[0];
+    return `<p class="case-card__papel"><span>Liderei</span> ${esc(lista)}</p>`;
+  }
+
   function renderCaseCards() {
     $("#case-list").innerHTML = CASES.map(
       (c, i) => `
@@ -348,6 +381,7 @@
               <div class="case-card__brand">${logoHTML(c.logo, c.logoAlt)}</div>
               <h3 class="case-card__title">${esc(c.title)}</h3>
               <p class="case-card__desc">${esc(c.summary)}</p>
+              ${papelHTML(c)}
             </div>
             <span class="case-card__cta">[ Ver case <em aria-hidden="true">→</em> ]</span>
           </div>
@@ -542,6 +576,48 @@
            ${figureHTML(b.after)}
          </div>
        </div>`,
+
+    /* Agrupado por nível, não listado com rótulo repetido: o nome do nível é
+       o título do grupo, e a definição vem ao lado dele. Assim a legenda deixa
+       de existir — ninguém precisa decodificar marca nenhuma — e a hierarquia
+       da página faz o trabalho que os traços faziam: o que eu liderei é o
+       bloco maior, e está em primeiro. A contagem repete a gramática dos
+       contadores do site ("Case 01 / 03"). */
+    involvement: (b) => {
+      const porFrente = new Map(b.items.map((x) => [x.area, x]));
+      const total = ENVOLVIMENTO.frentes.length;
+      const ordem = Object.keys(ENVOLVIMENTO.niveis).sort(
+        (a, z) => ENVOLVIMENTO.niveis[z].peso - ENVOLVIMENTO.niveis[a].peso
+      );
+
+      return `<div class="envolv">${ordem
+        .map((nivel) => {
+          const frentes = ENVOLVIMENTO.frentes.filter((f) => {
+            const item = porFrente.get(f.id);
+            return item && item.level === nivel;
+          });
+          if (!frentes.length) return "";
+          const n = ENVOLVIMENTO.niveis[nivel];
+          return `
+        <section class="envolv__grupo" data-nivel="${esc(nivel)}">
+          <div class="envolv__cabeca">
+            <h3 class="envolv__nivel">${esc(n.nome)}</h3>
+            <span class="envolv__conta">${String(frentes.length).padStart(2, "0")} de ${String(total).padStart(2, "0")}</span>
+            <p class="envolv__desc">${esc(n.descricao)}</p>
+          </div>
+          <dl class="envolv__itens">${frentes
+            .map(
+              (f) => `
+            <div class="envolv__item">
+              <dt>${esc(f.nome)}</dt>
+              <dd>${esc(porFrente.get(f.id).note)}</dd>
+            </div>`
+            )
+            .join("")}</dl>
+        </section>`;
+        })
+        .join("")}</div>`;
+    },
 
     credits: (b) =>
       `<div class="credits">${b.items

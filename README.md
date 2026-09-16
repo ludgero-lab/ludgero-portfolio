@@ -118,6 +118,42 @@ Atalho: tecla **T** alterna claro/escuro.
 - Todo o movimento respeita `prefers-reduced-motion`
 
 
+## Envolvimento por case
+
+Cada case abre com a seção **"Meu envolvimento"**: sete frentes, sempre as
+mesmas, agrupadas por nível. Os dados ficam em `involvement`, dentro de cada
+case; as frentes e os níveis, em `ENVOLVIMENTO` (`cases.js`). A seção é montada
+pelo `app.js` e inserida em primeiro lugar em `c.sections`, para entrar junto na
+coluna de navegação, no contador do menu flutuante e no scrollspy.
+
+**Agrupado, e não listado com rótulo repetido.** A primeira versão era uma
+tabela: uma linha por frente, o nível numa coluna com três traços e uma legenda
+em cima explicando os traços. Funcionava, mas pedia decodificação e repetia o
+mesmo rótulo sete vezes. Agora o nome do nível é o título do grupo e a
+definição vem ao lado dele — a legenda deixou de ser necessária, e a hierarquia
+da página faz o trabalho que os traços faziam: o que foi liderado é o bloco
+maior e vem primeiro. Grupo vazio não aparece.
+
+| Nível | Quer dizer |
+|---|---|
+| Liderei | decidi ou conduzi |
+| Contribuí | participei ativamente, com decisão ou execução dividida |
+| Acompanhei | outra pessoa conduziu |
+
+**Nunca percentual**: nota que a pessoa dá a si mesma não convence quem avalia.
+Cada frente vem com uma evidência, e é ela que sustenta o nível. O peso do tipo
+acompanha o grupo, mas só reforça o que o título já diz — nada de significado
+preso a cor ou a marca.
+
+O id da seção é `meu-envolvimento`, e **não** `envolvimento`: as duas views
+ficam no documento ao mesmo tempo, uma delas escondida, então id repetido faria
+o menu do case pular para a seção errada.
+
+Na home, cada card traz a versão curta: `Liderei` seguido das frentes em que o
+nível é esse, escritas com o campo `curto` de cada frente. É uma linha, não um
+quadro comparativo — fora do contexto do projeto, uma tabela de níveis lê como
+autoavaliação; junto do case, cada nível vem colado à evidência.
+
 ## Hero preso à tela
 
 Na home, em tela larga (≥861px) e alta (≥640px) e com movimento permitido, o
