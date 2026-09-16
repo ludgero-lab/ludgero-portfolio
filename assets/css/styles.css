@@ -772,9 +772,16 @@ figure, blockquote { margin: 0; }
   margin: 0;
   padding: 0;
 }
-/* Fora de um card, a etiqueta não tem o hover do case para acender: fica um
-   degrau mais legível desde o começo. */
-.tech .tag { color: var(--fg-4); }
+/* Preenchidas, ao contrário das etiquetas dos cases, que são contorno. O
+   fundo usa --line, o mesmo tom dos filetes do site, para a caixa aparecer
+   sem virar botão; a borda continua existindo, só transparente, para a
+   etiqueta manter a mesma medida das de contorno. Texto em --fg-2: cerca de
+   11:1 sobre o fundo nos dois temas. */
+.tech .tag {
+  background: var(--line);
+  border-color: transparent;
+  color: var(--fg-2);
+}
 
 
 /* ==========================================================================
@@ -1033,6 +1040,49 @@ body:has(.site-header[data-hidden="true"]) .section-head { top: 0; }
   transform-origin: center;
 }
 .case-card:hover .case-card__thumb--contain img { transform: translateY(-4px); }
+
+/* Rótulo que acompanha o ponteiro sobre um case: "Ver case".
+   Duas camadas de propósito. A de fora só anda — recebe a posição a cada
+   quadro por transform, sem transição, senão o rótulo arrastaria atrás do
+   mouse. A de dentro só aparece e some, com escala e opacidade animadas.
+   Misturar as duas no mesmo transform faria uma cancelar a outra.
+
+   O ponteiro nativo continua visível: o rótulo fica ao lado dele, não no
+   lugar. Esconder o cursor do sistema tira do usuário a referência exata de
+   onde ele está clicando. */
+.cursor-rotulo {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 99;
+  pointer-events: none;
+  will-change: transform;
+}
+.cursor-rotulo span {
+  display: block;
+  padding: 9px 14px 8px;
+  border-radius: var(--radius-pill);
+  background: var(--fg);
+  color: var(--bg);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  opacity: 0;
+  transform: scale(0.6);
+  transform-origin: 0 50%;
+  transition: opacity 180ms var(--ease), transform 320ms var(--ease-out);
+}
+.cursor-rotulo[data-ativo="true"] span {
+  opacity: 1;
+  transform: scale(1);
+}
+.cursor-rotulo span em {
+  font-style: normal;
+  margin-left: 6px;
+}
 
 /* ==========================================================================
    HOME — Sobre

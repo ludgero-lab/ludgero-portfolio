@@ -21,8 +21,8 @@ Depois acesse `http://localhost:5173`.
 O `index.html` carrega o CSS e os quatro scripts com um parâmetro de versão:
 
 ```html
-<link rel="stylesheet" href="assets/css/styles.css?v=20260916c">
-<script src="assets/js/app.js?v=20260916c"></script>
+<link rel="stylesheet" href="assets/css/styles.css?v=20260916e">
+<script src="assets/js/app.js?v=20260916e"></script>
 ```
 
 **São cinco ocorrências, e todas precisam do mesmo valor.** Sempre que

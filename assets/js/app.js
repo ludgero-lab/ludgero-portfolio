@@ -1537,6 +1537,107 @@
   })();
 
   /* ==========================================================================
+     10.2 · Rótulo que acompanha o ponteiro
+     ==========================================================================
+     Sobre um case — o card da home ou o paginador no fim de um case — aparece
+     "Ver case" ao lado do ponteiro, seguindo-o com um leve atraso.
+
+     Só com mouse ou trackpad. Em tela de toque não existe "passar por cima":
+     o rótulo apareceria no toque e ficaria preso ali depois.
+
+     É decoração: `aria-hidden`, e o card continua dizendo "Ver case" no próprio
+     texto, que é o que leitor de tela e teclado usam. */
+  (function rotuloDoPonteiro() {
+    const temMouse = window.matchMedia("(hover: hover) and (pointer: fine)");
+    const ALVOS = ".case-card, .case-pager__item";
+    // Ao lado e um pouco abaixo da ponta da seta, para não cobrir o que está
+    // exatamente sob o clique.
+    const DX = 18;
+    const DY = 16;
+    // Fração do caminho vencida por quadro: perto de 1 cola no ponteiro, mais
+    // baixo arrasta atrás dele.
+    const SEGUIR = 0.22;
+
+    const rotulo = document.createElement("div");
+    rotulo.className = "cursor-rotulo";
+    rotulo.setAttribute("aria-hidden", "true");
+    rotulo.innerHTML = "<span></span>";
+    document.body.appendChild(rotulo);
+    const caixa = rotulo.firstChild;
+
+    let mx = 0, my = 0;   // onde o ponteiro está
+    let x = 0, y = 0;     // onde o rótulo está
+    let conhecePosicao = false;
+    let ativo = false;
+    let animando = false;
+
+    const posicionar = () => {
+      rotulo.style.transform = `translate3d(${x + DX}px, ${y + DY}px, 0)`;
+    };
+
+    function passo() {
+      if (prefersReduced.matches) { x = mx; y = my; }
+      else { x += (mx - x) * SEGUIR; y += (my - y) * SEGUIR; }
+      posicionar();
+      if (Math.abs(mx - x) > 0.2 || Math.abs(my - y) > 0.2) requestAnimationFrame(passo);
+      else animando = false;
+    }
+
+    function acompanhar() {
+      if (!animando) { animando = true; requestAnimationFrame(passo); }
+    }
+
+    function marcar(elemento) {
+      const sobreCase = !!(elemento && elemento.closest && elemento.closest(ALVOS));
+      if (sobreCase === ativo) return;
+      ativo = sobreCase;
+      if (ativo) {
+        // Texto relido a cada entrada: o idioma pode ter mudado desde a última.
+        caixa.innerHTML = `${esc(t("cases.verCase"))}<em aria-hidden="true">→</em>`;
+        // Nasce já na ponta do ponteiro, em vez de viajar desde onde sumiu.
+        x = mx; y = my;
+        posicionar();
+      }
+      rotulo.dataset.ativo = String(ativo);
+    }
+
+    function esconder() {
+      ativo = false;
+      rotulo.dataset.ativo = "false";
+    }
+
+    document.addEventListener(
+      "pointermove",
+      (e) => {
+        if (!temMouse.matches || e.pointerType !== "mouse") return;
+        mx = e.clientX;
+        my = e.clientY;
+        if (!conhecePosicao) { x = mx; y = my; conhecePosicao = true; }
+        marcar(e.target);
+        if (ativo) acompanhar();
+      },
+      { passive: true }
+    );
+
+    /* Com a roda, a página anda e o ponteiro fica parado: nenhum pointermove
+       dispara, mas o que está sob ele muda. Sem esta checagem o rótulo
+       continuaria aceso depois de o card sair de baixo do mouse. */
+    window.addEventListener(
+      "scroll",
+      () => {
+        if (!conhecePosicao || !temMouse.matches) return;
+        marcar(document.elementFromPoint(mx, my));
+      },
+      { passive: true }
+    );
+
+    // Saiu da janela, trocou de aba ou de rota: nada de rótulo esquecido.
+    document.documentElement.addEventListener("mouseleave", esconder);
+    window.addEventListener("blur", esconder);
+    window.addEventListener("hashchange", esconder);
+  })();
+
+  /* ==========================================================================
      11 · Miudezas
      ========================================================================== */
 
