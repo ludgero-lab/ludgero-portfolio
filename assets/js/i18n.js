@@ -40,7 +40,7 @@
     "aoTopo":           { pt: "Voltar ao topo",        en: "Back to top" },
 
     /* --- Hero ---------------------------------------------------------- */
-    "hero.tag.1":       { pt: "Product Designer Sênior",   en: "Senior Product Designer" },
+    "hero.tag.1":       { pt: "Product Designer,",         en: "Product Designer," },
     "hero.tag.2":       { pt: "Moldando Experiências de",  en: "Shaping Learning and" },
     "hero.tag.3":       { pt: "Aprendizagem e Negócios",   en: "Business Experiences" },
     "hero.role":        { pt: "Role para ver os cases",    en: "Scroll to see the work" },
