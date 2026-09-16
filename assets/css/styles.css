@@ -959,7 +959,16 @@ body:has(.site-header[data-hidden="true"]) .section-head { top: 0; }
 }
 .case-card:hover .case-card__cta em { transform: translateX(6px); }
 
-.case-card__col-b { padding-inline: 24px; }
+/* A miniatura se alinha pelo centro da linha, no mesmo eixo do KPI da coluna
+   C — que também é centrado — e, portanto, no meio do filete que separa as
+   duas. Sem isso ela encosta no topo e a coluna sobra por baixo, o que fica
+   mais evidente em 1180px, onde esta coluna passa a ocupar as duas linhas. */
+.case-card__col-b {
+  padding-inline: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
 .case-card__thumb {
   display: block;
   position: relative;

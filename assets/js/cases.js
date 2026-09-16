@@ -23,7 +23,10 @@
     logo: { neg: `${LOGO}/votorantim-neg.svg`, pos: `${LOGO}/votorantim-pos.svg` },
     logoAlt: "Votorantim Cimentos",
     title: "Programa de Integração de Segurança Interativa",
-    shortTitle: "Programa de Integração de Segurança Interativa",
+    // Caixa de frase, como os h1 dos outros dois cases. O `title` acima segue
+    // em caixa alta de título: é o que aparece no card da home, onde os três
+    // são iguais entre si.
+    shortTitle: "Programa de integração de segurança interativa",
     summary:
       "Ecossistema nacional gamificado de simulação e tomada de decisão implementado em totens físicos proprietários.",
     // O recorte do totem substitui a arte que trazia o logotipo embutido —
