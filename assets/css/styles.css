@@ -1044,16 +1044,28 @@ body:has(.site-header[data-hidden="true"]) .section-head { top: 0; }
 /* O respiro de cima é menor porque o cabeçalho da seção já traz o seu:
    o mesmo intervalo que separa o cabeçalho do primeiro card na seção de
    cases. */
+/* A coluna do texto começa na mesma vertical da miniatura dos cards, logo
+   acima. Para isso a primeira coluna repete a proporção da primeira coluna do
+   card (1.16 de 1.16 + 0.97 + 1) e o texto recebe os mesmos 24px de recuo que
+   `.case-card__col-b` tem de padding. Em proporção, e não em pixels, para o
+   alinhamento se manter em qualquer largura — os dois blocos vivem em `.wrap`
+   e têm exatamente a mesma medida de linha. */
 .about {
   display: grid;
-  grid-template-columns: 440px minmax(0, 1fr);
-  gap: 96px;
+  grid-template-columns: minmax(0, 1.16fr) minmax(0, 1.97fr);
+  gap: 0;
   padding-block: 48px 96px;
 }
+.about > :last-child { padding-left: 24px; }
+/* A coluna tem a largura do retrato, não a da célula da grade: assim o aviso
+   de disponibilidade e o botão do currículo se centram no eixo da foto, e não
+   num ponto qualquer da coluna — que é bem mais larga desde que o texto do
+   Sobre passou a alinhar com a miniatura dos cards. */
 .about__aside {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
+  width: 192px;
   gap: 28px;
   position: sticky;
   top: 110px;
@@ -1075,6 +1087,9 @@ body:has(.site-header[data-hidden="true"]) .section-head { top: 0; }
   letter-spacing: 0.15em;
   text-transform: uppercase;
   color: var(--fg-4);
+  /* O bloco inteiro é centrado sob a foto pelo `align-items` do aside, mas o
+     texto em si continua justificado à esquerda: com duas linhas curtas em
+     caixa alta, centrar cada linha deixava a segunda flutuando. */
   text-align: left;
   line-height: 1.25;
 }
@@ -2707,7 +2722,12 @@ body:has(.drawer:not([hidden])) .to-top { opacity: 0; pointer-events: none; }
   .case-card__col-b { grid-row: 1 / span 2; grid-column: 2; padding-inline: 0 0; }
   .case-card__col-a { grid-column: 1; padding-right: 32px; }
   .case-card__col-c { grid-column: 1; border-left: 0; padding-left: 0; border-top: 1px solid var(--line); padding-top: 24px; }
-  .about { grid-template-columns: minmax(260px, 32%) minmax(0, 1fr); gap: 56px; }
+  /* O card passa a duas colunas iguais, com a miniatura começando na metade
+     da linha. O Sobre acompanha, para o texto continuar no mesmo eixo da
+     imagem. Aqui `.case-card__col-b` perde o padding lateral, então o recuo
+     de 24px do texto sai junto. */
+  .about { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 0; }
+  .about > :last-child { padding-left: 0; }
   /* A grade de terços segue valendo; só o respiro entre nav e texto encolhe. */
   .case-body > .case-nav { padding-right: 28px; }
   .kpi-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -2740,7 +2760,10 @@ body:has(.drawer:not([hidden])) .to-top { opacity: 0; pointer-events: none; }
   .case-card__col-c { grid-column: 1; grid-row: auto; padding-right: 0; }
   .case-card__col-b { order: -1; }
   .about { grid-template-columns: 1fr; gap: 40px; }
-  .about__aside { position: static; align-items: flex-start; }
+  /* Sem grude no topo, mas o alinhamento pela foto continua valendo: em
+     coluna única o retrato fica na margem e o texto e o botão seguem
+     centrados sob ele. */
+  .about__aside { position: static; }
   /* Coluna única: a grade de terços some e o recuo volta para o contêiner. */
   .case-body {
     grid-template-columns: 1fr;

@@ -8,6 +8,79 @@
   "use strict";
 
   const { CASES, TOOLS, ENVOLVIMENTO } = window.PORTFOLIO_DATA;
+  const I18N = window.PORTFOLIO_I18N || { UI: {}, IDIOMAS: ["pt"], PADRAO: "pt" };
+
+  /* ==========================================================================
+     0 · Idioma
+     ==========================================================================
+     Dois idiomas, como são dois temas. A escolha entra na URL (?lang=en) para
+     o link ser compartilhável, e fica no localStorage para a próxima visita.
+
+     `t()` aceita as duas formas que o conteúdo assume: uma chave do dicionário
+     ("nav.cases") ou o próprio par { pt, en } escrito dentro do cases.js, ao
+     lado do texto original. Faltando a tradução, devolve o português — um
+     campo sem `en` aparece em português em vez de sumir da tela.
+     ========================================================================== */
+
+  const IDIOMA_PADRAO = I18N.PADRAO || "pt";
+  const CHAVE_IDIOMA = "lra-lang";
+
+  function lerIdioma() {
+    try {
+      const naUrl = new URLSearchParams(location.search).get("lang");
+      if (I18N.IDIOMAS.includes(naUrl)) return naUrl;
+      const salvo = localStorage.getItem(CHAVE_IDIOMA);
+      if (I18N.IDIOMAS.includes(salvo)) return salvo;
+    } catch (e) {}
+    return IDIOMA_PADRAO;
+  }
+
+  let idioma = lerIdioma();
+
+  function t(valor) {
+    if (valor == null) return "";
+    // Par escrito no cases.js, junto do conteúdo.
+    if (typeof valor === "object") return valor[idioma] ?? valor[IDIOMA_PADRAO] ?? "";
+    // Chave do dicionário. Se não existir, o próprio texto passa adiante —
+    // assim dá para usar t() em qualquer lugar sem quebrar nada.
+    const entrada = I18N.UI[valor];
+    if (!entrada) return String(valor);
+    return entrada[idioma] ?? entrada[IDIOMA_PADRAO] ?? "";
+  }
+
+  /* Percorre o documento aplicando o dicionário. Os atributos dizem onde o
+     texto entra: no conteúdo, no innerHTML (quando há <strong> ou <br>), ou
+     num atributo de acessibilidade. */
+  function traduzirDocumento(raiz = document) {
+    $$("[data-i18n]", raiz).forEach((el) => { el.textContent = t(el.dataset.i18n); });
+    $$("[data-i18n-html]", raiz).forEach((el) => { el.innerHTML = t(el.dataset.i18nHtml); });
+    $$("[data-i18n-aria]", raiz).forEach((el) => { el.setAttribute("aria-label", t(el.dataset.i18nAria)); });
+    $$("[data-i18n-title]", raiz).forEach((el) => { el.setAttribute("title", t(el.dataset.i18nTitle)); });
+    $$("[data-i18n-alt]", raiz).forEach((el) => { el.setAttribute("alt", t(el.dataset.i18nAlt)); });
+  }
+
+  function aplicarIdioma(novo, { navegar = false } = {}) {
+    idioma = I18N.IDIOMAS.includes(novo) ? novo : IDIOMA_PADRAO;
+    try { localStorage.setItem(CHAVE_IDIOMA, idioma); } catch (e) {}
+
+    document.documentElement.lang = idioma === "en" ? "en" : "pt-BR";
+    traduzirDocumento();
+
+    const descricao = $('meta[name="description"]');
+    if (descricao) descricao.setAttribute("content", t("meta.descricao"));
+
+    if (navegar) {
+      // Mantém hash e demais parâmetros; só o idioma entra ou sai da URL.
+      const url = new URL(location.href);
+      if (idioma === IDIOMA_PADRAO) url.searchParams.delete("lang");
+      else url.searchParams.set("lang", idioma);
+      history.replaceState(history.state, "", url);
+
+      // O conteúdo montado por JS (cards e case aberto) precisa ser refeito.
+      renderCaseCards();
+      render(parseRoute(), { restore: window.scrollY });
+    }
+  }
 
   /* "Meu envolvimento" abre todo case que tem os dados. A seção é gerada
      aqui, e não escrita à mão em cases.js, para ficar sempre em primeiro
@@ -20,8 +93,8 @@
       // Não pode ser "envolvimento": esse id é da seção da home, que continua
       // no documento (só escondida) enquanto um case está aberto.
       id: "meu-envolvimento",
-      nav: "Meu Envolvimento",
-      title: "Meu envolvimento",
+      nav: { pt: "Meu Envolvimento", en: "My Involvement" },
+      title: { pt: "Meu envolvimento", en: "My involvement" },
       blocks: [{ type: "involvement", items: c.involvement }]
     });
   });
@@ -31,9 +104,14 @@
   const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
   const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)");
 
-  /* Escapa texto vindo dos dados antes de injetar como HTML. */
+  /* Escapa texto vindo dos dados antes de injetar como HTML.
+
+     Resolve o idioma antes de escapar: assim todo `esc(...)` já existente
+     aceita tanto uma string quanto o par { pt, en } do cases.js, sem precisar
+     marcar um a um os quarenta pontos onde o conteúdo entra no HTML. Valores
+     que não são texto traduzível (slug, href, id, classe) passam intactos. */
   const esc = (s = "") =>
-    String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+    String(t(s)).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 
   /* Logotipo do cliente nas duas versões; o CSS mostra a que combina com o
      tema ativo. Só a versão visível carrega o texto alternativo, para o
@@ -176,7 +254,7 @@
 
     positionThumb();
 
-    if (announce) toast(tema === "light" ? "Tema claro" : "Tema escuro");
+    if (announce) toast(t(tema === "light" ? "toast.temaClaro" : "toast.temaEscuro"));
   }
 
   themeSwitch.addEventListener("click", (e) => {
@@ -362,10 +440,10 @@
       const ids = new Set(
         c.involvement.filter((x) => x.level === nivel).map((x) => x.area)
       );
-      const nomes = ENVOLVIMENTO.frentes.filter((f) => ids.has(f.id)).map((f) => f.curto);
+      const nomes = ENVOLVIMENTO.frentes.filter((f) => ids.has(f.id)).map((f) => t(f.curto));
       if (!nomes.length) return "";
       return nomes.length > 1
-        ? `${nomes.slice(0, -1).join(", ")} e ${nomes[nomes.length - 1]}`
+        ? `${nomes.slice(0, -1).join(", ")} ${t("lista.conector")} ${nomes[nomes.length - 1]}`
         : nomes[0];
     };
 
@@ -376,15 +454,20 @@
     const acompanha = frentesDe("acompanha");
     // Ponto e vírgula entre as duas: com "e" a frase ficaria com dois "e"
     // seguidos ("decisões de produto e acompanhei pesquisa e produção").
+    // Em inglês o segundo verbo não muda de caixa no meio da frase, então a
+    // forma minúscula só é aplicada quando o idioma a distingue.
+    const seguido = t("papel.acompanhei");
     const resto = [
-      contribui ? `Contribuí em ${contribui}` : "",
-      acompanha ? `${contribui ? "a" : "A"}companhei ${acompanha}` : ""
+      contribui ? `${t("papel.contribuiEm")} ${contribui}` : "",
+      acompanha
+        ? `${contribui ? seguido.charAt(0).toLowerCase() + seguido.slice(1) : seguido} ${acompanha}`
+        : ""
     ]
       .filter(Boolean)
       .join("; ");
 
     return (
-      `<p class="case-card__papel"><span>Liderei</span> ${esc(lidera)}</p>` +
+      `<p class="case-card__papel"><span>${esc(t("papel.liderei"))}</span> ${esc(lidera)}</p>` +
       (resto ? `<p class="case-card__papel case-card__papel--resto">${esc(resto)}</p>` : "")
     );
   }
@@ -394,7 +477,7 @@
       (c, i) => `
       <a class="case-card reveal" href="#/case/${esc(c.slug)}" data-goto="${esc(c.slug)}"
          style="--reveal-delay:${i * 80}ms"
-         aria-label="Abrir o case ${esc(c.title)}">
+         aria-label="${esc(t("cases.abrir"))} ${esc(t(c.title))}">
         <p class="case-card__meta">
           <span class="case-card__idx">${esc(c.index)}</span>
           <span class="case-card__dot" aria-hidden="true">·</span>
@@ -402,29 +485,29 @@
           ${c.clientAlso ? `<span class="case-card__also">· ${esc(c.clientAlso)}</span>` : ""}
         </p>
 
-        <div class="tags">${c.tags.map((t) => `<span class="tag">${esc(t)}</span>`).join("")}</div>
+        <div class="tags">${c.tags.map((tag) => `<span class="tag">${esc(t(tag))}</span>`).join("")}</div>
 
         <div class="case-card__grid">
           <div class="case-card__col-a">
             <div>
               <div class="case-card__brand">${logoHTML(c.logo, c.logoAlt)}</div>
-              <h3 class="case-card__title">${esc(c.title)}</h3>
-              <p class="case-card__desc">${esc(c.summary)}</p>
+              <h3 class="case-card__title">${esc(t(c.title))}</h3>
+              <p class="case-card__desc">${esc(t(c.summary))}</p>
               ${papelHTML(c)}
             </div>
-            <span class="case-card__cta">[ Ver case <em aria-hidden="true">→</em> ]</span>
+            <span class="case-card__cta">[ ${esc(t("cases.verCase"))} <em aria-hidden="true">→</em> ]</span>
           </div>
 
           <div class="case-card__col-b">
             <div class="case-card__thumb${c.thumbFit === "contain" ? " case-card__thumb--contain" : ""}">
-              <img src="${esc(c.thumb)}" alt="${esc(c.thumbAlt)}" loading="lazy" decoding="async">
+              <img src="${esc(c.thumb)}" alt="${esc(t(c.thumbAlt))}" loading="lazy" decoding="async">
             </div>
           </div>
 
           <div class="case-card__col-c">
-            <p class="label">${esc(c.homeKpi.label)}</p>
-            <p class="kpi-hero">${esc(c.homeKpi.value)}</p>
-            <p>${esc(c.homeKpi.note)}</p>
+            <p class="label">${esc(t(c.homeKpi.label))}</p>
+            <p class="kpi-hero">${esc(t(c.homeKpi.value))}</p>
+            <p>${esc(t(c.homeKpi.note))}</p>
           </div>
         </div>
       </a>`
@@ -477,7 +560,7 @@
         .map((t, i) => `<li><b>${String(i + 1).padStart(2, "0")}</b><span>${esc(t)}</span></li>`)
         .join("")}</ol>`,
 
-    bullets: (b) => `<ul class="bullets">${b.items.map((t) => `<li>${esc(t)}</li>`).join("")}</ul>`,
+    bullets: (b) => `<ul class="bullets">${b.items.map((item) => `<li>${esc(item)}</li>`).join("")}</ul>`,
 
     figure: (b) => figureHTML(b),
 
@@ -557,7 +640,7 @@
         )
         .join("")}</div>`,
 
-    chips: (b) => `<div class="chips">${b.items.map((t) => `<span class="chip">${esc(t)}</span>`).join("")}</div>`,
+    chips: (b) => `<div class="chips">${b.items.map((item) => `<span class="chip">${esc(item)}</span>`).join("")}</div>`,
 
     kpiCards: (b) =>
       `<div class="kpi-cards">${b.items
@@ -630,16 +713,16 @@
           return `
         <section class="envolv__grupo" data-nivel="${esc(nivel)}">
           <div class="envolv__cabeca">
-            <h3 class="envolv__nivel">${esc(n.nome)}</h3>
-            <span class="envolv__conta">${String(frentes.length).padStart(2, "0")} de ${String(total).padStart(2, "0")}</span>
-            <p class="envolv__desc">${esc(n.descricao)}</p>
+            <h3 class="envolv__nivel">${esc(t(n.nome))}</h3>
+            <span class="envolv__conta">${String(frentes.length).padStart(2, "0")} ${esc(t("envolv.de"))} ${String(total).padStart(2, "0")}</span>
+            <p class="envolv__desc">${esc(t(n.descricao))}</p>
           </div>
           <dl class="envolv__itens">${frentes
             .map(
               (f) => `
             <div class="envolv__item">
-              <dt>${esc(f.nome)}</dt>
-              <dd>${esc(porFrente.get(f.id).note)}</dd>
+              <dt>${esc(t(f.nome))}</dt>
+              <dd>${esc(t(porFrente.get(f.id).note))}</dd>
             </div>`
             )
             .join("")}</dl>
@@ -674,13 +757,13 @@
     if (!target) return "";
     const isPrev = dir === "prev";
     const arrow = `<em aria-hidden="true">${isPrev ? "←" : "→"}</em>`;
-    const word = isPrev ? "Case anterior" : "Próximo case";
+    const word = t(isPrev ? "pager.anterior" : "pager.proximo");
 
     return `
       <a class="case-pager__item case-pager__item--${dir}" href="#/case/${esc(target.slug)}" data-goto="${esc(target.slug)}">
         <span class="case-pager__body">
           <span class="case-pager__dir">${isPrev ? `${arrow} ${word}` : `${word} ${arrow}`}</span>
-          <span class="case-pager__title">${esc(target.title)}</span>
+          <span class="case-pager__title">${esc(t(target.title))}</span>
           <span class="case-pager__client">${esc(target.client)}</span>
         </span>
         <span class="case-pager__thumb">
@@ -697,33 +780,33 @@
     return `
       <div class="case-top">
         <button type="button" class="back-link" data-goto="/">
-          <em aria-hidden="true">←</em> Voltar para cases
+          <em aria-hidden="true">←</em> ${esc(t("case.voltar"))}
         </button>
-        <span class="case-card__idx">Case ${esc(c.index)} / 03</span>
+        <span class="case-card__idx">${esc(t("case.rotulo"))} ${esc(c.index)} / 03</span>
       </div>
 
       <header class="case-hero">
         <div class="reveal">${logoHTML(c.logo, c.logoAlt)}</div>
 
-        <h1 class="case-title reveal" style="--reveal-delay:60ms">${esc(c.shortTitle)}</h1>
+        <h1 class="case-title reveal" style="--reveal-delay:60ms">${esc(t(c.shortTitle))}</h1>
 
         <div class="tags reveal" style="--reveal-delay:120ms">
-          ${c.heroTags.map((t) => `<span class="tag">${esc(t)}</span>`).join("")}
+          ${c.heroTags.map((tag) => `<span class="tag">${esc(t(tag))}</span>`).join("")}
         </div>
 
         <div class="kpi-grid reveal" style="--reveal-delay:180ms">
           ${c.kpis
-            .map((k) => `<div><p class="kpi-grid__num">${esc(k.value)}</p><p>${esc(k.note)}</p></div>`)
+            .map((k) => `<div><p class="kpi-grid__num">${esc(t(k.value))}</p><p>${esc(t(k.note))}</p></div>`)
             .join("")}
         </div>
       </header>
 
       <div class="case-body">
-        <nav class="case-nav" id="case-nav" aria-label="Seções do case">
+        <nav class="case-nav" id="case-nav" aria-label="${esc(t("case.secoes"))}">
           ${c.sections
             .map(
               (s, i) =>
-                `<a href="#${esc(s.id)}" data-section="${esc(s.id)}" ${i === 0 ? 'aria-current="true"' : ""}>${esc(s.nav)}</a>`
+                `<a href="#${esc(s.id)}" data-section="${esc(s.id)}" ${i === 0 ? 'aria-current="true"' : ""}>${esc(t(s.nav))}</a>`
             )
             .join("")}
         </nav>
@@ -740,7 +823,7 @@
             <rect class="case-fab__indice-ativo" x="0" y="4.5" width="9" height="1" rx="0.5"/>
             <rect x="0" y="9" width="14" height="1" rx="0.5"/>
           </svg>
-          <span class="case-fab__label" data-fab-label>Seções</span>
+          <span class="case-fab__label" data-fab-label>${esc(t("case.secoesFab"))}</span>
           <span class="case-fab__count" data-fab-count aria-hidden="true"></span>
           <span class="case-fab__caret" aria-hidden="true">▴</span>
         </button>
@@ -750,7 +833,7 @@
             .map(
               (s, i) => `
             <section class="case-section reveal" id="${esc(s.id)}" aria-labelledby="h-${esc(s.id)}">
-              <h2 id="h-${esc(s.id)}">${esc(s.title)}</h2>
+              <h2 id="h-${esc(s.id)}">${esc(t(s.title))}</h2>
               ${s.blocks.map(renderBlock).join("")}
             </section>
             ${i < c.sections.length - 1 ? '<hr class="rule">' : ""}`
@@ -761,7 +844,7 @@
 
       <nav class="case-pager" aria-label="Navegar entre cases">
         <div class="case-pager__head">
-          <h2 class="eyebrow">Continue explorando</h2>
+          <h2 class="eyebrow">${esc(t("pager.titulo"))}</h2>
           <span>${esc(c.index)} de 03</span>
         </div>
         <div class="case-pager__grid${prev && next ? "" : " case-pager__grid--single"}">
@@ -841,7 +924,7 @@
       // Dentro de um case nenhuma seção da home está ativa.
       $$("[data-spy]", mainNav).forEach((a) => a.setAttribute("aria-current", "false"));
       atualizarNavDaHome();
-      document.title = `${c.title} · Ludgero Ricardo Abilino`;
+      document.title = `${t(c.title)} · Ludgero Ricardo Abilino`;
 
       animarEntrada(viewCase);
 
@@ -996,7 +1079,7 @@
     const marcarNoBotao = (id) => {
       const i = c.sections.findIndex((s) => s.id === id);
       if (i < 0) return;
-      rotulo.textContent = c.sections[i].nav;
+      rotulo.textContent = t(c.sections[i].nav);
       contador.textContent = `${String(i + 1).padStart(2, "0")}/${total}`;
     };
     marcarNoBotao(c.sections[0].id);
@@ -1344,6 +1427,116 @@
   });
 
   /* ==========================================================================
+     10.1 · Rolagem com inércia
+     ==========================================================================
+     Só a roda do mouse e do trackpad. O dedo na tela já tem inércia nativa,
+     melhor que qualquer imitação, e o teclado precisa continuar previsível.
+
+     A posição continua sendo a do documento: a cada quadro isto chama
+     `window.scrollTo`, não desloca um invólucro com `transform`. Essa é a
+     diferença que importa aqui — é o que as bibliotecas de scroll suave fazem,
+     e um ancestral com transform vira bloco de contenção, o que quebraria o
+     hero preso (`sticky`) e o fundo `fixed`. Tudo que lê `window.scrollY` —
+     a barra de progresso, o scrollspy, a prisão do hero — segue funcionando
+     sem saber que isto existe.
+
+     Guardamos a posição como número fracionário: `window.scrollY` vem
+     arredondado, e no fim do percurso o passo calculado ficaria abaixo de 1px,
+     travando a animação antes de encostar no alvo. */
+  (function rolagemComInercia() {
+    // Quanto do caminho restante é vencido por quadro. Mais alto, mais seco;
+    // mais baixo, mais deslizante. Em 0.08 o movimento cobre 95% da distância
+    // em torno de 36 quadros — cerca de 0,6s a 60Hz.
+    const FATOR = 0.08;
+    const PARADA = 0.5;
+    const raiz = document.documentElement;
+
+    let alvo = window.scrollY;
+    let atual = window.scrollY;
+    let animando = false;
+    let nossoScroll = false;
+
+    const limite = () => Math.max(0, raiz.scrollHeight - window.innerHeight);
+    const prender = (v) => Math.max(0, Math.min(v, limite()));
+
+    /* A roda dentro de algo que rola por conta própria — o menu do mobile, uma
+       tabela larga, o lightbox — é do elemento, não da página. */
+    function temRolagemPropria(alvoDoEvento, direcao) {
+      let el = alvoDoEvento;
+      while (el && el !== document.body && el !== raiz) {
+        if (el.nodeType === 1) {
+          const e = getComputedStyle(el);
+          const rolaY = /(auto|scroll)/.test(e.overflowY) && el.scrollHeight > el.clientHeight;
+          if (rolaY) {
+            const noTopo = el.scrollTop <= 0;
+            const naBase = el.scrollTop + el.clientHeight >= el.scrollHeight - 1;
+            // Só cede a vez se o elemento ainda tem para onde ir naquele sentido.
+            if ((direcao < 0 && !noTopo) || (direcao > 0 && !naBase)) return true;
+          }
+        }
+        el = el.parentElement;
+      }
+      return false;
+    }
+
+    function passo() {
+      const resto = alvo - atual;
+      if (Math.abs(resto) < PARADA) {
+        atual = alvo;
+        nossoScroll = true;
+        window.scrollTo(0, atual);
+        animando = false;
+        raiz.style.scrollBehavior = "";
+        return;
+      }
+      atual += resto * FATOR;
+      nossoScroll = true;
+      window.scrollTo(0, atual);
+      requestAnimationFrame(passo);
+    }
+
+    function aoGirar(e) {
+      if (prefersReduced.matches) return;
+      if (e.ctrlKey) return;                 // zoom do navegador
+      if (!drawer.hidden || !lb.hidden) return;
+      // Gesto horizontal — shift + roda, ou trackpad de lado — é de quem
+      // estiver embaixo: uma tabela larga, um bloco de código. Sem esta saída
+      // o preventDefault abaixo mataria essa rolagem sem substituí-la.
+      if (Math.abs(e.deltaX) >= Math.abs(e.deltaY)) return;
+      if (temRolagemPropria(e.target, Math.sign(e.deltaY))) return;
+
+      // deltaMode 1 conta linhas e 2 conta páginas; só o 0 já vem em pixels.
+      const escala = e.deltaMode === 1 ? 16 : e.deltaMode === 2 ? window.innerHeight : 1;
+
+      e.preventDefault();
+      alvo = prender(alvo + e.deltaY * escala);
+      if (!animando) {
+        animando = true;
+        // A rolagem suave do CSS animaria cada passo nosso, brigando com este
+        // laço. Fica suspensa enquanto a inércia corre.
+        raiz.style.scrollBehavior = "auto";
+        atual = window.scrollY;
+        requestAnimationFrame(passo);
+      }
+    }
+
+    /* Âncora, teclado, botão de voltar ao topo, restauração de rota: qualquer
+       rolagem que não seja nossa reposiciona o alvo, senão o próximo giro da
+       roda puxaria a página de volta para onde a inércia tinha parado. */
+    window.addEventListener(
+      "scroll",
+      () => {
+        if (nossoScroll) { nossoScroll = false; return; }
+        if (!animando) { alvo = atual = window.scrollY; }
+      },
+      { passive: true }
+    );
+
+    window.addEventListener("resize", () => { alvo = prender(alvo); }, { passive: true });
+    window.addEventListener("wheel", aoGirar, { passive: false });
+  })();
+
+  /* ==========================================================================
      11 · Miudezas
      ========================================================================== */
 
@@ -1352,7 +1545,7 @@
     const email = copyBtn.dataset.email;
     try {
       await navigator.clipboard.writeText(email);
-      toast("E-mail copiado");
+      toast(t("toast.emailCopiado"));
       copyBtn.dataset.copied = "true";
       setTimeout(() => { copyBtn.dataset.copied = "false"; }, 1800);
     } catch (e) {
@@ -1364,7 +1557,7 @@
   window.addEventListener("hashchange", () => $$("video").forEach((v) => v.pause()));
 
   $("#lang-btn").addEventListener("click", () => {
-    toast("Versão em inglês em breve");
+    aplicarIdioma(idioma === "pt" ? "en" : "pt", { navegar: true });
   });
 
   /* Atalho: T alterna o tema. */
@@ -1497,6 +1690,10 @@
     );
     cards.forEach((c) => cardSpy.observe(c));
   }
+
+  // Antes do primeiro render: os cards e o case são montados já no idioma
+  // certo, sem piscar em português.
+  aplicarIdioma(idioma);
 
   renderCaseCards();
   render(parseRoute());
