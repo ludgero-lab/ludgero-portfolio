@@ -348,16 +348,45 @@
      corrida. É a versão curta do bloco "Meu envolvimento" que abre o case —
      na home ela diz a amplitude sem virar autoavaliação, porque não atribui
      nível a nada, só nomeia o que foi meu. */
+  /* A versão curta do bloco "Meu envolvimento", para o card da home.
+     A linha de cima traz as frentes lideradas; a de baixo, as demais.
+     Sem a segunda linha o card do Benkyou anunciava só as quatro frentes
+     que ele liderou e calava sobre as outras três — quem lesse apenas a
+     home veria liderança contínua nos três cases, que não é o caso. */
   function papelHTML(c) {
     if (!c.involvement) return "";
-    const lidera = new Set(
-      c.involvement.filter((x) => x.level === "lidera").map((x) => x.area)
+
+    // As frentes de um nível, na ordem de ENVOLVIMENTO.frentes (não na do
+    // case), já escritas como lista: "a, b e c".
+    const frentesDe = (nivel) => {
+      const ids = new Set(
+        c.involvement.filter((x) => x.level === nivel).map((x) => x.area)
+      );
+      const nomes = ENVOLVIMENTO.frentes.filter((f) => ids.has(f.id)).map((f) => f.curto);
+      if (!nomes.length) return "";
+      return nomes.length > 1
+        ? `${nomes.slice(0, -1).join(", ")} e ${nomes[nomes.length - 1]}`
+        : nomes[0];
+    };
+
+    const lidera = frentesDe("lidera");
+    if (!lidera) return "";
+
+    const contribui = frentesDe("contribui");
+    const acompanha = frentesDe("acompanha");
+    // Ponto e vírgula entre as duas: com "e" a frase ficaria com dois "e"
+    // seguidos ("decisões de produto e acompanhei pesquisa e produção").
+    const resto = [
+      contribui ? `Contribuí em ${contribui}` : "",
+      acompanha ? `${contribui ? "a" : "A"}companhei ${acompanha}` : ""
+    ]
+      .filter(Boolean)
+      .join("; ");
+
+    return (
+      `<p class="case-card__papel"><span>Liderei</span> ${esc(lidera)}</p>` +
+      (resto ? `<p class="case-card__papel case-card__papel--resto">${esc(resto)}</p>` : "")
     );
-    const nomes = ENVOLVIMENTO.frentes.filter((f) => lidera.has(f.id)).map((f) => f.curto);
-    if (!nomes.length) return "";
-    const lista =
-      nomes.length > 1 ? `${nomes.slice(0, -1).join(", ")} e ${nomes[nomes.length - 1]}` : nomes[0];
-    return `<p class="case-card__papel"><span>Liderei</span> ${esc(lista)}</p>`;
   }
 
   function renderCaseCards() {

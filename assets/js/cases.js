@@ -442,8 +442,10 @@
     shortTitle: "Plataforma de aprendizagem gamificada e imersiva",
     summary:
       "Arquitetura de produto multi-tenant com ambientes 3D customizados, alcançando crescimento consistente por 5 temporadas consecutivas.",
-    thumb: `${IMG}/home/case-benkyou.jpg`,
-    thumbAlt: "Ambiente 3D da plataforma Benkyou Game",
+    // Aponta direto para o arquivo do case, como o totem faz no Votorantim,
+    // em vez de uma segunda cópia em img/home.
+    thumb: `${IMG}/benkyou/perfil-jogador.jpg`,
+    thumbAlt: "Tela de perfil do jogador da plataforma Benkyou Game, com avatar, progresso, pontos e rankings",
     tags: ["UX/UI Design", "B2B2C", "Plataformas Escaláveis"],
     heroTags: ["B2B", "UX/UI Design", "Game Design", "2021 — 2025"],
     homeKpi: { label: "KPI Principal", value: "2.700", note: "jogadores ativos e +84% de crescimento" },

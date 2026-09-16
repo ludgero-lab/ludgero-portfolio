@@ -931,6 +931,13 @@ body:has(.site-header[data-hidden="true"]) .section-head { top: 0; }
   line-height: 1.6;
   color: var(--fg-3);
 }
+/* Um degrau abaixo da linha das frentes lideradas: está lá para completar o
+   quadro, não para disputar a leitura com ela. */
+.case-card__papel--resto {
+  margin-top: 4px;
+  font-size: 12px;
+  color: var(--fg-2);
+}
 .case-card__papel span {
   margin-right: 8px;
   font-size: 10px;
