@@ -640,7 +640,7 @@
     shortTitle: { pt: "Plataforma de aprendizagem gamificada e imersiva",
                   en: "Gamified and immersive learning platform" },
     summary: {
-      pt: "Arquitetura de produto multi-tenant com ambientes 3D customizados, alcançando crescimento consistente por 5 temporadas consecutivas.",
+      pt: "Arquitetura de produto multi-cliente com ambientes 3D customizados, alcançando crescimento consistente por 5 temporadas consecutivas.",
       en: "A multi-tenant product architecture with custom 3D environments, growing steadily across 5 consecutive seasons."
     },
     // Aponta direto para o arquivo do case, como o totem faz no Votorantim,
