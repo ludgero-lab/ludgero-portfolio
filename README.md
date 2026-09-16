@@ -16,6 +16,30 @@ powershell -ExecutionPolicy Bypass -File serve.ps1 -Port 5173
 
 Depois acesse `http://localhost:5173`.
 
+## Ao publicar: trocar o `?v=`
+
+O `index.html` carrega o CSS e os quatro scripts com um parâmetro de versão:
+
+```html
+<link rel="stylesheet" href="assets/css/styles.css?v=20260916a">
+<script src="assets/js/app.js?v=20260916a"></script>
+```
+
+**São cinco ocorrências, e todas precisam do mesmo valor.** Sempre que
+`styles.css` ou qualquer `.js` mudar, o valor muda junto — data da publicação
+mais uma letra, para o caso de duas no mesmo dia.
+
+O motivo: o GitHub Pages serve tudo com `Cache-Control: max-age=600`. Sem a
+versão, quem visitou o site nos últimos dez minutos recebia o HTML novo com o
+CSS e o JS antigos, e a página quebrava sem avisar — a faixa de Tecnologia sem
+as regras de flex, as capas dos cards ainda alinhadas ao topo. Aconteceu duas
+vezes antes de o parâmetro existir.
+
+O que a versão **não** faz é tornar a publicação instantânea: o próprio HTML
+continua em cache por até dez minutos. O que ela garante é que HTML e assets
+andem juntos — cada HTML só pede os arquivos da sua própria safra. Passados os
+dez minutos, tudo chega novo de uma vez, em vez de misturado.
+
 ## Estrutura
 
 ```
