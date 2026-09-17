@@ -57,6 +57,7 @@
     $$("[data-i18n-aria]", raiz).forEach((el) => { el.setAttribute("aria-label", t(el.dataset.i18nAria)); });
     $$("[data-i18n-title]", raiz).forEach((el) => { el.setAttribute("title", t(el.dataset.i18nTitle)); });
     $$("[data-i18n-alt]", raiz).forEach((el) => { el.setAttribute("alt", t(el.dataset.i18nAlt)); });
+    $$("[data-i18n-href]", raiz).forEach((el) => { el.setAttribute("href", t(el.dataset.i18nHref)); });
   }
 
   function aplicarIdioma(novo, { navegar = false } = {}) {

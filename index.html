@@ -42,7 +42,7 @@
      uma vez, em vez de misturado.
 
      Formato: data da publicação e uma letra, para o caso de duas no mesmo dia. -->
-<link rel="stylesheet" href="assets/css/styles.css?v=20260916f">
+<link rel="stylesheet" href="assets/css/styles.css?v=20260916g">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='18' fill='%23000'/><text x='50' y='68' font-family='Barlow,sans-serif' font-weight='900' font-size='46' fill='%23fff' text-anchor='middle'>LRA</text></svg>">
 
 <script>
@@ -295,6 +295,26 @@
             <h3 class="eyebrow" data-i18n="sobre.busco.titulo">O Que Busco</h3>
             <p data-i18n="sobre.busco.texto">Procuro equipes maduras em que o design participa de forma estratégica das decisões e existe espaço para colaboração, aprendizado e conversas honestas. Quero continuar evoluindo ao lado de pessoas boas, contribuindo com minha experiência para construir produtos digitais que resolvam problemas reais e gerem impacto consistente para o negócio.</p>
             <p class="about__closer" data-i18n="sobre.busco.fecho">Se essa forma de pensar design e produto combina com os desafios da sua equipe, vamos conversar.</p>
+            <!-- A mensagem já vem escrita no campo do WhatsApp, no idioma da
+                 página: quem clica só precisa enviar. O link troca junto com
+                 o idioma, pelo data-i18n-href. -->
+            <a class="cta-colchete"
+               href="https://wa.me/5541996556391?text=Ol%C3%A1%2C%20Ludgero!%20Vi%20seu%20portf%C3%B3lio%20e%20gostaria%20de%20conversar."
+               data-i18n-href="sobre.whatsLink"
+               target="_blank" rel="noopener noreferrer">
+              <span aria-hidden="true">[</span>
+              <span data-i18n="sobre.whats">Fale comigo no WhatsApp</span>
+              <!-- Seta na diagonal, não para o lado: aqui o clique sai do site
+                   e abre outro aplicativo, e é essa a convenção para link
+                   externo. A seta reta do "Ver case" fica para navegar dentro
+                   do portfólio. Desenhada em SVG porque o glifo ↗ da fonte
+                   sai fino e em outra altura que a do texto. -->
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M7 17 17 7M8.5 7H17v8.5"/>
+              </svg>
+              <span aria-hidden="true">]</span>
+              <span class="sr-only" data-i18n="sobre.whatsNota">(abre em nova aba)</span>
+            </a>
           </div>
 
           <div class="about__block reveal">
@@ -406,10 +426,10 @@
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <!-- O mesmo ?v= do <link> do <head>. Ver a nota lá sobre por que existe. -->
-<script src="assets/js/i18n.js?v=20260916f"></script>
-<script src="assets/js/tool-icons.js?v=20260916f"></script>
-<script src="assets/js/cases.js?v=20260916f"></script>
-<script src="assets/js/app.js?v=20260916f"></script>
+<script src="assets/js/i18n.js?v=20260916g"></script>
+<script src="assets/js/tool-icons.js?v=20260916g"></script>
+<script src="assets/js/cases.js?v=20260916g"></script>
+<script src="assets/js/app.js?v=20260916g"></script>
 
 <!-- Cloudflare Web Analytics: sem cookies e sem identificar ninguém, então
      não exige aviso de consentimento.

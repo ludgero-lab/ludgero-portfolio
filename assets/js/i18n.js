@@ -114,6 +114,16 @@
       pt: "Procuro equipes maduras em que o design participa de forma estratégica das decisões e existe espaço para colaboração, aprendizado e conversas honestas. Quero continuar evoluindo ao lado de pessoas boas, contribuindo com minha experiência para construir produtos digitais que resolvam problemas reais e gerem impacto consistente para o negócio.",
       en: "I'm looking for mature teams where design takes part in decisions strategically and there is room for collaboration, learning and honest conversations. I want to keep growing alongside good people, bringing my experience to build digital products that solve real problems and deliver consistent impact for the business."
     },
+    "sobre.whats":      { pt: "Fale comigo no WhatsApp", en: "Message me on WhatsApp" },
+    "sobre.whatsNota":  { pt: "(abre em nova aba)",    en: "(opens in a new tab)" },
+    // Mensagem pré-preenchida, já codificada para URL.
+    // pt: "Olá, Ludgero! Vi seu portfólio e gostaria de conversar."
+    // en: "Hi Ludgero! I saw your portfolio and would like to talk."
+    "sobre.whatsLink": {
+      pt: "https://wa.me/5541996556391?text=Ol%C3%A1%2C%20Ludgero!%20Vi%20seu%20portf%C3%B3lio%20e%20gostaria%20de%20conversar.",
+      en: "https://wa.me/5541996556391?text=Hi%20Ludgero!%20I%20saw%20your%20portfolio%20and%20would%20like%20to%20talk."
+    },
+
     "sobre.busco.fecho": {
       pt: "Se essa forma de pensar design e produto combina com os desafios da sua equipe, vamos conversar.",
       en: "If this way of thinking about design and product fits your team's challenges, let's talk."

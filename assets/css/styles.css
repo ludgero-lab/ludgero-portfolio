@@ -1221,6 +1221,36 @@ body:has(.site-header[data-hidden="true"]) .section-head { top: 0; }
   max-width: 34ch;
 }
 
+/* Resposta direta ao convite logo acima ("vamos conversar"), na mesma
+   gramática do "[ Ver case → ]" dos cards: colchetes, caixa alta espaçada e a
+   seta que avança no hover. Mesmos tokens, para as duas ações se lerem como
+   uma família. A diferença é que aqui o hover é do próprio link, e não de um
+   card inteiro em volta dele. */
+.cta-colchete {
+  margin-top: 28px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--fg-6);
+  transition: color 260ms var(--ease);
+}
+.cta-colchete:hover,
+.cta-colchete:focus-visible { color: var(--fg); }
+.cta-colchete svg {
+  width: 11px;
+  height: 11px;
+  flex: none;
+  transition: transform 320ms var(--ease-out);
+}
+/* A seta avança na direção em que aponta. */
+.cta-colchete:hover svg,
+.cta-colchete:focus-visible svg { transform: translate(3px, -3px); }
+
 /* Linha de experiência como na referência: o cargo em destaque, uma única
    linha de apoio com os atributos separados por ponto médio, e a data
    ancorada na borda direita da coluna. */
