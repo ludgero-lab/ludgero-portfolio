@@ -292,7 +292,6 @@
         blocks: [
           {
             type: "p",
-            lead: true,
             text: {
               pt: "O maior aprendizado foi entender que a proposta mais simples nem sempre é a mais eficaz. Um vídeo passivo comum teria cumprido o briefing inicial, mas a experiência interativa desenhada cumpriu o verdadeiro objetivo de negócio: mudar o comportamento em campo.",
               en: "The biggest lesson was that the simplest proposal is not always the most effective one. An ordinary passive video would have met the initial brief, but the interactive experience we designed met the real business goal: changing behavior in the field."
@@ -613,7 +612,6 @@
         blocks: [
           {
             type: "p",
-            lead: true,
             text: {
               pt: "Este projeto consolidou a importância de escalar o design instrucional através de metodologias ágeis e do uso consciente de IA. Liderar um projeto end-to-end — desde a concepção pedagógica até a direção de arte e entrega técnica — demonstrou que a inovação didática é o motor principal para transformar a cultura de segurança operacional de uma organização.",
               en: "This project made clear how much instructional design gains from agile methods and from a deliberate use of AI. Leading it end to end — from the pedagogical concept through art direction to technical delivery — showed that innovation in teaching is the main engine for changing an organization's operational safety culture."
@@ -1023,7 +1021,6 @@
         blocks: [
           {
             type: "p",
-            lead: true,
             text: {
               pt: "Construir uma plataforma do zero em um contexto de startup, com demandas crescentes e prazos curtos, exigiu constantes adaptações entre o ideal em design e o que era tecnicamente viável. Uma das principais tensões esteve na relação com o desenvolvimento, que frequentemente priorizava funcionalidades de back-end em detrimento de melhorias de usabilidade e interface, como no sistema de recompensas. Aprendi a negociar escopo sem abrir mão do raciocínio de UX, documentando propostas mesmo quando não eram implementadas. Em retrospecto, a ausência de validações formais com usuários também foi um ponto de aprendizado, especialmente em fluxos como onboarding e navegação pelo mapa 3D. Por fim, trabalhar em um produto que se reinventava a cada temporada ampliou minha capacidade de pensar em sistemas, e não apenas em telas isoladas.",
               en: "Building a platform from scratch in a startup context, with growing demand and short deadlines, meant constantly negotiating between the ideal design and what was technically feasible. One of the main tensions was with engineering, which often prioritized back-end features over improvements to usability and interface — the rewards system being one example. I learned to negotiate scope without giving up the UX reasoning, documenting proposals even when they were not built. Looking back, the absence of formal validation with users was also a lesson, particularly in flows like onboarding and navigating the 3D map. Finally, working on a product that reinvented itself every season stretched my ability to think in systems rather than in isolated screens."

@@ -566,7 +566,11 @@
   }
 
   const BLOCKS = {
-    p: (b) => `<p${b.lead ? ' style="font-size:18px"' : ""}>${esc(b.text)}</p>`,
+    /* Todo parágrafo de corpo sai no mesmo tamanho. Havia uma variante
+       "lead", em 18px, usada só na abertura das Reflexões de cada case: um
+       parágrafo maior, sozinho, no fim da página, lia como desalinhamento e
+       não como ênfase. A hierarquia fica com os títulos. */
+    p: (b) => `<p>${esc(b.text)}</p>`,
 
     h3: (b) => `<h3>${esc(b.text)}</h3>`,
 
