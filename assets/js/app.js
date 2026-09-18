@@ -438,6 +438,17 @@
      que ele liderou e calava sobre as outras três — quem lesse apenas a
      home veria liderança contínua nos três cases, que não é o caso. */
   function papelHTML(c) {
+    // Texto escrito à mão no case tem precedência sobre o montado. A primeira
+    // linha fica com o peso da linha de liderança; as seguintes, um degrau
+    // abaixo, como a linha de "Contribuí/Acompanhei" dos outros cards.
+    if (c.papelCard) {
+      return c.papelCard
+        .map(
+          (l, i) =>
+            `<p class="case-card__papel${i ? " case-card__papel--resto" : ""}"><span>${esc(l.rotulo)}</span> ${esc(l.texto)}</p>`
+        )
+        .join("");
+    }
     if (!c.involvement) return "";
 
     // As frentes de um nível, na ordem de ENVOLVIMENTO.frentes (não na do

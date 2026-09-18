@@ -20,6 +20,18 @@
     index: "01",
     client: "Votorantim Cimentos",
     shortName: "Votorantim",
+    // Texto próprio para a linha de papel do card da home, no lugar da que o
+    // app.js monta a partir do `involvement`. Existe porque aqui a divisão
+    // com a equipe de tecnologia pede uma frase, e não cabe na lista de
+    // frentes. Cada item é uma linha: rótulo em caixa alta e o texto.
+    papelCard: [
+      { rotulo: { pt: "Liderei", en: "Led" },
+        texto: { pt: "pesquisa, arquitetura do conteúdo, UX, direção visual, decisões de produto e produção",
+                 en: "research, content architecture, UX, visual direction, product decisions and production" } },
+      { rotulo: { pt: "Colaborei", en: "Collaborated" },
+        texto: { pt: "com a equipe de tecnologia na definição de requisitos e validação da implementação",
+                 en: "with the engineering team on defining requirements and validating the implementation" } }
+    ],
     logo: { neg: `${LOGO}/votorantim-neg.svg`, pos: `${LOGO}/votorantim-pos.svg` },
     logoAlt: "Votorantim Cimentos",
     // "Integração", aqui, é o credenciamento do motorista parceiro — em inglês
@@ -78,9 +90,11 @@
       { area: "decisoes", level: "lidera", note: {
         pt: "Conduzi o projeto de ponta a ponta: ajudei a decidir a virada de captação real para animação quando a pandemia inviabilizou o briefing, e propus o formato Top 10, que virou o vídeo Política de Consequências em 2024",
         en: "I led the project end to end: I helped decide the shift from live action to animation when the pandemic made the original brief impossible, and proposed the Top 10 format that became the 2024 video Política de Consequências" } },
-      { area: "tecnologia", level: "lidera", note: {
-        pt: "Adaptei a experiência ao hardware do totem, com o teclado numérico como única entrada, e especifiquei como esses caminhos deveriam ser montados no Adobe Captivate",
-        en: "I adapted the experience to the kiosk hardware, with the numeric keypad as the only input, and specified how those paths should be assembled in Adobe Captivate" } },
+      // "Contribuí", e não "Liderei": a definição técnica foi dividida com a
+      // equipe de tecnologia. É o mesmo que o card da home diz em "Colaborei".
+      { area: "tecnologia", level: "contribui", note: {
+        pt: "Colaborei com a equipe de tecnologia na definição de requisitos e na validação da implementação, adaptando a experiência ao hardware do totem, com o teclado numérico como única entrada",
+        en: "I worked with the engineering team on defining requirements and validating the implementation, adapting the experience to the kiosk hardware, with the numeric keypad as the only input" } },
       // Os nomes da equipe ficam na ficha técnica, não aqui: esta seção
       // responde "o que foi meu". O nível já diz onde a execução foi dividida.
       { area: "producao", level: "lidera", note: {
