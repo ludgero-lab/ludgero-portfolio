@@ -1255,18 +1255,101 @@ body:has(.site-header[data-hidden="true"]) .section-head { top: 0; }
    linha de apoio com os atributos separados por ponto médio, e a data
    ancorada na borda direita da coluna. */
 .exp { margin-top: 32px; }
-.exp__row {
+
+/* Cada entrada da lista — uma linha simples ou o grupo de uma empresa com
+   vários cargos — tem o mesmo respiro e o mesmo filete embaixo.
+
+   Sem realce no hover, de propósito. Nada aqui é clicável, e o fundo que
+   acendia com o deslocamento lateral sugeria uma ação que não existe. A lista
+   é para ler. */
+.exp__row,
+.exp__grupo {
+  padding: 28px 0;
+  border-bottom: 1px solid var(--line-subtle);
+}
+.exp > :first-child { padding-top: 0; }
+.exp > :last-child { border-bottom: 0; }
+
+/* Título à esquerda, período à direita, na mesma linha de base. */
+.exp__row,
+.exp__topo,
+.exp__cargo {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
   gap: 32px;
-  padding: 28px 0;
-  border-bottom: 1px solid var(--line-subtle);
-  transition: padding 300ms var(--ease), background-color 300ms var(--ease);
 }
-.exp__row:first-child { padding-top: 0; }
-.exp__row:last-child { border-bottom: 0; }
-.exp__row:hover { background: var(--bg-elev); padding-inline: 16px; }
+
+/* Os cargos dentro de uma empresa. Um degrau abaixo do item principal —
+   corpo em vez da display, tamanho e tom menores —, para a hierarquia ficar
+   empresa → cargos sem precisar de rótulo.
+
+   O filete vertical costura os cargos e os pontos marcam cada degrau, todos
+   vazados. A mesma gramática da linha do tempo do case Benkyou, onde cada ano
+   é um marco sobre um eixo. */
+.exp__cargos {
+  list-style: none;
+  margin: 20px 0 0;
+  padding: 0 0 0 22px;
+}
+.exp__cargo {
+  position: relative;
+  gap: 24px;
+  padding-block: 10px;
+}
+.exp__cargo::before {
+  content: "";
+  position: absolute;
+  left: -22px;
+  /* Centrado na primeira linha do nome do cargo. */
+  top: calc(10px + 0.75em - 3.5px);
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--bg);
+  border: 1px solid var(--fg-6);
+  transition: background-color 220ms var(--ease), border-color 220ms var(--ease);
+}
+/* A única reação da lista ao mouse: o ponto do cargo sob o ponteiro se
+   preenche. Em repouso todos são vazados, inclusive o do cargo atual — o
+   preenchimento fica sendo só o sinal de onde o olho está. Nada se desloca e
+   nenhum fundo acende —
+   a área continua sendo de leitura; o ponto só marca onde o olho está.
+   Restrito a quem tem mouse: no toque, o ponto ficaria preso aceso. */
+@media (hover: hover) {
+  .exp__cargo:hover::before {
+    background: var(--fg);
+    border-color: var(--fg);
+  }
+}
+/* O filete é feito em trechos, um por cargo, do ponto dele até o ponto do
+   cargo seguinte — assim começa no primeiro e termina exatamente no último,
+   sem sobrar rabo embaixo. Cada cargo tem a mesma estrutura, então 100% da
+   altura dele é a distância certa entre dois pontos. Fica atrás dos pontos,
+   que têm fundo e cobrem a passagem do filete. */
+.exp__cargo:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  left: -19px;
+  top: calc(10px + 0.75em);
+  height: 100%;
+  width: 1px;
+  background: var(--line-strong);
+}
+.exp__cargos { position: relative; z-index: 0; }
+.exp__cargo-nome {
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.5;
+  color: var(--fg-2);
+}
+.exp__cargo-meta {
+  margin-top: 2px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--fg-4);
+}
 
 .exp__role {
   font-family: var(--font-display);
@@ -1283,7 +1366,7 @@ body:has(.site-header[data-hidden="true"]) .section-head { top: 0; }
 }
 /* A data era o texto mais apagado da página (#333 sobre preto, ~2:1).
    Agora usa o mesmo degrau do corpo e numeral tabular para alinhar. */
-.exp__row time {
+.exp time {
   flex: none;
   font-size: 13px;
   letter-spacing: 0.06em;
@@ -1292,6 +1375,8 @@ body:has(.site-header[data-hidden="true"]) .section-head { top: 0; }
   white-space: nowrap;
   text-transform: uppercase;
 }
+/* A data de cada cargo acompanha o degrau abaixo do resto da linha. */
+.exp__cargo time { font-size: 12px; color: var(--fg-4); }
 
 /* ==========================================================================
    Rodapé
@@ -2985,7 +3070,10 @@ body:has(.drawer:not([hidden])) .to-top { opacity: 0; pointer-events: none; }
   .roles__col:last-child { border-bottom: 0; }
   .roles__col--self { padding-left: 14px; }
   .roles__col--self::before { inset: 0 auto 0 0; width: 2px; height: auto; }
-  .exp__row { flex-direction: column; align-items: flex-start; gap: 10px; }
+  .exp__row,
+  .exp__topo { flex-direction: column; align-items: flex-start; gap: 10px; }
+  /* Nos cargos, o período desce para baixo do regime, colado a ele. */
+  .exp__cargo { flex-direction: column; align-items: flex-start; gap: 4px; }
   .site-footer__cols { gap: 40px; }
   .hero { padding-top: 130px; }
   .hero__scroll { display: none; }

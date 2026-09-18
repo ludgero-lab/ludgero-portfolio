@@ -139,12 +139,26 @@
     "exp.3.cargo":      { pt: "UX/UI Designer",           en: "UX/UI Designer" },
     "exp.4.cargo":      { pt: "Designer Digital Pleno",   en: "Mid-Level Digital Designer" },
     "exp.5.cargo":      { pt: "Designer Digital Júnior",  en: "Junior Digital Designer" },
-    "exp.remoto":       { pt: "Benkyou do Brasil · B2B · Remoto",
-                          en: "Benkyou do Brasil · B2B · Remote" },
-    "exp.presencial":   { pt: "Benkyou do Brasil · B2B · Presencial",
-                          en: "Benkyou do Brasil · B2B · On-site" },
-    "exp.presencial2":  { pt: "Benkyou do Brasil · Presencial",
-                          en: "Benkyou do Brasil · On-site" },
+    // Os cargos da Benkyou ficam sob a empresa, então a linha de apoio de cada
+    // um diz só o regime — empresa e segmento já estão no item principal.
+    "exp.remoto":       { pt: "Remoto",     en: "Remote" },
+    "exp.presencial":   { pt: "Presencial", en: "On-site" },
+    "exp.benkyou.meta": { pt: "EdTech · B2B · 10 anos, 5 cargos",
+                          en: "EdTech · B2B · 10 years, 5 roles" },
+    "exp.benkyou.data": { pt: "Abr 2016 – Mar 2026", en: "Apr 2016 – Mar 2026" },
+
+    "exp.paz.cargo":    { pt: "Designer Gráfico", en: "Graphic Designer" },
+    "exp.paz.meta":     { pt: "Paz Comunicação Visual · Presencial",
+                          en: "Paz Comunicação Visual · On-site" },
+    "exp.paz.data":     { pt: "Out 2014 – Ago 2015", en: "Oct 2014 – Aug 2015" },
+
+    // No currículo está "Designer Sócio Proprietário"; aqui com o "e" e o
+    // hífen de sócio-proprietário, que é a forma correta do composto.
+    "exp.3est.cargo":   { pt: "Designer e Sócio-Proprietário", en: "Designer and Co-Owner" },
+    "exp.3est.meta":    { pt: "3est Branding Digital · Presencial",
+                          en: "3est Branding Digital · On-site" },
+    "exp.3est.data":    { pt: "Jan 2013 – Set 2014", en: "Jan 2013 – Sep 2014" },
+
     "exp.1.data":       { pt: "Jan 2024 – Mar 2026", en: "Jan 2024 – Mar 2026" },
     "exp.2.data":       { pt: "Abr 2021 – Jan 2024", en: "Apr 2021 – Jan 2024" },
     "exp.3.data":       { pt: "Mar 2020 – Abr 2021", en: "Mar 2020 – Apr 2021" },
