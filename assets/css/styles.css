@@ -1191,7 +1191,11 @@ body:has(.site-header[data-hidden="true"]) .section-head { top: 0; }
    o cargo e a empresa dentro das linhas de experiência. */
 .about__block > p:not(.eyebrow):not(.about__closer) {
   margin-top: 20px;
-  font-size: 15px;
+  /* 16px, o mesmo corpo de texto dos cases: o site tem um tamanho só para
+     parágrafo. A entrelinha segue mais aberta que a dos cases (1,8 contra
+     1,65) — aqui a linha é mais curta e o texto é contínuo, sem imagens
+     entre os blocos. */
+  font-size: 16px;
   line-height: 1.8;
   color: var(--fg-3);
   max-width: 68ch;
