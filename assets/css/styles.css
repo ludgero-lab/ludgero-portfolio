@@ -2273,24 +2273,31 @@ body:has(.site-header[data-hidden="true"]) .section-head { top: 0; }
 /* As células esticam à altura da mais alta e o nome é empurrado para a base,
    então todos os nomes assentam na mesma linha mesmo quando um cargo ocupa
    duas linhas. */
+/* Cargo em cima, nome embaixo, e os nomes de uma mesma linha da grade sempre
+   na mesma altura. Cada crédito ocupa duas linhas da grade e as herda por
+   subgrid: a linha do cargo fica com a altura do cargo mais longo ao lado, e
+   todos os nomes começam juntos logo abaixo dela.
+
+   Antes o cargo reservava uma altura fixa de duas linhas. Bastou um cargo de
+   três — "Design Instrucional / Conteúdo" — para aquele nome descer sozinho.
+   A mesma técnica alinha os algarismos da faixa de números da home. */
 .credits {
   display: grid;
   /* 150px permite que as fichas de cinco créditos caibam numa linha só;
      abaixo disso a grade quebra sozinha. */
   grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   gap: 24px;
-  align-items: stretch;
 }
 .credit {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-row: span 2;
+  grid-template-rows: subgrid;
+  /* O intervalo entre cargo e nome é do próprio crédito; o de 24px da grade
+     fica só entre uma linha de créditos e a seguinte. */
+  row-gap: 12px;
   border-left: 1px solid var(--line);
   padding-left: 16px;
 }
-/* O rótulo reserva sempre a altura de duas linhas. Assim todos os nomes
-   começam na mesma linha, independentemente de o cargo ocupar uma linha ou
-   duas — e sem depender de os nomes terem o mesmo número de linhas, que era
-   o que quebrava o alinhamento por baixo. */
 .credit span {
   display: block;
   font-size: 11px;
@@ -2298,11 +2305,9 @@ body:has(.site-header[data-hidden="true"]) .section-head { top: 0; }
   text-transform: uppercase;
   color: var(--fg-3);
   line-height: 1.45;
-  min-height: calc(1.45em * 2);
 }
 .credit b {
   display: block;
-  padding-top: 12px;
   font-size: 14px;
   font-weight: 600;
   line-height: 1.4;
