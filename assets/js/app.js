@@ -83,14 +83,19 @@
     }
   }
 
-  /* "Meu envolvimento" abre todo case que tem os dados. A seção é gerada
-     aqui, e não escrita à mão em cases.js, para ficar sempre em primeiro
-     lugar e com o mesmo título nos três — e para entrar na lista de seções
+  /* "Meu envolvimento" é a segunda seção de todo case que tem os dados: vem
+     logo depois da primeira seção do cases.js, que é sempre a que apresenta o
+     problema ("O desafio" ou "O contexto"). A ordem narrativa é problema →
+     meu papel → solução → resultados; abrir pelo papel obrigava quem lê a
+     entender a contribuição antes de saber do que se trata o projeto.
+
+     A seção é gerada aqui, e não escrita à mão em cases.js, para ter o mesmo
+     título e a mesma posição nos três — e para entrar na lista de seções
      antes de qualquer leitura dela: a coluna de navegação, o contador do
-     menu flutuante e o scrollspy leem todos c.sections. */
+     menu flutuante e o scrollspy leem todos c.sections, na ordem do array. */
   CASES.forEach((c) => {
     if (!c.involvement || c.sections.some((s) => s.id === "meu-envolvimento")) return;
-    c.sections.unshift({
+    c.sections.splice(1, 0, {
       // Não pode ser "envolvimento": esse id é da seção da home, que continua
       // no documento (só escondida) enquanto um case está aberto.
       id: "meu-envolvimento",

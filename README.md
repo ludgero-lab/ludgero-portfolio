@@ -21,8 +21,8 @@ Depois acesse `http://localhost:5173`.
 O `index.html` carrega o CSS e os quatro scripts com um parâmetro de versão:
 
 ```html
-<link rel="stylesheet" href="assets/css/styles.css?v=20260916g">
-<script src="assets/js/app.js?v=20260916g"></script>
+<link rel="stylesheet" href="assets/css/styles.css?v=20260917a">
+<script src="assets/js/app.js?v=20260917a"></script>
 ```
 
 **São cinco ocorrências, e todas precisam do mesmo valor.** Sempre que
@@ -144,11 +144,19 @@ Atalho: tecla **T** alterna claro/escuro.
 
 ## Envolvimento por case
 
-Cada case abre com a seção **"Meu envolvimento"**: sete frentes, sempre as
-mesmas, agrupadas por nível. Os dados ficam em `involvement`, dentro de cada
-case; as frentes e os níveis, em `ENVOLVIMENTO` (`cases.js`). A seção é montada
-pelo `app.js` e inserida em primeiro lugar em `c.sections`, para entrar junto na
-coluna de navegação, no contador do menu flutuante e no scrollspy.
+Todo case tem a seção **"Meu envolvimento"** em segundo lugar: sete frentes,
+sempre as mesmas, agrupadas por nível. Os dados ficam em `involvement`, dentro
+de cada case; as frentes e os níveis, em `ENVOLVIMENTO` (`cases.js`). A seção é
+montada pelo `app.js` e inserida em `c.sections` logo depois da primeira seção,
+para entrar junto na coluna de navegação, no contador do menu flutuante e no
+scrollspy.
+
+**Ordem narrativa dos cases:** problema → meu papel → solução → resultados, com
+a ficha técnica sempre por último. Por isso a primeira seção de cada case no
+`cases.js` tem de ser a que apresenta o problema ("O desafio" ou "O contexto"):
+é depois dela que o envolvimento entra. Até setembro de 2026 o envolvimento
+abria o case, e quem lia precisava entender a contribuição antes de saber do
+que se tratava o projeto.
 
 **Agrupado, e não listado com rótulo repetido.** A primeira versão era uma
 tabela: uma linha por frente, o nível numa coluna com três traços e uma legenda

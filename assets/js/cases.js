@@ -89,6 +89,45 @@
     ],
     sections: [
       {
+        id: "desafio",
+        nav: { pt: "O Desafio", en: "The Challenge" },
+        title: { pt: "O desafio e a virada da pandemia",
+                 en: "The challenge and the pandemic pivot" },
+        blocks: [
+          {
+            type: "p",
+            text: {
+              pt: "Em 2020, o briefing original previa gravações in loco com imagens reais nas unidades industriais da Votorantim. Com a chegada da pandemia de Covid-19, o plano foi integralmente inviabilizado. A virada estratégica foi migrar toda a produção de captação real para ilustrações e animações do zero. O obstáculo se tornou uma vantagem competitiva: as ilustrações permitiram encenar perigos, infrações operacionais e consequências graves com precisão pedagógica máxima, sem expor ninguém a situações reais de risco.",
+              en: "In 2020 the original brief called for on-site filming with real footage at Votorantim's industrial plants. When the Covid-19 pandemic arrived, that plan became impossible. The strategic pivot was to move the entire production from live action to illustration and animation built from scratch. The obstacle turned into an advantage: illustration made it possible to stage hazards, operational violations and severe consequences with full instructional precision, without putting anyone in real danger."
+            }
+          },
+          {
+            type: "grid",
+            cols: 2,
+            items: [
+              {
+                src: `${IMG}/votorantim/storyboard.jpg`,
+                alt: { pt: "Storyboard e planejamento do processo de animação",
+                       en: "Storyboard and planning for the animation process" },
+                caption: { pt: "Storyboard / planejamento do processo",
+                           en: "Storyboard / process planning" }
+              },
+              {
+                // Também no Vimeo, pelo mesmo motivo do vídeo da Stefani.
+                // Sem `poster`: a miniatura vem de lá.
+                vimeo: "1224800204",
+                vimeoHash: "7f1ab5847e",
+                label: { pt: "Animação", en: "Animation" },
+                alt: { pt: "Demonstração do vídeo em animação produzido para o treinamento",
+                       en: "Demo of the animated video produced for the training" },
+                caption: { pt: "Demonstração do vídeo em animação",
+                           en: "Demo of the animated video" }
+              }
+            ]
+          }
+        ]
+      },
+      {
         id: "solucao",
         nav: { pt: "Solução", en: "Solution" },
         title: { pt: "A solução", en: "The solution" },
@@ -102,7 +141,7 @@
           },
           {
             // Vem antes do totem: a foto do equipamento é a mesma miniatura do
-            // card na home, então abrir o case com ela repete o que o visitante
+            // card na home, então abrir a seção com ela repete o que o visitante
             // acabou de clicar. Quem chega aqui quer ver a interface.
             //
             // As três telas são etapas de um mesmo fluxo: quase encostadas,
@@ -152,45 +191,6 @@
                 alt: { pt: "Totem físico com a interface do treinamento",
                        en: "The physical kiosk running the training interface" },
                 fit: "bare"
-              }
-            ]
-          }
-        ]
-      },
-      {
-        id: "desafio",
-        nav: { pt: "O Desafio", en: "The Challenge" },
-        title: { pt: "O desafio e a virada da pandemia",
-                 en: "The challenge and the pandemic pivot" },
-        blocks: [
-          {
-            type: "p",
-            text: {
-              pt: "Em 2020, o briefing original previa gravações in loco com imagens reais nas unidades industriais da Votorantim. Com a chegada da pandemia de Covid-19, o plano foi integralmente inviabilizado. A virada estratégica foi migrar toda a produção de captação real para ilustrações e animações do zero. O obstáculo se tornou uma vantagem competitiva: as ilustrações permitiram encenar perigos, infrações operacionais e consequências graves com precisão pedagógica máxima, sem expor ninguém a situações reais de risco.",
-              en: "In 2020 the original brief called for on-site filming with real footage at Votorantim's industrial plants. When the Covid-19 pandemic arrived, that plan became impossible. The strategic pivot was to move the entire production from live action to illustration and animation built from scratch. The obstacle turned into an advantage: illustration made it possible to stage hazards, operational violations and severe consequences with full instructional precision, without putting anyone in real danger."
-            }
-          },
-          {
-            type: "grid",
-            cols: 2,
-            items: [
-              {
-                src: `${IMG}/votorantim/storyboard.jpg`,
-                alt: { pt: "Storyboard e planejamento do processo de animação",
-                       en: "Storyboard and planning for the animation process" },
-                caption: { pt: "Storyboard / planejamento do processo",
-                           en: "Storyboard / process planning" }
-              },
-              {
-                // Também no Vimeo, pelo mesmo motivo do vídeo da Stefani.
-                // Sem `poster`: a miniatura vem de lá.
-                vimeo: "1224800204",
-                vimeoHash: "7f1ab5847e",
-                label: { pt: "Animação", en: "Animation" },
-                alt: { pt: "Demonstração do vídeo em animação produzido para o treinamento",
-                       en: "Demo of the animated video produced for the training" },
-                caption: { pt: "Demonstração do vídeo em animação",
-                           en: "Demo of the animated video" }
               }
             ]
           }
@@ -367,40 +367,6 @@
     ],
     sections: [
       {
-        id: "solucao",
-        nav: { pt: "Solução", en: "Solution" },
-        title: { pt: "A solução", en: "The solution" },
-        blocks: [
-          {
-            type: "p",
-            // Sem a frase "Atuei como designer líder...": a seção "Meu
-            // envolvimento", logo acima, já diz isso com nível e evidência.
-            text: {
-              pt: "Foi desenvolvida uma solução de treinamento digital estruturada para transformar conteúdos técnicos em uma experiência acessível, interativa e escalável, alinhando necessidades operacionais com estratégias de aprendizagem.",
-              en: "We built a structured digital training solution to turn technical content into an accessible, interactive and scalable experience, aligning operational needs with learning strategy."
-            }
-          },
-          {
-            // Em largura cheia: é a prova do case. A lista "ponto a ponto" que
-            // dividia esta área com o vídeo repetia, item por item, o que a
-            // seção "Meu envolvimento" já diz na abertura.
-            type: "video",
-            // Hospedado no Vimeo: o player entrega bitrate adaptativo, o que
-            // importa num vídeo de quase oito minutos aberto no celular. Sem
-            // `poster`, a miniatura vem do próprio Vimeo.
-            vimeo: "1193806255",
-            vimeoHash: "53c8f60c2d",
-            label: { pt: "Solução", en: "Solution" },
-            alt: { pt: "Demonstração da solução digital implementada para a Stefani",
-                   en: "Walkthrough of the digital solution delivered to Stefani" },
-            caption: { pt: "Reprodução da solução digital implementada",
-                       en: "Walkthrough of the delivered digital solution" }
-          }
-          // A nota de créditos que ficava aqui repetia, uma a uma, as quatro
-          // pessoas que a ficha técnica deste mesmo case já lista com função.
-        ]
-      },
-      {
         id: "desafio",
         nav: { pt: "O Desafio", en: "The Challenge" },
         title: { pt: "O desafio", en: "The challenge" },
@@ -447,6 +413,40 @@
                 ratio: "full" }
             ]
           }
+        ]
+      },
+      {
+        id: "solucao",
+        nav: { pt: "Solução", en: "Solution" },
+        title: { pt: "A solução", en: "The solution" },
+        blocks: [
+          {
+            type: "p",
+            // Sem a frase "Atuei como designer líder...": a seção "Meu
+            // envolvimento", logo acima, já diz isso com nível e evidência.
+            text: {
+              pt: "Foi desenvolvida uma solução de treinamento digital estruturada para transformar conteúdos técnicos em uma experiência acessível, interativa e escalável, alinhando necessidades operacionais com estratégias de aprendizagem.",
+              en: "We built a structured digital training solution to turn technical content into an accessible, interactive and scalable experience, aligning operational needs with learning strategy."
+            }
+          },
+          {
+            // Em largura cheia: é a prova do case. A lista "ponto a ponto" que
+            // dividia esta área com o vídeo repetia, item por item, o que a
+            // seção "Meu envolvimento" já diz na abertura.
+            type: "video",
+            // Hospedado no Vimeo: o player entrega bitrate adaptativo, o que
+            // importa num vídeo de quase oito minutos aberto no celular. Sem
+            // `poster`, a miniatura vem do próprio Vimeo.
+            vimeo: "1193806255",
+            vimeoHash: "53c8f60c2d",
+            label: { pt: "Solução", en: "Solution" },
+            alt: { pt: "Demonstração da solução digital implementada para a Stefani",
+                   en: "Walkthrough of the digital solution delivered to Stefani" },
+            caption: { pt: "Reprodução da solução digital implementada",
+                       en: "Walkthrough of the delivered digital solution" }
+          }
+          // A nota de créditos que ficava aqui repetia, uma a uma, as quatro
+          // pessoas que a ficha técnica deste mesmo case já lista com função.
         ]
       },
       {
