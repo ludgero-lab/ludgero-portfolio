@@ -258,6 +258,11 @@
       btn.tabIndex = on ? 0 : -1;
     });
 
+    /* A cor da barra do navegador acompanha o tema, não o sistema: os
+       mesmos valores de --bg nos dois temas. */
+    const barra = $('meta[name="theme-color"]');
+    if (barra) barra.setAttribute("content", tema === "light" ? "#fbfbf9" : "#000000");
+
     positionThumb();
 
     if (announce) toast(t(tema === "light" ? "toast.temaClaro" : "toast.temaEscuro"));

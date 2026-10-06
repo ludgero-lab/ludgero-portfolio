@@ -6,8 +6,12 @@
 <title>Ludgero Ricardo Abilino · Product Designer</title>
 <meta name="description" content="Portfólio de Ludgero Ricardo Abilino — Product Designer com 15 anos de mercado, moldando experiências de aprendizagem e negócios em EdTech, T&amp;D e produtos digitais B2B.">
 <meta name="author" content="Ludgero Ricardo Abilino">
-<meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
-<meta name="theme-color" content="#fbfbf9" media="(prefers-color-scheme: light)">
+<!-- Cor da barra do navegador. Uma só, sem media query: ela acompanha o
+     tema aplicado no site, não o do sistema. Como o site abre sempre no
+     escuro, a versão anterior deixava a barra clara sobre uma página preta
+     em qualquer celular com o sistema em modo claro. O valor é escrito pelo
+     script abaixo e atualizado pelo app.js a cada troca de tema. -->
+<meta name="theme-color" content="#000000">
 
 <!-- Prévia em links: og:image e og:url precisam ser absolutas — LinkedIn,
      WhatsApp e afins não resolvem caminho relativo. Apontam para o
@@ -42,7 +46,7 @@
      uma vez, em vez de misturado.
 
      Formato: data da publicação e uma letra, para o caso de duas no mesmo dia. -->
-<link rel="stylesheet" href="assets/css/styles.css?v=20261006e">
+<link rel="stylesheet" href="assets/css/styles.css?v=20261006f">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='18' fill='%23000'/><text x='50' y='68' font-family='Barlow,sans-serif' font-weight='900' font-size='46' fill='%23fff' text-anchor='middle'>LRA</text></svg>">
 
 <script>
@@ -63,6 +67,8 @@
       if (pref !== "light" && pref !== "dark") pref = "dark";
       document.documentElement.dataset.theme = pref;
       document.documentElement.dataset.themePref = pref;
+      var barra = document.querySelector('meta[name="theme-color"]');
+      if (barra) barra.setAttribute("content", pref === "light" ? "#fbfbf9" : "#000000");
     } catch (e) {}
   })();
 </script>
@@ -457,10 +463,10 @@
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <!-- O mesmo ?v= do <link> do <head>. Ver a nota lá sobre por que existe. -->
-<script src="assets/js/i18n.js?v=20261006e"></script>
-<script src="assets/js/tool-icons.js?v=20261006e"></script>
-<script src="assets/js/cases.js?v=20261006e"></script>
-<script src="assets/js/app.js?v=20261006e"></script>
+<script src="assets/js/i18n.js?v=20261006f"></script>
+<script src="assets/js/tool-icons.js?v=20261006f"></script>
+<script src="assets/js/cases.js?v=20261006f"></script>
+<script src="assets/js/app.js?v=20261006f"></script>
 
 <!-- Cloudflare Web Analytics: sem cookies e sem identificar ninguém, então
      não exige aviso de consentimento.
