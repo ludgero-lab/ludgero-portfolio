@@ -111,8 +111,8 @@
 
     "sobre.busco.titulo": { pt: "O Que Busco", en: "What I'm Looking For" },
     "sobre.busco.texto": {
-      pt: "Procuro equipes maduras em que o design participa de forma estratégica das decisões e existe espaço para colaboração, aprendizado e conversas honestas. Quero continuar evoluindo ao lado de pessoas boas, contribuindo com minha experiência para construir produtos digitais que resolvam problemas reais e gerem impacto consistente para o negócio.",
-      en: "I'm looking for mature teams where design takes part in decisions strategically and there is room for collaboration, learning and honest conversations. I want to keep growing alongside good people, bringing my experience to build digital products that solve real problems and deliver consistent impact for the business."
+      pt: "Procuro times multidisciplinares em que eu possa somar minha experiência, seja em equipes já estruturadas ou em times que ainda estão se formando. Acredito que o design contribui mais quando participa das decisões de produto, e isso acontece com mais naturalidade em ambientes com espaço para colaboração, aprendizado e conversas honestas. Quero seguir evoluindo ao lado de boas pessoas, construindo produtos digitais que resolvam problemas reais e gerem impacto consistente para o negócio.",
+      en: "I'm looking for multidisciplinary teams where I can add my experience, whether in already established teams or in teams that are still taking shape. I believe design contributes most when it takes part in product decisions, and that happens more naturally in environments with room for collaboration, learning and honest conversations. I want to keep growing alongside good people, building digital products that solve real problems and deliver consistent impact for the business."
     },
     "sobre.whats":      { pt: "Fale comigo no WhatsApp", en: "Message me on WhatsApp" },
     "sobre.whatsNota":  { pt: "(abre em nova aba)",    en: "(opens in a new tab)" },
